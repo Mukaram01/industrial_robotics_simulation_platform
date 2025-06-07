@@ -98,6 +98,13 @@ class PoseEstimationNode(Node):
             self.max_depth = 5.0
             self.depth_scale = 0.001  # Convert mm to meters
             return
+
+        if not os.path.isfile(self.pose_estimation_config_path):
+            self.get_logger().error(f'Pose estimation config file not found: {self.pose_estimation_config_path}')
+            self.min_depth = 0.1
+            self.max_depth = 5.0
+            self.depth_scale = 0.001
+            return
         
         try:
             with open(self.pose_estimation_config_path, 'r') as f:

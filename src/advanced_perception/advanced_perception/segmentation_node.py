@@ -64,6 +64,13 @@ class SegmentationNode(Node):
             self.threshold_max = np.array([255, 255, 255])
             self.min_contour_area = 1000
             return
+
+        if not os.path.isfile(self.segmentation_config_path):
+            self.get_logger().error(f'Segmentation config file not found: {self.segmentation_config_path}')
+            self.threshold_min = np.array([0, 0, 0])
+            self.threshold_max = np.array([255, 255, 255])
+            self.min_contour_area = 1000
+            return
         
         try:
             with open(self.segmentation_config_path, 'r') as f:
