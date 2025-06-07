@@ -82,6 +82,15 @@ This platform is designed to serve as the foundation for a robotics company, wit
 3. Customize the environment for your specific demonstration needs
 4. Consider hardware integration options for hybrid operation
 
+## Running Tests
+
+`pytest` is used for running the unit tests. After building the workspace,
+install any Python dependencies and execute:
+
+```bash
+pytest
+```
+
 ## License
 
 All packages in this repository are released under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file and each package's `package.xml` or `LICENSE` file for details.
