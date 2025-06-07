@@ -107,6 +107,15 @@ pip3 install flask flask-socketio rclpy numpy opencv-python pyyaml matplotlib
 pip3 install asyncua paho-mqtt  # For industrial protocol support
 ```
 
+### UR5 Mesh Assets
+
+The `ur5_robot_description` package provided in this repository installs a
+`meshes` directory, but the actual UR5 mesh files are not included.
+Before building the workspace either download the meshes from the
+[Universal Robots description package](https://github.com/ros-industrial/universal_robot)
+and place them in `src/ur5_robot_description/meshes`, or remove the `meshes`
+entry from `src/ur5_robot_description/CMakeLists.txt`.
+
 ### Building the Workspace
 
 1. Clone the repository:
