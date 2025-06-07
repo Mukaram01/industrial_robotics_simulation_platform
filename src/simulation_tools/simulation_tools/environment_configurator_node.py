@@ -184,7 +184,7 @@ class EnvironmentConfiguratorNode(Node):
                     ]
             
             # Handle error simulation
-            if 'trigger_error' in config_data:
+            if config_data.get('action') == 'trigger_error':
                 error_type = config_data.get('type', 'generic')
                 self.simulate_error(error_type)
         
