@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
@@ -15,6 +16,8 @@ from flask_socketio import SocketIO
 import cv2
 import numpy as np
 import base64
+
+SCENARIO_ID_PATTERN = re.compile(r'^[A-Za-z0-9_]+$')
 
 from ament_index_python.packages import get_package_share_directory
 
@@ -243,6 +246,9 @@ class WebInterfaceNode(Node):
         
         @self.app.route('/api/scenarios/<scenario_id>')
         def get_scenario(scenario_id):
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
             if self.config_dir:
                 scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
                 
