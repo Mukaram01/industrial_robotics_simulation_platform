@@ -87,7 +87,7 @@ def generate_launch_description():
     nodes.append(
         Node(
             package='simulation_tools',
-            executable='camera_simulator_node.py',
+            executable='camera_simulator_node',
             name='camera_simulator',
             parameters=[{
                 'simulation_mode': 'synthetic',
@@ -111,7 +111,7 @@ def generate_launch_description():
     nodes.append(
         Node(
             package='simulation_tools',
-            executable='environment_configurator_node.py',
+            executable='environment_configurator_node',
             name='environment_configurator',
             parameters=[{
                 'config_dir': config_dir,
@@ -143,7 +143,7 @@ def generate_launch_description():
     nodes.append(
         Node(
             package='simulation_tools',
-            executable='web_interface_node.py',
+            executable='web_interface_node',
             name='web_interface',
             parameters=[{
                 'port': 8080,
@@ -160,7 +160,7 @@ def generate_launch_description():
     nodes.append(
         Node(
             package='simulation_tools',
-            executable='visualization_server_node.py',
+            executable='visualization_server_node',
             name='visualization_server',
             parameters=[{
                 'data_dir': data_dir,
@@ -176,7 +176,7 @@ def generate_launch_description():
     nodes.append(
         Node(
             package='simulation_tools',
-            executable='industrial_protocol_bridge_node.py',
+            executable='industrial_protocol_bridge_node',
             name='industrial_protocol_bridge',
             parameters=[{
                 'config_dir': config_dir,
@@ -195,7 +195,7 @@ def generate_launch_description():
     nodes.append(
         Node(
             package='simulation_tools',
-            executable='safety_monitor_node.py',
+            executable='safety_monitor_node',
             name='safety_monitor',
             parameters=[{
                 'config_dir': config_dir,
