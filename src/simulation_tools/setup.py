@@ -23,7 +23,6 @@ setup(
     maintainer_email='user@example.com',
     description='Industrial Robotics Simulation Tools',
     license='Apache-2.0',
-    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'camera_simulator_node = simulation_tools.camera_simulator_node:main',
