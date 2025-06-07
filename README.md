@@ -51,6 +51,7 @@ directory from `src/ur5_robot_description/CMakeLists.txt`.
    ```bash
    source /opt/ros/humble/setup.bash
    cd industrial_robotics_simulation_platform
+   pip install -r requirements.txt
    colcon build --symlink-install
    source install/setup.bash
    ```
