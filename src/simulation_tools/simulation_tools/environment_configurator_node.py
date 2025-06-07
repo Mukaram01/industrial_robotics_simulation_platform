@@ -13,12 +13,15 @@ class EnvironmentConfiguratorNode(Node):
     def __init__(self):
         super().__init__('environment_configurator_node')
         
-        # Declare parameters
-        self.declare_parameter('config_dir', '')
-        self.declare_parameter('default_scenario', 'default')
-        self.declare_parameter('physics_enabled', True)
-        self.declare_parameter('record_metrics', True)
-        self.declare_parameter('error_simulation_rate', 0.0)
+        # Declare parameters using a single dictionary
+        param_defaults = {
+            'config_dir': '',
+            'default_scenario': 'default',
+            'physics_enabled': True,
+            'record_metrics': True,
+            'error_simulation_rate': 0.0,
+        }
+        self.declare_parameters('', param_defaults)
         
         # Get parameters
         self.config_dir = self.get_parameter('config_dir').value
