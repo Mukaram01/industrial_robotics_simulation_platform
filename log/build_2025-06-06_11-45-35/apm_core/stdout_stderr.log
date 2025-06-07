@@ -1,0 +1,32 @@
+running develop
+running egg_info
+creating apm_core.egg-info
+writing apm_core.egg-info/PKG-INFO
+writing dependency_links to apm_core.egg-info/dependency_links.txt
+writing entry points to apm_core.egg-info/entry_points.txt
+writing requirements to apm_core.egg-info/requires.txt
+writing top-level names to apm_core.egg-info/top_level.txt
+writing manifest file 'apm_core.egg-info/SOURCES.txt'
+reading manifest file 'apm_core.egg-info/SOURCES.txt'
+writing manifest file 'apm_core.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages/apm-core.egg-link (link to .)
+Installing image_subscriber_node script to /home/user/industrial_robotics_simulation_platform/install/apm_core/bin
+Installing onnx_inference_node script to /home/user/industrial_robotics_simulation_platform/install/apm_core/bin
+Installing point_cloud_subscriber_node script to /home/user/industrial_robotics_simulation_platform/install/apm_core/bin
+
+Installed /home/user/industrial_robotics_simulation_platform/build/apm_core
+running symlink_data
+creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index
+creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index/resource_index
+creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index/resource_index/packages
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/resource/apm_core -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index/resource_index/packages
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/package.xml -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core
+creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/launch
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/launch/object_detection_launch.py -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/launch
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/launch/apm_subscribers_launch.py -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/launch
+creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/config
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/config/default_object_detection_config.yaml -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/config
+creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/models
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/models/ssd_mobilenet_v2.onnx -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/models
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/config/coco_classes.txt -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/config

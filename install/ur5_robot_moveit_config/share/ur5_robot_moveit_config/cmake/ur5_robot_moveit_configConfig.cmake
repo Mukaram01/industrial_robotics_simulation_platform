@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config/ament_cmake_core/ur5_robot_moveit_configConfig.cmake

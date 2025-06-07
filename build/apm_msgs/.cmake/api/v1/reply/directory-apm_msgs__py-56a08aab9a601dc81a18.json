@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "apm_msgs__py",
+		"source" : "/home/user/industrial_robotics_simulation_platform/build/apm_msgs/apm_msgs__py"
+	}
+}

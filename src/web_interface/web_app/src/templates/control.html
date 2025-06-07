@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - ROS2 Perception and Manipulation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .card {
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        #workspace-canvas {
+            border: 1px solid #ccc;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Control Panel</li>
+            </ol>
+        </nav>
+        
+        <h1 class="mb-4">Robot Control Panel</h1>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">System Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Current Status:</span>
+                            <span id="status-badge" class="badge bg-secondary">Unknown</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Detected Objects:</span>
+                            <span id="objects-count" class="badge bg-info">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Pick Object</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="pick-object-id" class="form-label">Object ID:</label>
+                            <select id="pick-object-id" class="form-select">
+                                <option value="">Select an object</option>
+                            </select>
+                        </div>
+                        <button id="pick-btn" class="btn btn-primary w-100">Send Pick Command</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Place Object</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Predefined Locations:</label>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary place-location-btn" data-location="bin_a">Bin A</button>
+                                <button class="btn btn-outline-primary place-location-btn" data-location="bin_b">Bin B</button>
+                                <button class="btn btn-outline-primary place-location-btn" data-location="bin_c">Bin C</button>
+                                <button class="btn btn-outline-primary place-location-btn" data-location="bin_d">Bin D</button>
+                                <button class="btn btn-outline-primary place-location-btn" data-location="home">Home</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="form-label">Custom Location:</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">X:</span>
+                                <input type="number" id="place-x" class="form-control" value="0.0" step="0.1">
+                            </div>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">Y:</span>
+                                <input type="number" id="place-y" class="form-control" value="0.0" step="0.1">
+                            </div>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">Z:</span>
+                                <input type="number" id="place-z" class="form-control" value="0.1" step="0.1">
+                            </div>
+                        </div>
+                        <button id="place-custom-btn" class="btn btn-success w-100">Send Custom Place Command</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Workspace Visualization</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="workspace-canvas" width="600" height="400"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Command Log</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="command-log" style="height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; font-family: monospace;">
+                            <!-- Command log entries will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        
+        // Elements
+        const statusBadge = document.getElementById('status-badge');
+        const objectsCount = document.getElementById('objects-count');
+        const pickObjectId = document.getElementById('pick-object-id');
+        const pickBtn = document.getElementById('pick-btn');
+        const placeLocationBtns = document.querySelectorAll('.place-location-btn');
+        const placeXInput = document.getElementById('place-x');
+        const placeYInput = document.getElementById('place-y');
+        const placeZInput = document.getElementById('place-z');
+        const placeCustomBtn = document.getElementById('place-custom-btn');
+        const commandLog = document.getElementById('command-log');
+        const workspaceCanvas = document.getElementById('workspace-canvas');
+        
+        // Canvas context
+        const ctx = workspaceCanvas.getContext('2d');
+        
+        // Objects data
+        let objects = [];
+        
+        // Status update handler
+        socket.on('status_update', function(data) {
+            statusBadge.textContent = data.status;
+            
+            // Update badge color based on status
+            statusBadge.className = 'badge';
+            switch (data.status) {
+                case 'ready':
+                    statusBadge.classList.add('bg-success');
+                    break;
+                case 'error':
+                    statusBadge.classList.add('bg-danger');
+                    break;
+                case 'picking':
+                case 'placing':
+                    statusBadge.classList.add('bg-warning');
+                    break;
+                case 'pick_complete':
+                case 'place_complete':
+                    statusBadge.classList.add('bg-info');
+                    break;
+                default:
+                    statusBadge.classList.add('bg-secondary');
+            }
+            
+            // Add to command log
+            addToCommandLog(`Status: ${data.status}`);
+        });
+        
+        // Objects update handler
+        socket.on('objects_update', function(data) {
+            objects = data.objects;
+            objectsCount.textContent = objects.length;
+            
+            // Update object dropdown
+            updateObjectDropdown();
+            
+            // Draw workspace
+            drawWorkspace();
+        });
+        
+        // Update object dropdown
+        function updateObjectDropdown() {
+            // Clear dropdown
+            pickObjectId.innerHTML = '<option value="">Select an object</option>';
+            
+            // Add objects to dropdown
+            objects.forEach(obj => {
+                const option = document.createElement('option');
+                option.value = obj.id;
+                option.textContent = `Object #${obj.id} (${obj.class})`;
+                pickObjectId.appendChild(option);
+            });
+        }
+        
+        // Draw workspace
+        function drawWorkspace() {
+            // Clear canvas
+            ctx.clearRect(0, 0, workspaceCanvas.width, workspaceCanvas.height);
+            
+            // Draw grid
+            drawGrid();
+            
+            // Draw objects
+            drawObjects();
+            
+            // Draw bins
+            drawBins();
+        }
+        
+        // Draw grid
+        function drawGrid() {
+            const width = workspaceCanvas.width;
+            const height = workspaceCanvas.height;
+            
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+            
+            // Draw vertical lines
+            for (let x = 0; x <= width; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // Draw horizontal lines
+            for (let y = 0; y <= height; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            
+            // X axis
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
+            
+            // Y axis
+            ctx.beginPath();
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.stroke();
+            
+            // Origin
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Labels
+            ctx.fillStyle = '#000';
+            ctx.font = '12px Arial';
+            ctx.fillText('X', width - 10, height / 2 - 10);
+            ctx.fillText('Y', width / 2 + 10, 10);
+            ctx.fillText('(0,0)', width / 2 + 10, height / 2 + 20);
+        }
+        
+        // Draw objects
+        function drawObjects() {
+            const width = workspaceCanvas.width;
+            const height = workspaceCanvas.height;
+            
+            // Scale factor (1 meter = 200 pixels)
+            const scale = 200;
+            
+            objects.forEach(obj => {
+                // Convert coordinates
+                const x = width / 2 + obj.position.x * scale;
+                const y = height / 2 - obj.position.y * scale;
+                
+                // Draw object
+                ctx.fillStyle = getColorForClass(obj.class);
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw label
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.fillText(`#${obj.id}`, x + 15, y);
+            });
+        }
+        
+        // Draw bins
+        function drawBins() {
+            const width = workspaceCanvas.width;
+            const height = workspaceCanvas.height;
+            
+            // Scale factor (1 meter = 200 pixels)
+            const scale = 200;
+            
+            // Bin locations
+            const bins = [
+                { name: 'Bin A', x: 0.3, y: 0.3, color: '#ff6b6b' },
+                { name: 'Bin B', x: 0.3, y: -0.3, color: '#51cf66' },
+                { name: 'Bin C', x: -0.3, y: 0.3, color: '#339af0' },
+                { name: 'Bin D', x: -0.3, y: -0.3, color: '#fcc419' }
+            ];
+            
+            bins.forEach(bin => {
+                // Convert coordinates
+                const x = width / 2 + bin.x * scale;
+                const y = height / 2 - bin.y * scale;
+                
+                // Draw bin
+                ctx.fillStyle = bin.color + '80'; // Add transparency
+                ctx.strokeStyle = bin.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.rect(x - 25, y - 25, 50, 50);
+                ctx.fill();
+                ctx.stroke();
+                
+                // Draw label
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.fillText(bin.name, x - 20, y);
+            });
+        }
+        
+        // Get color for object class
+        function getColorForClass(className) {
+            switch (className) {
+                case 'red': return '#ff6b6b';
+                case 'green': return '#51cf66';
+                case 'blue': return '#339af0';
+                case 'white': return '#f8f9fa';
+                case 'black': return '#212529';
+                case 'gray': return '#adb5bd';
+                default: return '#fcc419';
+            }
+        }
+        
+        // Add to command log
+        function addToCommandLog(message) {
+            const now = new Date();
+            const timestamp = now.toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<span class="text-muted">[${timestamp}]</span> ${message}`;
+            commandLog.appendChild(logEntry);
+            
+            // Scroll to bottom
+            commandLog.scrollTop = commandLog.scrollHeight;
+        }
+        
+        // Pick button handler
+        pickBtn.addEventListener('click', function() {
+            const objectId = pickObjectId.value;
+            
+            if (!objectId) {
+                alert('Please select an object');
+                return;
+            }
+            
+            fetch('/api/pick', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ object_id: objectId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addToCommandLog(`Sent pick command for object #${objectId}`);
+                } else {
+                    addToCommandLog(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addToCommandLog('Error sending pick command');
+            });
+        });
+        
+        // Place location buttons handler
+        placeLocationBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const location = this.getAttribute('data-location');
+                
+                fetch('/api/place', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ location: location })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        addToCommandLog(`Sent place command for location ${location}`);
+                    } else {
+                        addToCommandLog(`Error: ${data.error}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addToCommandLog('Error sending place command');
+                });
+            });
+        });
+        
+        // Place custom button handler
+        placeCustomBtn.addEventListener('click', function() {
+            const x = parseFloat(placeXInput.value);
+            const y = parseFloat(placeYInput.value);
+            const z = parseFloat(placeZInput.value);
+            
+            const location = `${x} ${y} ${z}`;
+            
+            fetch('/api/place', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ location: location })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addToCommandLog(`Sent place command for location (${x}, ${y}, ${z})`);
+                } else {
+                    addToCommandLog(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addToCommandLog('Error sending place command');
+            });
+        });
+        
+        // Initial workspace drawing
+        drawWorkspace();
+    </script>
+</body>
+</html>

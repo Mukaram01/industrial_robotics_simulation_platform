@@ -1,0 +1,21 @@
+# Default sorting configuration
+sorting_categories:
+  - name: red
+    color: [255, 0, 0]
+    position: [0.3, 0.3, 0.1]
+  - name: green
+    color: [0, 255, 0]
+    position: [0.3, -0.3, 0.1]
+  - name: blue
+    color: [0, 0, 255]
+    position: [-0.3, 0.3, 0.1]
+  - name: unknown
+    color: [128, 128, 128]
+    position: [-0.3, -0.3, 0.1]
+
+robot_settings:
+  gripper_open_width: 0.08
+  gripper_closed_width: 0.02
+  approach_distance: 0.1
+  grasp_height_offset: 0.02
+

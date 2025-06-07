@@ -1,0 +1,22 @@
+[1.731s] Invoking command in '/home/user/industrial_robotics_simulation_platform/src/fmm_core': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/fmm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/fmm_core build --build-base /home/user/industrial_robotics_simulation_platform/build/fmm_core/build install --record /home/user/industrial_robotics_simulation_platform/build/fmm_core/install.log --single-version-externally-managed install_data
+[2.129s] running egg_info
+[2.130s] writing ../../build/fmm_core/fmm_core.egg-info/PKG-INFO
+[2.131s] writing dependency_links to ../../build/fmm_core/fmm_core.egg-info/dependency_links.txt
+[2.132s] writing entry points to ../../build/fmm_core/fmm_core.egg-info/entry_points.txt
+[2.132s] writing requirements to ../../build/fmm_core/fmm_core.egg-info/requires.txt
+[2.132s] writing top-level names to ../../build/fmm_core/fmm_core.egg-info/top_level.txt
+[2.135s] reading manifest file '../../build/fmm_core/fmm_core.egg-info/SOURCES.txt'
+[2.136s] writing manifest file '../../build/fmm_core/fmm_core.egg-info/SOURCES.txt'
+[2.136s] running build
+[2.137s] running build_py
+[2.137s] running install
+[2.138s] running install_lib
+[2.140s] running install_data
+[2.141s] running install_egg_info
+[2.143s] removing '/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages/fmm_core-0.1.0-py3.10.egg-info' (and everything under it)
+[2.144s] Copying ../../build/fmm_core/fmm_core.egg-info to /home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages/fmm_core-0.1.0-py3.10.egg-info
+[2.145s] running install_scripts
+[2.177s] Installing fmm_moveit_interface_node script to /home/user/industrial_robotics_simulation_platform/install/fmm_core/bin
+[2.177s] Installing planning_scene_updater_node script to /home/user/industrial_robotics_simulation_platform/install/fmm_core/bin
+[2.178s] writing list of installed files to '/home/user/industrial_robotics_simulation_platform/build/fmm_core/install.log'
+[2.235s] Invoked command in '/home/user/industrial_robotics_simulation_platform/src/fmm_core' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/fmm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/fmm_core build --build-base /home/user/industrial_robotics_simulation_platform/build/fmm_core/build install --record /home/user/industrial_robotics_simulation_platform/build/fmm_core/install.log --single-version-externally-managed install_data

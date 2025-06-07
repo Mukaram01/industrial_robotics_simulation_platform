@@ -1,0 +1,9 @@
+[console_scripts]
+camera_simulator_node = simulation_tools.camera_simulator_node:main
+environment_configurator_node = simulation_tools.environment_configurator_node:main
+industrial_protocol_bridge_node = simulation_tools.industrial_protocol_bridge_node:main
+safety_monitor_node = simulation_tools.safety_monitor_node:main
+system_test_node = simulation_tools.system_test_node:main
+visualization_server_node = simulation_tools.visualization_server_node:main
+web_interface_node = simulation_tools.web_interface_node:main
+

@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/src/apm_msgs/msg/Detection2DArray.msg

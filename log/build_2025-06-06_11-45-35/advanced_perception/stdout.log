@@ -1,0 +1,28 @@
+running develop
+running egg_info
+creating advanced_perception.egg-info
+writing advanced_perception.egg-info/PKG-INFO
+writing dependency_links to advanced_perception.egg-info/dependency_links.txt
+writing entry points to advanced_perception.egg-info/entry_points.txt
+writing requirements to advanced_perception.egg-info/requires.txt
+writing top-level names to advanced_perception.egg-info/top_level.txt
+writing manifest file 'advanced_perception.egg-info/SOURCES.txt'
+reading manifest file 'advanced_perception.egg-info/SOURCES.txt'
+writing manifest file 'advanced_perception.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages/advanced-perception.egg-link (link to .)
+Installing pose_estimation_node script to /home/user/industrial_robotics_simulation_platform/install/advanced_perception/bin
+Installing segmentation_node script to /home/user/industrial_robotics_simulation_platform/install/advanced_perception/bin
+
+Installed /home/user/industrial_robotics_simulation_platform/build/advanced_perception
+running symlink_data
+creating /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/ament_index
+creating /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/ament_index/resource_index
+creating /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/ament_index/resource_index/packages
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/advanced_perception/resource/advanced_perception -> /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/ament_index/resource_index/packages
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/advanced_perception/package.xml -> /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception
+creating /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/launch
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/advanced_perception/launch/advanced_perception_launch.py -> /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/launch
+creating /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/config
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/advanced_perception/config/pose_estimation_config.yaml -> /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/config
+symbolically linking /home/user/industrial_robotics_simulation_platform/build/advanced_perception/config/segmentation_config.yaml -> /home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/config

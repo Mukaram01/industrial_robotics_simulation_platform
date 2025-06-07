@@ -1,0 +1,36 @@
+[2.046s] Invoking command in '/home/user/industrial_robotics_simulation_platform/build/simulation_tools': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build --no-deps symlink_data
+[2.619s] running develop
+[3.062s] running egg_info
+[3.063s] creating simulation_tools.egg-info
+[3.066s] writing simulation_tools.egg-info/PKG-INFO
+[3.066s] writing dependency_links to simulation_tools.egg-info/dependency_links.txt
+[3.067s] writing entry points to simulation_tools.egg-info/entry_points.txt
+[3.067s] writing requirements to simulation_tools.egg-info/requires.txt
+[3.067s] writing top-level names to simulation_tools.egg-info/top_level.txt
+[3.067s] writing manifest file 'simulation_tools.egg-info/SOURCES.txt'
+[3.072s] reading manifest file 'simulation_tools.egg-info/SOURCES.txt'
+[3.072s] writing manifest file 'simulation_tools.egg-info/SOURCES.txt'
+[3.074s] running build_ext
+[3.075s] Creating /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation-tools.egg-link (link to .)
+[3.077s] Installing camera_simulator_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.078s] Installing environment_configurator_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.082s] Installing industrial_protocol_bridge_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.082s] Installing safety_monitor_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.083s] Installing system_test_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.083s] Installing visualization_server_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.083s] Installing web_interface_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[3.084s] 
+[3.084s] Installed /home/user/industrial_robotics_simulation_platform/build/simulation_tools
+[3.084s] running symlink_data
+[3.084s] creating /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/ament_index
+[3.084s] creating /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/ament_index/resource_index
+[3.084s] creating /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/ament_index/resource_index/packages
+[3.084s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/simulation_tools/resource/simulation_tools -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/ament_index/resource_index/packages
+[3.084s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/simulation_tools/package.xml -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools
+[3.085s] creating /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/launch
+[3.085s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/simulation_tools/launch/realsense_hybrid_launch.py -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/launch
+[3.085s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/simulation_tools/launch/integrated_system_launch.py -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/launch
+[3.085s] creating /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/config
+[3.085s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/simulation_tools/config/create_default_config.py -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/config
+[3.085s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/simulation_tools/config/realsense_config.yaml -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/config
+[3.202s] Invoked command in '/home/user/industrial_robotics_simulation_platform/build/simulation_tools' returned '0': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build --no-deps symlink_data

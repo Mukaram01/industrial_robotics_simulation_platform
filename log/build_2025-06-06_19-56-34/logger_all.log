@@ -1,0 +1,678 @@
+[0.133s] [34mcolcon[0m [1;30mDEBUG[0m [32mCommand line arguments: ['/usr/bin/colcon', 'build'][0m
+[0.133s] [34mcolcon[0m [1;30mDEBUG[0m [32mParsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=8, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7ba384c360e0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7ba384c35a50>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7ba384c35a50>>, mixin_verb=('build',))[0m
+[0.342s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) check parameters
+[0.342s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) check parameters
+[0.342s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) check parameters
+[0.342s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) check parameters
+[0.343s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) discover
+[0.343s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) discover
+[0.343s] [34mcolcon.colcon_core.package_discovery[0m [1;30mINFO[0m Crawling recursively for packages in '/home/user/industrial_robotics_simulation_platform'
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore'
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore_ament_install'
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_pkg']
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_pkg'
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_meta']
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_meta'
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ros']
+[0.343s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ros'
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['cmake', 'python']
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'cmake'
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python'
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['python_setup_py']
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python_setup_py'
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extension 'ignore'
+[0.365s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) ignored
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extension 'ignore'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) ignored
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extension 'ignore'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) ignored
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'ignore'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'ignore_ament_install'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['colcon_pkg']
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'colcon_pkg'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['colcon_meta']
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'colcon_meta'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['ros']
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'ros'
+[0.366s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['cmake', 'python']
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'cmake'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'python'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extensions ['python_setup_py']
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src) by extension 'python_setup_py'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extensions ['ignore', 'ignore_ament_install']
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extension 'ignore'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extension 'ignore_ament_install'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extensions ['colcon_pkg']
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extension 'colcon_pkg'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extensions ['colcon_meta']
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extension 'colcon_meta'
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extensions ['ros']
+[0.367s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/advanced_perception) by extension 'ros'
+[0.370s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/advanced_perception' with type 'ros.ament_python' and name 'advanced_perception'[0m
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extensions ['ignore', 'ignore_ament_install']
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extension 'ignore'
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extension 'ignore_ament_install'
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extensions ['colcon_pkg']
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extension 'colcon_pkg'
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extensions ['colcon_meta']
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extension 'colcon_meta'
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extensions ['ros']
+[0.371s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_core) by extension 'ros'
+[0.372s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/apm_core' with type 'ros.ament_python' and name 'apm_core'[0m
+[0.372s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.372s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extension 'ignore'
+[0.372s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extension 'ignore_ament_install'
+[0.372s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extensions ['colcon_pkg']
+[0.372s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extension 'colcon_pkg'
+[0.373s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extensions ['colcon_meta']
+[0.373s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extension 'colcon_meta'
+[0.373s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extensions ['ros']
+[0.373s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/apm_msgs) by extension 'ros'
+[0.373s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/apm_msgs' with type 'ros.ament_cmake' and name 'apm_msgs'[0m
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extensions ['ignore', 'ignore_ament_install']
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extension 'ignore'
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extension 'ignore_ament_install'
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extensions ['colcon_pkg']
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extension 'colcon_pkg'
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extensions ['colcon_meta']
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extension 'colcon_meta'
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extensions ['ros']
+[0.374s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_description) by extension 'ros'
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/delta_robot_description' with type 'ros.ament_cmake' and name 'delta_robot_description'[0m
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extensions ['ignore', 'ignore_ament_install']
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extension 'ignore'
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extension 'ignore_ament_install'
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extensions ['colcon_pkg']
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extension 'colcon_pkg'
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extensions ['colcon_meta']
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extension 'colcon_meta'
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extensions ['ros']
+[0.375s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/delta_robot_moveit_config) by extension 'ros'
+[0.376s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/delta_robot_moveit_config' with type 'ros.ament_cmake' and name 'delta_robot_moveit_config'[0m
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extensions ['ignore', 'ignore_ament_install']
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extension 'ignore'
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extension 'ignore_ament_install'
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extensions ['colcon_pkg']
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extension 'colcon_pkg'
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extensions ['colcon_meta']
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extension 'colcon_meta'
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extensions ['ros']
+[0.377s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/fmm_core) by extension 'ros'
+[0.378s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/fmm_core' with type 'ros.ament_python' and name 'fmm_core'[0m
+[0.378s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extensions ['ignore', 'ignore_ament_install']
+[0.378s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extension 'ignore'
+[0.378s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extension 'ignore_ament_install'
+[0.378s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extensions ['colcon_pkg']
+[0.378s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extension 'colcon_pkg'
+[0.379s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extensions ['colcon_meta']
+[0.379s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extension 'colcon_meta'
+[0.379s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extensions ['ros']
+[0.379s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/simulation_tools) by extension 'ros'
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/simulation_tools' with type 'ros.ament_python' and name 'simulation_tools'[0m
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extension 'ignore'
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extension 'ignore_ament_install'
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extensions ['colcon_pkg']
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extension 'colcon_pkg'
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extensions ['colcon_meta']
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extension 'colcon_meta'
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extensions ['ros']
+[0.380s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_description) by extension 'ros'
+[0.381s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/ur5_robot_description' with type 'ros.ament_cmake' and name 'ur5_robot_description'[0m
+[0.381s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extensions ['ignore', 'ignore_ament_install']
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extension 'ignore'
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extension 'ignore_ament_install'
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extensions ['colcon_pkg']
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extension 'colcon_pkg'
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extensions ['colcon_meta']
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extension 'colcon_meta'
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extensions ['ros']
+[0.382s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/ur5_robot_moveit_config) by extension 'ros'
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/ur5_robot_moveit_config' with type 'ros.ament_cmake' and name 'ur5_robot_moveit_config'[0m
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extensions ['ignore', 'ignore_ament_install']
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extension 'ignore'
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extension 'ignore_ament_install'
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extensions ['colcon_pkg']
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extension 'colcon_pkg'
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extensions ['colcon_meta']
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extension 'colcon_meta'
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extensions ['ros']
+[0.383s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(src/web_interface) by extension 'ros'
+[0.384s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'src/web_interface' with type 'ros.ament_python' and name 'web_interface'[0m
+[0.384s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) using defaults
+[0.384s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) discover
+[0.384s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) using defaults
+[0.384s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) discover
+[0.384s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) using defaults
+[0.403s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) check parameters
+[0.403s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) discover
+[0.406s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 381 installed packages in /opt/ros/humble[0m
+[0.407s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) using defaults
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'cmake_args' from command line to 'None'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'cmake_target' from command line to 'None'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'cmake_clean_cache' from command line to 'False'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'cmake_clean_first' from command line to 'False'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'cmake_force_configure' from command line to 'False'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'ament_cmake_args' from command line to 'None'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'catkin_cmake_args' from command line to 'None'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_core' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'apm_core' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/apm_core', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/apm_core', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/apm_core', 'symlink_install': False, 'test_result_base': None}[0m
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'cmake_args' from command line to 'None'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'cmake_target' from command line to 'None'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.457s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'apm_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'apm_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/apm_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/apm_msgs', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/apm_msgs', 'symlink_install': False, 'test_result_base': None}[0m
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'cmake_args' from command line to 'None'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'cmake_target' from command line to 'None'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'cmake_clean_cache' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'cmake_clean_first' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'cmake_force_configure' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'ament_cmake_args' from command line to 'None'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'catkin_cmake_args' from command line to 'None'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_description' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.458s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'delta_robot_description' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/delta_robot_description', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/delta_robot_description', 'symlink_install': False, 'test_result_base': None}[0m
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'cmake_args' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'cmake_target' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'cmake_clean_cache' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'cmake_clean_first' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'cmake_force_configure' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'ament_cmake_args' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'catkin_cmake_args' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'simulation_tools' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'simulation_tools' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/simulation_tools', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/simulation_tools', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/simulation_tools', 'symlink_install': False, 'test_result_base': None}[0m
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'cmake_args' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'cmake_target' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'cmake_clean_cache' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'cmake_clean_first' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'cmake_force_configure' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'ament_cmake_args' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'catkin_cmake_args' from command line to 'None'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_description' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.459s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'ur5_robot_description' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_description', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/ur5_robot_description', 'symlink_install': False, 'test_result_base': None}[0m
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'cmake_args' from command line to 'None'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'cmake_target' from command line to 'None'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'cmake_clean_cache' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'cmake_clean_first' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'cmake_force_configure' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'ament_cmake_args' from command line to 'None'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'catkin_cmake_args' from command line to 'None'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'advanced_perception' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'advanced_perception' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/advanced_perception', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/advanced_perception', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/advanced_perception', 'symlink_install': False, 'test_result_base': None}[0m
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'cmake_args' from command line to 'None'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'cmake_target' from command line to 'None'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'cmake_clean_cache' from command line to 'False'
+[0.460s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'cmake_clean_first' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'cmake_force_configure' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'ament_cmake_args' from command line to 'None'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'catkin_cmake_args' from command line to 'None'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'delta_robot_moveit_config' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'delta_robot_moveit_config' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/delta_robot_moveit_config', 'symlink_install': False, 'test_result_base': None}[0m
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'cmake_args' from command line to 'None'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'cmake_target' from command line to 'None'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'cmake_clean_cache' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'cmake_clean_first' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'cmake_force_configure' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'ament_cmake_args' from command line to 'None'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'catkin_cmake_args' from command line to 'None'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'fmm_core' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.461s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'fmm_core' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/fmm_core', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/fmm_core', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/fmm_core', 'symlink_install': False, 'test_result_base': None}[0m
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'cmake_args' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'cmake_target' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'cmake_clean_cache' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'cmake_clean_first' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'cmake_force_configure' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'ament_cmake_args' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'catkin_cmake_args' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'ur5_robot_moveit_config' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'ur5_robot_moveit_config' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/ur5_robot_moveit_config', 'symlink_install': False, 'test_result_base': None}[0m
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'cmake_args' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'cmake_target' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'cmake_clean_cache' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'cmake_clean_first' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'cmake_force_configure' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'ament_cmake_args' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'catkin_cmake_args' from command line to 'None'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'web_interface' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.462s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'web_interface' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/industrial_robotics_simulation_platform/build/web_interface', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/industrial_robotics_simulation_platform/install/web_interface', 'merge_install': False, 'path': '/home/user/industrial_robotics_simulation_platform/src/web_interface', 'symlink_install': False, 'test_result_base': None}[0m
+[0.463s] [34mcolcon.colcon_core.executor[0m [1;30mINFO[0m Executing jobs using 'parallel' executor
+[0.464s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete[0m
+[0.464s] [34mcolcon.colcon_ros.task.ament_cmake.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/apm_msgs' with build type 'ament_cmake'
+[0.464s] [34mcolcon.colcon_cmake.task.cmake.build[0m [1;30mINFO[0m Building CMake package in '/home/user/industrial_robotics_simulation_platform/src/apm_msgs'
+[0.468s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.468s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.468s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.472s] [34mcolcon.colcon_ros.task.ament_cmake.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/delta_robot_description' with build type 'ament_cmake'
+[0.472s] [34mcolcon.colcon_cmake.task.cmake.build[0m [1;30mINFO[0m Building CMake package in '/home/user/industrial_robotics_simulation_platform/src/delta_robot_description'
+[0.473s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.473s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.477s] [34mcolcon.colcon_ros.task.ament_cmake.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/ur5_robot_description' with build type 'ament_cmake'
+[0.477s] [34mcolcon.colcon_cmake.task.cmake.build[0m [1;30mINFO[0m Building CMake package in '/home/user/industrial_robotics_simulation_platform/src/ur5_robot_description'
+[0.477s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.478s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.483s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/apm_core' with build type 'ament_python'
+[0.483s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_core', 'ament_prefix_path')
+[0.483s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/ament_prefix_path.ps1'
+[0.485s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/ament_prefix_path.dsv'
+[0.486s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/ament_prefix_path.sh'
+[0.487s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.487s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.491s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/simulation_tools' with build type 'ament_python'
+[0.492s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('simulation_tools', 'ament_prefix_path')
+[0.492s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/hook/ament_prefix_path.ps1'
+[0.494s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/hook/ament_prefix_path.dsv'
+[0.495s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/hook/ament_prefix_path.sh'
+[0.498s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.498s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.510s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/apm_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/apm_msgs -- -j8 -l8[0m
+[0.514s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_description': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/delta_robot_description -- -j8 -l8[0m
+[0.520s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_description': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/ur5_robot_description -- -j8 -l8[0m
+[1.013s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/user/industrial_robotics_simulation_platform/src/apm_core'
+[1.013s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.013s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.360s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/user/industrial_robotics_simulation_platform/src/simulation_tools'
+[1.360s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.360s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.365s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/delta_robot_description -- -j8 -l8[0m
+[1.379s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_description': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/delta_robot_description[0m
+[1.383s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/ur5_robot_description -- -j8 -l8[0m
+[1.389s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_description': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/ur5_robot_description[0m
+[1.406s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/apm_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/apm_msgs -- -j8 -l8[0m
+[1.407s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/apm_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/apm_msgs[0m
+[1.418s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(delta_robot_description)
+[1.419s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/delta_robot_description[0m
+[1.422s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description' for CMake module files
+[1.437s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description' for CMake config files
+[1.460s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('delta_robot_description', 'cmake_prefix_path')
+[1.460s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/hook/cmake_prefix_path.ps1'
+[1.465s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/hook/cmake_prefix_path.dsv'
+[1.469s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/hook/cmake_prefix_path.sh'
+[1.476s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/bin'
+[1.477s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/lib/pkgconfig/delta_robot_description.pc'
+[1.477s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/lib/python3.10/site-packages'
+[1.478s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/bin'
+[1.478s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.ps1'
+[1.480s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.dsv'
+[1.481s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.sh'
+[1.482s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.bash'
+[1.483s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.zsh'
+[1.484s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/colcon-core/packages/delta_robot_description)
+[1.485s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(delta_robot_description)
+[1.485s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description' for CMake module files
+[1.486s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description' for CMake config files
+[1.487s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('delta_robot_description', 'cmake_prefix_path')
+[1.487s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/hook/cmake_prefix_path.ps1'
+[1.488s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/hook/cmake_prefix_path.dsv'
+[1.489s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/hook/cmake_prefix_path.sh'
+[1.489s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/bin'
+[1.490s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/lib/pkgconfig/delta_robot_description.pc'
+[1.490s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/lib/python3.10/site-packages'
+[1.490s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/bin'
+[1.491s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.ps1'
+[1.491s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.dsv'
+[1.492s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.sh'
+[1.493s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.bash'
+[1.494s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/delta_robot_description/package.zsh'
+[1.494s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/delta_robot_description/share/colcon-core/packages/delta_robot_description)
+[1.495s] [34mcolcon.colcon_ros.task.ament_cmake.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/delta_robot_moveit_config' with build type 'ament_cmake'
+[1.496s] [34mcolcon.colcon_cmake.task.cmake.build[0m [1;30mINFO[0m Building CMake package in '/home/user/industrial_robotics_simulation_platform/src/delta_robot_moveit_config'
+[1.496s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.496s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.505s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(ur5_robot_description)
+[1.505s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description' for CMake module files
+[1.507s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/ur5_robot_description[0m
+[1.507s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description' for CMake config files
+[1.508s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('ur5_robot_description', 'cmake_prefix_path')
+[1.509s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/hook/cmake_prefix_path.ps1'
+[1.510s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/hook/cmake_prefix_path.dsv'
+[1.511s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/hook/cmake_prefix_path.sh'
+[1.512s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/bin'
+[1.512s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/lib/pkgconfig/ur5_robot_description.pc'
+[1.513s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/lib/python3.10/site-packages'
+[1.513s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/bin'
+[1.513s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.ps1'
+[1.514s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.dsv'
+[1.515s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.sh'
+[1.516s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.bash'
+[1.517s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.zsh'
+[1.518s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/colcon-core/packages/ur5_robot_description)
+[1.519s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(ur5_robot_description)
+[1.519s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description' for CMake module files
+[1.521s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description' for CMake config files
+[1.521s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('ur5_robot_description', 'cmake_prefix_path')
+[1.522s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/hook/cmake_prefix_path.ps1'
+[1.522s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/hook/cmake_prefix_path.dsv'
+[1.523s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/hook/cmake_prefix_path.sh'
+[1.524s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/bin'
+[1.524s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/lib/pkgconfig/ur5_robot_description.pc'
+[1.525s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/lib/python3.10/site-packages'
+[1.525s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/bin'
+[1.526s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.ps1'
+[1.527s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.dsv'
+[1.528s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.sh'
+[1.529s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.bash'
+[1.530s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/ur5_robot_description/package.zsh'
+[1.531s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description/share/colcon-core/packages/ur5_robot_description)
+[1.532s] [34mcolcon.colcon_ros.task.ament_cmake.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/ur5_robot_moveit_config' with build type 'ament_cmake'
+[1.532s] [34mcolcon.colcon_cmake.task.cmake.build[0m [1;30mINFO[0m Building CMake package in '/home/user/industrial_robotics_simulation_platform/src/ur5_robot_moveit_config'
+[1.532s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.533s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.565s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config -- -j8 -l8[0m
+[1.572s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(apm_msgs)
+[1.573s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs' for CMake module files
+[1.579s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config -- -j8 -l8[0m
+[1.580s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/apm_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/apm_msgs[0m
+[1.580s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs' for CMake config files
+[1.581s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_msgs', 'cmake_prefix_path')
+[1.581s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/cmake_prefix_path.ps1'
+[1.582s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/cmake_prefix_path.dsv'
+[1.583s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/cmake_prefix_path.sh'
+[1.584s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib'
+[1.585s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_msgs', 'ld_library_path_lib')
+[1.585s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/ld_library_path_lib.ps1'
+[1.587s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/ld_library_path_lib.dsv'
+[1.588s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/ld_library_path_lib.sh'
+[1.591s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/bin'
+[1.591s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib/pkgconfig/apm_msgs.pc'
+[1.591s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib/python3.10/site-packages'
+[1.592s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/bin'
+[1.593s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.ps1'
+[1.594s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.dsv'
+[1.596s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.sh'
+[1.597s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.bash'
+[1.598s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.zsh'
+[1.599s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/colcon-core/packages/apm_msgs)
+[1.600s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(apm_msgs)
+[1.601s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs' for CMake module files
+[1.602s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs' for CMake config files
+[1.603s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_msgs', 'cmake_prefix_path')
+[1.603s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/cmake_prefix_path.ps1'
+[1.604s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/cmake_prefix_path.dsv'
+[1.605s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/cmake_prefix_path.sh'
+[1.606s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib'
+[1.606s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_msgs', 'ld_library_path_lib')
+[1.606s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/ld_library_path_lib.ps1'
+[1.607s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/ld_library_path_lib.dsv'
+[1.608s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/hook/ld_library_path_lib.sh'
+[1.609s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/bin'
+[1.609s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib/pkgconfig/apm_msgs.pc'
+[1.610s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib/python3.10/site-packages'
+[1.610s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/bin'
+[1.610s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.ps1'
+[1.612s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.dsv'
+[1.613s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.sh'
+[1.615s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.bash'
+[1.616s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/apm_msgs/package.zsh'
+[1.616s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/apm_msgs/share/colcon-core/packages/apm_msgs)
+[1.617s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/advanced_perception' with build type 'ament_python'
+[1.618s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('advanced_perception', 'ament_prefix_path')
+[1.618s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/ament_prefix_path.ps1'
+[1.620s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/ament_prefix_path.dsv'
+[1.621s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/ament_prefix_path.sh'
+[1.622s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.622s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.630s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/fmm_core' with build type 'ament_python'
+[1.630s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('fmm_core', 'ament_prefix_path')
+[1.631s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/ament_prefix_path.ps1'
+[1.632s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/ament_prefix_path.dsv'
+[1.633s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/ament_prefix_path.sh'
+[1.636s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.636s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.642s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/user/industrial_robotics_simulation_platform/src/web_interface' with build type 'ament_python'
+[1.642s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('web_interface', 'ament_prefix_path')
+[1.642s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/ament_prefix_path.ps1'
+[1.643s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/ament_prefix_path.dsv'
+[1.645s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/ament_prefix_path.sh'
+[1.646s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.646s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[2.076s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/user/industrial_robotics_simulation_platform/src/advanced_perception'
+[2.076s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.076s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[2.081s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config -- -j8 -l8[0m
+[2.084s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config[0m
+[2.416s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/user/industrial_robotics_simulation_platform/src/fmm_core'
+[2.416s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.416s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[2.738s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/user/industrial_robotics_simulation_platform/src/web_interface'
+[2.738s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.738s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[2.748s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/src/apm_core': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/apm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/apm_core build --build-base /home/user/industrial_robotics_simulation_platform/build/apm_core/build install --record /home/user/industrial_robotics_simulation_platform/build/apm_core/install.log --single-version-externally-managed install_data[0m
+[2.754s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/src/simulation_tools': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/simulation_tools build --build-base /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build install --record /home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log --single-version-externally-managed install_data[0m
+[2.754s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:/opt/ros/humble /usr/bin/cmake --build /home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config -- -j8 -l8[0m
+[2.755s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config[0m
+[2.760s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(delta_robot_moveit_config)
+[2.761s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config' for CMake module files
+[2.762s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/delta_robot_description:/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config[0m
+[2.763s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config' for CMake config files
+[2.764s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('delta_robot_moveit_config', 'cmake_prefix_path')
+[2.765s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/hook/cmake_prefix_path.ps1'
+[2.767s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/hook/cmake_prefix_path.dsv'
+[2.769s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/hook/cmake_prefix_path.sh'
+[2.773s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/bin'
+[2.773s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/lib/pkgconfig/delta_robot_moveit_config.pc'
+[2.774s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/lib/python3.10/site-packages'
+[2.774s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/bin'
+[2.775s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.ps1'
+[2.781s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.dsv'
+[2.781s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.sh'
+[2.782s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.bash'
+[2.783s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.zsh'
+[2.783s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/colcon-core/packages/delta_robot_moveit_config)
+[2.785s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(delta_robot_moveit_config)
+[2.785s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config' for CMake module files
+[2.786s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config' for CMake config files
+[2.786s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('delta_robot_moveit_config', 'cmake_prefix_path')
+[2.787s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/hook/cmake_prefix_path.ps1'
+[2.787s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/hook/cmake_prefix_path.dsv'
+[2.788s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/hook/cmake_prefix_path.sh'
+[2.790s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/bin'
+[2.790s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/lib/pkgconfig/delta_robot_moveit_config.pc'
+[2.790s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/lib/python3.10/site-packages'
+[2.790s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/bin'
+[2.791s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.ps1'
+[2.795s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.dsv'
+[2.796s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.sh'
+[2.797s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.bash'
+[2.798s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/delta_robot_moveit_config/package.zsh'
+[2.800s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config/share/colcon-core/packages/delta_robot_moveit_config)
+[2.811s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(ur5_robot_moveit_config)
+[2.812s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:/opt/ros/humble /usr/bin/cmake --install /home/user/industrial_robotics_simulation_platform/build/ur5_robot_moveit_config[0m
+[2.813s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config' for CMake module files
+[2.816s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config' for CMake config files
+[2.816s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('ur5_robot_moveit_config', 'cmake_prefix_path')
+[2.817s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/hook/cmake_prefix_path.ps1'
+[2.818s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/hook/cmake_prefix_path.dsv'
+[2.820s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/hook/cmake_prefix_path.sh'
+[2.821s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/bin'
+[2.821s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/lib/pkgconfig/ur5_robot_moveit_config.pc'
+[2.822s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/lib/python3.10/site-packages'
+[2.822s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/bin'
+[2.823s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.ps1'
+[2.824s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.dsv'
+[2.825s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.sh'
+[2.827s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.bash'
+[2.828s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.zsh'
+[2.830s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/colcon-core/packages/ur5_robot_moveit_config)
+[2.832s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(ur5_robot_moveit_config)
+[2.832s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config' for CMake module files
+[2.833s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config' for CMake config files
+[2.834s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('ur5_robot_moveit_config', 'cmake_prefix_path')
+[2.835s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/hook/cmake_prefix_path.ps1'
+[2.836s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/hook/cmake_prefix_path.dsv'
+[2.837s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/hook/cmake_prefix_path.sh'
+[2.839s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/bin'
+[2.839s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/lib/pkgconfig/ur5_robot_moveit_config.pc'
+[2.840s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/lib/python3.10/site-packages'
+[2.840s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/bin'
+[2.841s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.ps1'
+[2.842s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.dsv'
+[2.844s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.sh'
+[2.845s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.bash'
+[2.846s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/ur5_robot_moveit_config/package.zsh'
+[2.847s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config/share/colcon-core/packages/ur5_robot_moveit_config)
+[3.403s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools' for CMake module files
+[3.404s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools' for CMake config files
+[3.405s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib'
+[3.405s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/bin'
+[3.406s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/pkgconfig/simulation_tools.pc'
+[3.406s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages'
+[3.406s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('simulation_tools', 'pythonpath')
+[3.408s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/hook/pythonpath.ps1'
+[3.409s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/src/simulation_tools' returned '0': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/simulation_tools build --build-base /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build install --record /home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log --single-version-externally-managed install_data[0m
+[3.410s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/hook/pythonpath.dsv'
+[3.411s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/hook/pythonpath.sh'
+[3.412s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/bin'
+[3.413s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(simulation_tools)
+[3.413s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/package.ps1'
+[3.414s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/package.dsv'
+[3.415s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/package.sh'
+[3.418s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/package.bash'
+[3.419s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/package.zsh'
+[3.420s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/colcon-core/packages/simulation_tools)
+[3.425s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core' for CMake module files
+[3.426s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/src/apm_core' returned '0': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/apm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/apm_core build --build-base /home/user/industrial_robotics_simulation_platform/build/apm_core/build install --record /home/user/industrial_robotics_simulation_platform/build/apm_core/install.log --single-version-externally-managed install_data[0m
+[3.427s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core' for CMake config files
+[3.429s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core/lib'
+[3.429s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core/bin'
+[3.429s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_core', 'path')
+[3.430s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/path.ps1'
+[3.432s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/path.dsv'
+[3.433s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/path.sh'
+[3.434s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core/lib/pkgconfig/apm_core.pc'
+[3.435s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages'
+[3.435s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_core', 'pythonpath')
+[3.436s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/pythonpath.ps1'
+[3.438s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/pythonpath.dsv'
+[3.442s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/pythonpath.sh'
+[3.444s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/apm_core/bin'
+[3.444s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('apm_core', 'pythonscriptspath')
+[3.445s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/pythonscriptspath.ps1'
+[3.447s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/pythonscriptspath.dsv'
+[3.448s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/hook/pythonscriptspath.sh'
+[3.450s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(apm_core)
+[3.452s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/package.ps1'
+[3.453s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/package.dsv'
+[3.455s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/package.sh'
+[3.456s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/package.bash'
+[3.457s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/package.zsh'
+[3.457s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/apm_core/share/colcon-core/packages/apm_core)
+[3.591s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/src/advanced_perception': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/advanced_perception/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/advanced_perception build --build-base /home/user/industrial_robotics_simulation_platform/build/advanced_perception/build install --record /home/user/industrial_robotics_simulation_platform/build/advanced_perception/install.log --single-version-externally-managed install_data[0m
+[3.598s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/src/fmm_core': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/fmm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/fmm_core build --build-base /home/user/industrial_robotics_simulation_platform/build/fmm_core/build install --record /home/user/industrial_robotics_simulation_platform/build/fmm_core/install.log --single-version-externally-managed install_data[0m
+[3.612s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/user/industrial_robotics_simulation_platform/src/web_interface': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/web_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/web_interface/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/web_interface build --build-base /home/user/industrial_robotics_simulation_platform/build/web_interface/build install --record /home/user/industrial_robotics_simulation_platform/build/web_interface/install.log --single-version-externally-managed install_data[0m
+[4.112s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception' for CMake module files
+[4.114s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/src/advanced_perception' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/advanced_perception/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/advanced_perception build --build-base /home/user/industrial_robotics_simulation_platform/build/advanced_perception/build install --record /home/user/industrial_robotics_simulation_platform/build/advanced_perception/install.log --single-version-externally-managed install_data[0m
+[4.115s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception' for CMake config files
+[4.116s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib'
+[4.116s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/bin'
+[4.117s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('advanced_perception', 'path')
+[4.117s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/path.ps1'
+[4.118s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/path.dsv'
+[4.120s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/path.sh'
+[4.121s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/pkgconfig/advanced_perception.pc'
+[4.121s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages'
+[4.122s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('advanced_perception', 'pythonpath')
+[4.122s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/pythonpath.ps1'
+[4.123s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/pythonpath.dsv'
+[4.124s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/pythonpath.sh'
+[4.125s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/bin'
+[4.126s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('advanced_perception', 'pythonscriptspath')
+[4.126s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/pythonscriptspath.ps1'
+[4.127s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/pythonscriptspath.dsv'
+[4.128s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/hook/pythonscriptspath.sh'
+[4.129s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(advanced_perception)
+[4.129s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/package.ps1'
+[4.130s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/package.dsv'
+[4.132s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/package.sh'
+[4.133s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/package.bash'
+[4.134s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/advanced_perception/package.zsh'
+[4.134s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/advanced_perception/share/colcon-core/packages/advanced_perception)
+[4.138s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core' for CMake module files
+[4.141s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/src/fmm_core' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/fmm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/fmm_core build --build-base /home/user/industrial_robotics_simulation_platform/build/fmm_core/build install --record /home/user/industrial_robotics_simulation_platform/build/fmm_core/install.log --single-version-externally-managed install_data[0m
+[4.142s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core' for CMake config files
+[4.143s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib'
+[4.143s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core/bin'
+[4.143s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('fmm_core', 'path')
+[4.144s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/path.ps1'
+[4.144s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/path.dsv'
+[4.145s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/path.sh'
+[4.146s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/pkgconfig/fmm_core.pc'
+[4.147s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core/lib/python3.10/site-packages'
+[4.147s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('fmm_core', 'pythonpath')
+[4.147s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/pythonpath.ps1'
+[4.148s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/pythonpath.dsv'
+[4.149s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/pythonpath.sh'
+[4.150s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/fmm_core/bin'
+[4.150s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('fmm_core', 'pythonscriptspath')
+[4.150s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/pythonscriptspath.ps1'
+[4.151s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/pythonscriptspath.dsv'
+[4.151s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/hook/pythonscriptspath.sh'
+[4.152s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(fmm_core)
+[4.152s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/package.ps1'
+[4.153s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/package.dsv'
+[4.154s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/package.sh'
+[4.155s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/package.bash'
+[4.155s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/fmm_core/package.zsh'
+[4.156s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/fmm_core/share/colcon-core/packages/fmm_core)
+[4.157s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface' for CMake module files
+[4.159s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface' for CMake config files
+[4.159s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/user/industrial_robotics_simulation_platform/src/web_interface' returned '0': AMENT_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs LD_LIBRARY_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/web_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/web_interface/lib/python3.10/site-packages:/home/user/industrial_robotics_simulation_platform/install/apm_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/web_interface build --build-base /home/user/industrial_robotics_simulation_platform/build/web_interface/build install --record /home/user/industrial_robotics_simulation_platform/build/web_interface/install.log --single-version-externally-managed install_data[0m
+[4.160s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface/lib'
+[4.160s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface/bin'
+[4.160s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('web_interface', 'path')
+[4.161s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/path.ps1'
+[4.161s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/path.dsv'
+[4.162s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/path.sh'
+[4.162s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface/lib/pkgconfig/web_interface.pc'
+[4.163s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface/lib/python3.10/site-packages'
+[4.163s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('web_interface', 'pythonpath')
+[4.163s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/pythonpath.ps1'
+[4.164s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/pythonpath.dsv'
+[4.164s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/pythonpath.sh'
+[4.165s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/user/industrial_robotics_simulation_platform/install/web_interface/bin'
+[4.165s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('web_interface', 'pythonscriptspath')
+[4.166s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/pythonscriptspath.ps1'
+[4.166s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/pythonscriptspath.dsv'
+[4.167s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/hook/pythonscriptspath.sh'
+[4.167s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(web_interface)
+[4.168s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/package.ps1'
+[4.168s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/package.dsv'
+[4.169s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/package.sh'
+[4.170s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/package.bash'
+[4.170s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/user/industrial_robotics_simulation_platform/install/web_interface/share/web_interface/package.zsh'
+[4.171s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/user/industrial_robotics_simulation_platform/install/web_interface/share/colcon-core/packages/web_interface)
+[4.172s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mclosing loop[0m
+[4.172s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mloop closed[0m
+[4.172s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete finished with '0'[0m
+[4.172s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoining thread[0m
+[4.181s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[4.181s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[4.181s] [34mcolcon.colcon_notification.desktop_notification[0m [1;30mINFO[0m Sending desktop notification using 'notify2'
+[4.199s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoined thread[0m
+[4.199s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/user/industrial_robotics_simulation_platform/install/local_setup.ps1'
+[4.201s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/home/user/industrial_robotics_simulation_platform/install/_local_setup_util_ps1.py'
+[4.203s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/user/industrial_robotics_simulation_platform/install/setup.ps1'
+[4.205s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/user/industrial_robotics_simulation_platform/install/local_setup.sh'
+[4.206s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/home/user/industrial_robotics_simulation_platform/install/_local_setup_util_sh.py'
+[4.207s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/user/industrial_robotics_simulation_platform/install/setup.sh'
+[4.208s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/user/industrial_robotics_simulation_platform/install/local_setup.bash'
+[4.209s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/user/industrial_robotics_simulation_platform/install/setup.bash'
+[4.211s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/user/industrial_robotics_simulation_platform/install/local_setup.zsh'
+[4.211s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/user/industrial_robotics_simulation_platform/install/setup.zsh'

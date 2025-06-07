@@ -1,0 +1,15 @@
+controller_names:
+  - delta_arm_controller
+
+delta_arm_controller:
+  type: ros2_control/JointTrajectoryController
+  joints:
+    - base_to_upper_arm_1
+    - base_to_upper_arm_2
+    - base_to_upper_arm_3
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.05
+    base_to_upper_arm_1: {trajectory: 0.1, goal: 0.1}
+    base_to_upper_arm_2: {trajectory: 0.1, goal: 0.1}
+    base_to_upper_arm_3: {trajectory: 0.1, goal: 0.1}

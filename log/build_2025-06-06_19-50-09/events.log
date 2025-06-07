@@ -1,0 +1,59 @@
+[0.000000] (-) TimerEvent: {}
+[0.000216] (-) JobUnselected: {'identifier': 'advanced_perception'}
+[0.000252] (-) JobUnselected: {'identifier': 'apm_core'}
+[0.000290] (-) JobUnselected: {'identifier': 'apm_msgs'}
+[0.000361] (-) JobUnselected: {'identifier': 'delta_robot_description'}
+[0.000419] (-) JobUnselected: {'identifier': 'delta_robot_moveit_config'}
+[0.000493] (-) JobUnselected: {'identifier': 'fmm_core'}
+[0.000550] (-) JobUnselected: {'identifier': 'ur5_robot_description'}
+[0.000569] (-) JobUnselected: {'identifier': 'ur5_robot_moveit_config'}
+[0.000584] (-) JobUnselected: {'identifier': 'web_interface'}
+[0.000641] (simulation_tools) JobQueued: {'identifier': 'simulation_tools', 'dependencies': OrderedDict()}
+[0.001723] (simulation_tools) JobStarted: {'identifier': 'simulation_tools'}
+[0.099755] (-) TimerEvent: {}
+[0.200069] (-) TimerEvent: {}
+[0.300503] (-) TimerEvent: {}
+[0.400889] (-) TimerEvent: {}
+[0.501348] (-) TimerEvent: {}
+[0.601746] (-) TimerEvent: {}
+[0.702099] (-) TimerEvent: {}
+[0.802438] (-) TimerEvent: {}
+[0.902783] (-) TimerEvent: {}
+[0.948514] (simulation_tools) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/simulation_tools', 'build', '--build-base', '/home/user/industrial_robotics_simulation_platform/build/simulation_tools/build', 'install', '--record', '/home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/user/industrial_robotics_simulation_platform/src/simulation_tools', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'LANGUAGE': 'en_GB:en', 'USER': 'user', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/user', 'CONDA_SHLVL': '0', 'OLDPWD': '/home/user', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '1398', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', '_CE_M': '', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'user', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'user', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', '_CE_CONDA': '', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/user/anaconda3/condabin:/opt/ros/humble/bin:/home/user/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/ubuntu:@/tmp/.ICE-unix/1362,unix/ubuntu:/tmp/.ICE-unix/1362', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/ec0a777d_d7c2_479c_b189_a7d8dd705dc4', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.I58R72', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'GNOME_TERMINAL_SERVICE': ':1.143', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'CONDA_PYTHON_EXE': '/home/user/anaconda3/bin/python', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/user/industrial_robotics_simulation_platform/build/simulation_tools', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'CONDA_EXE': '/home/user/anaconda3/bin/conda', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VTE_VERSION': '6800'}, 'shell': False}
+[1.003033] (-) TimerEvent: {}
+[1.103444] (-) TimerEvent: {}
+[1.203837] (-) TimerEvent: {}
+[1.304188] (-) TimerEvent: {}
+[1.304765] (simulation_tools) StdoutLine: {'line': b'running egg_info\n'}
+[1.304980] (simulation_tools) StdoutLine: {'line': b'writing ../../build/simulation_tools/simulation_tools.egg-info/PKG-INFO\n'}
+[1.305120] (simulation_tools) StdoutLine: {'line': b'writing dependency_links to ../../build/simulation_tools/simulation_tools.egg-info/dependency_links.txt\n'}
+[1.305212] (simulation_tools) StdoutLine: {'line': b'writing entry points to ../../build/simulation_tools/simulation_tools.egg-info/entry_points.txt\n'}
+[1.305289] (simulation_tools) StdoutLine: {'line': b'writing requirements to ../../build/simulation_tools/simulation_tools.egg-info/requires.txt\n'}
+[1.305375] (simulation_tools) StdoutLine: {'line': b'writing top-level names to ../../build/simulation_tools/simulation_tools.egg-info/top_level.txt\n'}
+[1.308706] (simulation_tools) StdoutLine: {'line': b"reading manifest file '../../build/simulation_tools/simulation_tools.egg-info/SOURCES.txt'\n"}
+[1.309197] (simulation_tools) StdoutLine: {'line': b"adding license file 'LICENSE'\n"}
+[1.309412] (simulation_tools) StdoutLine: {'line': b"writing manifest file '../../build/simulation_tools/simulation_tools.egg-info/SOURCES.txt'\n"}
+[1.309503] (simulation_tools) StdoutLine: {'line': b'running build\n'}
+[1.309579] (simulation_tools) StdoutLine: {'line': b'running build_py\n'}
+[1.309650] (simulation_tools) StdoutLine: {'line': b'copying simulation_tools/web_interface_node.py -> /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build/lib/simulation_tools\n'}
+[1.309721] (simulation_tools) StdoutLine: {'line': b'running install\n'}
+[1.310037] (simulation_tools) StdoutLine: {'line': b'running install_lib\n'}
+[1.311445] (simulation_tools) StdoutLine: {'line': b'copying /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build/lib/simulation_tools/web_interface_node.py -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation_tools\n'}
+[1.313562] (simulation_tools) StdoutLine: {'line': b'byte-compiling /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation_tools/web_interface_node.py to web_interface_node.cpython-310.pyc\n'}
+[1.313934] (simulation_tools) StdoutLine: {'line': b'running install_data\n'}
+[1.314515] (simulation_tools) StderrLine: {'line': b'Sorry: TabError: inconsistent use of tabs and spaces in indentation (web_interface_node.py, line 189)\n'}
+[1.314755] (simulation_tools) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.317412] (simulation_tools) StdoutLine: {'line': b"removing '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation_tools-0.1.0-py3.10.egg-info' (and everything under it)\n"}
+[1.317561] (simulation_tools) StdoutLine: {'line': b'Copying ../../build/simulation_tools/simulation_tools.egg-info to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation_tools-0.1.0-py3.10.egg-info\n'}
+[1.318359] (simulation_tools) StdoutLine: {'line': b'running install_scripts\n'}
+[1.343571] (simulation_tools) StdoutLine: {'line': b'Installing camera_simulator_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.344268] (simulation_tools) StdoutLine: {'line': b'Installing environment_configurator_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.344900] (simulation_tools) StdoutLine: {'line': b'Installing industrial_protocol_bridge_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.345196] (simulation_tools) StdoutLine: {'line': b'Installing safety_monitor_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.345293] (simulation_tools) StdoutLine: {'line': b'Installing system_test_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.345564] (simulation_tools) StdoutLine: {'line': b'Installing visualization_server_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.345840] (simulation_tools) StdoutLine: {'line': b'Installing web_interface_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools\n'}
+[1.346696] (simulation_tools) StdoutLine: {'line': b"writing list of installed files to '/home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log'\n"}
+[1.378594] (simulation_tools) CommandEnded: {'returncode': 0}
+[1.393800] (simulation_tools) JobEnded: {'identifier': 'simulation_tools', 'rc': 0}
+[1.394535] (-) EventReactorShutdown: {}

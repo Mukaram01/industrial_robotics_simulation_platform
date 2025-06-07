@@ -1,0 +1,27 @@
+# Advanced Perception Configuration
+
+# Segmentation parameters
+threshold_min: [0, 0, 0]  # HSV minimum threshold
+threshold_max: [255, 255, 255]  # HSV maximum threshold
+min_contour_area: 1000  # Minimum contour area in pixels
+
+# Color-specific thresholds
+color_thresholds:
+  red:
+    min: [0, 100, 100]
+    max: [10, 255, 255]
+  green:
+    min: [45, 100, 100]
+    max: [75, 255, 255]
+  blue:
+    min: [100, 100, 100]
+    max: [130, 255, 255]
+  yellow:
+    min: [20, 100, 100]
+    max: [40, 255, 255]
+  white:
+    min: [0, 0, 200]
+    max: [180, 30, 255]
+  black:
+    min: [0, 0, 0]
+    max: [180, 255, 30]

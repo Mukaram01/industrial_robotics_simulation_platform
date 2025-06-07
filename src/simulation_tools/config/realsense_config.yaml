@@ -1,0 +1,17 @@
+camera_integration:
+  type: realsense_d435i
+  topic_mapping:
+    color: /camera/color/image_raw
+    depth: /camera/aligned_depth_to_color/image_raw
+    pointcloud: /camera/depth/color/points
+  camera_info_topic: /camera/color/camera_info
+  frame_id: camera_color_optical_frame
+  
+perception:
+  use_real_camera: true
+  object_detection:
+    enabled: true
+    confidence_threshold: 0.7
+  pose_estimation:
+    enabled: true
+    method: pointcloud

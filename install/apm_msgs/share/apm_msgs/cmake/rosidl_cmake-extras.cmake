@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/build/apm_msgs/rosidl_cmake/rosidl_cmake-extras.cmake

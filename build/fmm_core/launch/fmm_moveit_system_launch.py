@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/src/fmm_core/launch/fmm_moveit_system_launch.py

@@ -1,0 +1,34 @@
+[2.078s] Invoking command in '/home/user/industrial_robotics_simulation_platform/build/apm_core': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/apm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/user/industrial_robotics_simulation_platform/build/apm_core/build --no-deps symlink_data
+[2.678s] running develop
+[3.176s] running egg_info
+[3.177s] creating apm_core.egg-info
+[3.177s] writing apm_core.egg-info/PKG-INFO
+[3.177s] writing dependency_links to apm_core.egg-info/dependency_links.txt
+[3.177s] writing entry points to apm_core.egg-info/entry_points.txt
+[3.177s] writing requirements to apm_core.egg-info/requires.txt
+[3.178s] writing top-level names to apm_core.egg-info/top_level.txt
+[3.178s] writing manifest file 'apm_core.egg-info/SOURCES.txt'
+[3.178s] reading manifest file 'apm_core.egg-info/SOURCES.txt'
+[3.178s] writing manifest file 'apm_core.egg-info/SOURCES.txt'
+[3.182s] running build_ext
+[3.182s] Creating /home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages/apm-core.egg-link (link to .)
+[3.185s] Installing image_subscriber_node script to /home/user/industrial_robotics_simulation_platform/install/apm_core/bin
+[3.185s] Installing onnx_inference_node script to /home/user/industrial_robotics_simulation_platform/install/apm_core/bin
+[3.186s] Installing point_cloud_subscriber_node script to /home/user/industrial_robotics_simulation_platform/install/apm_core/bin
+[3.186s] 
+[3.186s] Installed /home/user/industrial_robotics_simulation_platform/build/apm_core
+[3.186s] running symlink_data
+[3.187s] creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index
+[3.187s] creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index/resource_index
+[3.187s] creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index/resource_index/packages
+[3.187s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/resource/apm_core -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/ament_index/resource_index/packages
+[3.188s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/package.xml -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core
+[3.188s] creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/launch
+[3.188s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/launch/object_detection_launch.py -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/launch
+[3.188s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/launch/apm_subscribers_launch.py -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/launch
+[3.188s] creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/config
+[3.189s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/config/default_object_detection_config.yaml -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/config
+[3.189s] creating /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/models
+[3.190s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/models/ssd_mobilenet_v2.onnx -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/models
+[3.196s] symbolically linking /home/user/industrial_robotics_simulation_platform/build/apm_core/config/coco_classes.txt -> /home/user/industrial_robotics_simulation_platform/install/apm_core/share/apm_core/config
+[3.265s] Invoked command in '/home/user/industrial_robotics_simulation_platform/build/apm_core' returned '0': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/apm_core/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/apm_core/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/user/industrial_robotics_simulation_platform/build/apm_core/build --no-deps symlink_data

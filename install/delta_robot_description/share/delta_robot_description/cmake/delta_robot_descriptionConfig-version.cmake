@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/build/delta_robot_description/ament_cmake_core/delta_robot_descriptionConfig-version.cmake

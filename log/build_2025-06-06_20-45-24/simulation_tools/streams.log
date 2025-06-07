@@ -1,0 +1,29 @@
+[1.228s] Invoking command in '/home/user/industrial_robotics_simulation_platform/src/simulation_tools': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/simulation_tools build --build-base /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build install --record /home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log --single-version-externally-managed install_data
+[1.521s] running egg_info
+[1.521s] writing ../../build/simulation_tools/simulation_tools.egg-info/PKG-INFO
+[1.522s] writing dependency_links to ../../build/simulation_tools/simulation_tools.egg-info/dependency_links.txt
+[1.523s] writing entry points to ../../build/simulation_tools/simulation_tools.egg-info/entry_points.txt
+[1.523s] writing requirements to ../../build/simulation_tools/simulation_tools.egg-info/requires.txt
+[1.524s] writing top-level names to ../../build/simulation_tools/simulation_tools.egg-info/top_level.txt
+[1.527s] reading manifest file '../../build/simulation_tools/simulation_tools.egg-info/SOURCES.txt'
+[1.527s] adding license file 'LICENSE'
+[1.528s] writing manifest file '../../build/simulation_tools/simulation_tools.egg-info/SOURCES.txt'
+[1.528s] running build
+[1.528s] running build_py
+[1.529s] running install
+[1.530s] running install_lib
+[1.532s] running install_data
+[1.533s] copying launch/visualization_launch.py -> /home/user/industrial_robotics_simulation_platform/install/simulation_tools/share/simulation_tools/launch
+[1.534s] running install_egg_info
+[1.538s] removing '/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation_tools-0.1.0-py3.10.egg-info' (and everything under it)
+[1.539s] Copying ../../build/simulation_tools/simulation_tools.egg-info to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages/simulation_tools-0.1.0-py3.10.egg-info
+[1.541s] running install_scripts
+[1.755s] Installing camera_simulator_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.756s] Installing environment_configurator_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.757s] Installing industrial_protocol_bridge_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.757s] Installing safety_monitor_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.758s] Installing system_test_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.759s] Installing visualization_server_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.759s] Installing web_interface_node script to /home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/simulation_tools
+[1.761s] writing list of installed files to '/home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log'
+[1.796s] Invoked command in '/home/user/industrial_robotics_simulation_platform/src/simulation_tools' returned '0': PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/simulation_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/simulation_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/simulation_tools build --build-base /home/user/industrial_robotics_simulation_platform/build/simulation_tools/build install --record /home/user/industrial_robotics_simulation_platform/build/simulation_tools/install.log --single-version-externally-managed install_data

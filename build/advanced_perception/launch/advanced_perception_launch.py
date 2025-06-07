@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/src/advanced_perception/launch/advanced_perception_launch.py

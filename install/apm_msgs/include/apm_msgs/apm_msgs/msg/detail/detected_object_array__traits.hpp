@@ -1,0 +1,1 @@
+/home/user/industrial_robotics_simulation_platform/build/apm_msgs/rosidl_generator_cpp/apm_msgs/msg/detail/detected_object_array__traits.hpp

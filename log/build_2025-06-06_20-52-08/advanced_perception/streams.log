@@ -1,0 +1,22 @@
+[2.548s] Invoking command in '/home/user/industrial_robotics_simulation_platform/src/advanced_perception': CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config:/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config:/home/user/industrial_robotics_simulation_platform/install/delta_robot_description PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/advanced_perception/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/advanced_perception build --build-base /home/user/industrial_robotics_simulation_platform/build/advanced_perception/build install --record /home/user/industrial_robotics_simulation_platform/build/advanced_perception/install.log --single-version-externally-managed install_data
+[2.928s] running egg_info
+[2.928s] writing ../../build/advanced_perception/advanced_perception.egg-info/PKG-INFO
+[2.931s] writing dependency_links to ../../build/advanced_perception/advanced_perception.egg-info/dependency_links.txt
+[2.931s] writing entry points to ../../build/advanced_perception/advanced_perception.egg-info/entry_points.txt
+[2.932s] writing requirements to ../../build/advanced_perception/advanced_perception.egg-info/requires.txt
+[2.932s] writing top-level names to ../../build/advanced_perception/advanced_perception.egg-info/top_level.txt
+[2.935s] reading manifest file '../../build/advanced_perception/advanced_perception.egg-info/SOURCES.txt'
+[2.936s] writing manifest file '../../build/advanced_perception/advanced_perception.egg-info/SOURCES.txt'
+[2.937s] running build
+[2.937s] running build_py
+[2.937s] running install
+[2.938s] running install_lib
+[2.940s] running install_data
+[2.940s] running install_egg_info
+[2.943s] removing '/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages/advanced_perception-0.1.0-py3.10.egg-info' (and everything under it)
+[2.944s] Copying ../../build/advanced_perception/advanced_perception.egg-info to /home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages/advanced_perception-0.1.0-py3.10.egg-info
+[2.946s] running install_scripts
+[2.973s] Installing pose_estimation_node script to /home/user/industrial_robotics_simulation_platform/install/advanced_perception/bin
+[2.974s] Installing segmentation_node script to /home/user/industrial_robotics_simulation_platform/install/advanced_perception/bin
+[2.974s] writing list of installed files to '/home/user/industrial_robotics_simulation_platform/build/advanced_perception/install.log'
+[3.011s] Invoked command in '/home/user/industrial_robotics_simulation_platform/src/advanced_perception' returned '0': CMAKE_PREFIX_PATH=/home/user/industrial_robotics_simulation_platform/install/apm_msgs:/home/user/industrial_robotics_simulation_platform/install/ur5_robot_moveit_config:/home/user/industrial_robotics_simulation_platform/install/ur5_robot_description:/home/user/industrial_robotics_simulation_platform/install/delta_robot_moveit_config:/home/user/industrial_robotics_simulation_platform/install/delta_robot_description PYTHONPATH=/home/user/industrial_robotics_simulation_platform/build/advanced_perception/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/industrial_robotics_simulation_platform/install/advanced_perception/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/advanced_perception build --build-base /home/user/industrial_robotics_simulation_platform/build/advanced_perception/build install --record /home/user/industrial_robotics_simulation_platform/build/advanced_perception/install.log --single-version-externally-managed install_data
