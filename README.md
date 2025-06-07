@@ -51,6 +51,13 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
    ros2 launch simulation_tools integrated_system_launch.py
    ```
 
+   To load a specific scenario or enable advanced perception:
+   ```bash
+   ros2 launch simulation_tools integrated_system_launch.py \
+       scenario:=warehouse use_advanced_perception:=true
+   ```
+   The `scenario` argument defaults to `default`.
+
 3. **Access the Web Interface**
    ```
    http://localhost:8080

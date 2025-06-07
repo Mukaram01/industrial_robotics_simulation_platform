@@ -237,6 +237,13 @@ source install/setup.bash
 ros2 launch simulation_tools integrated_system_launch.py
 ```
 
+To launch a specific scenario with advanced perception enabled:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py \
+    scenario:=warehouse use_advanced_perception:=true
+```
+
 ### Accessing the Web Interface
 
 Once the system is running, access the web interface at:

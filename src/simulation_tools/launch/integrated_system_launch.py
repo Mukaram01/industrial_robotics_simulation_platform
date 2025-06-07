@@ -2,9 +2,13 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, OpaqueFunction
+from launch.actions import (DeclareLaunchArgument, ExecuteProcess,
+                            RegisterEventHandler, OpaqueFunction,
+                            IncludeLaunchDescription)
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration, FindExecutable
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
@@ -13,6 +17,7 @@ def generate_launch_description():
     use_realsense = LaunchConfiguration('use_realsense', default='false')
     use_delta_robot = LaunchConfiguration('use_delta_robot', default='true')
     use_advanced_perception = LaunchConfiguration('use_advanced_perception', default='false')
+    scenario = LaunchConfiguration('scenario', default='default')
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
@@ -32,6 +37,10 @@ def generate_launch_description():
             'use_advanced_perception',
             default_value='false',
             description='Use advanced perception algorithms'),
+        DeclareLaunchArgument(
+            'scenario',
+            default_value='default',
+            description='Scenario configuration to load'),
         DeclareLaunchArgument(
             'config_dir',
             default_value=os.path.join(get_package_share_directory('simulation_tools'), 'config'),
@@ -54,51 +63,49 @@ def generate_launch_description():
     nodes = []
     
     # Camera node (either RealSense or simulation)
-    if use_realsense == 'true':
-        # Launch RealSense camera node
-        nodes.append(
-            Node(
-                package='realsense2_camera',
-                executable='realsense2_camera_node',
-                name='realsense2_camera',
-                parameters=[{
-                    'enable_color': True,
-                    'enable_depth': True,
-                    'enable_infra1': False,
-                    'enable_infra2': False,
-                    'color_width': 640,
-                    'color_height': 480,
-                    'depth_width': 640,
-                    'depth_height': 480,
-                    'depth_fps': 30,
-                    'color_fps': 30
-                }],
-                output='screen'
-            )
+    nodes.append(
+        Node(
+            package='realsense2_camera',
+            executable='realsense2_camera_node',
+            name='realsense2_camera',
+            parameters=[{
+                'enable_color': True,
+                'enable_depth': True,
+                'enable_infra1': False,
+                'enable_infra2': False,
+                'color_width': 640,
+                'color_height': 480,
+                'depth_width': 640,
+                'depth_height': 480,
+                'depth_fps': 30,
+                'color_fps': 30
+            }],
+            output='screen',
+            condition=IfCondition(use_realsense)
         )
-    else:
-        # Launch camera simulator node
-        nodes.append(
-            Node(
-                package='simulation_tools',
-                executable='camera_simulator_node.py',
-                name='camera_simulator',
-                parameters=[{
-                    'simulation_mode': 'synthetic',
-                    'frame_rate': 30.0,
-                    'resolution_width': 640,
-                    'resolution_height': 480,
-                    'camera_name': 'camera',
-                    'object_count': 5,
-                    'object_types': ['red_cube', 'green_cylinder', 'blue_sphere'],
-                    'background_type': 'conveyor_belt',
-                    'noise_level': 0.02,
-                    'simulate_lighting': True,
-                    'simulate_occlusion': False
-                }],
-                output='screen'
-            )
+    )
+    nodes.append(
+        Node(
+            package='simulation_tools',
+            executable='camera_simulator_node.py',
+            name='camera_simulator',
+            parameters=[{
+                'simulation_mode': 'synthetic',
+                'frame_rate': 30.0,
+                'resolution_width': 640,
+                'resolution_height': 480,
+                'camera_name': 'camera',
+                'object_count': 5,
+                'object_types': ['red_cube', 'green_cylinder', 'blue_sphere'],
+                'background_type': 'conveyor_belt',
+                'noise_level': 0.02,
+                'simulate_lighting': True,
+                'simulate_occlusion': False
+            }],
+            output='screen',
+            condition=UnlessCondition(use_realsense)
         )
+    )
     
     # Environment configurator node
     nodes.append(
@@ -108,12 +115,27 @@ def generate_launch_description():
             name='environment_configurator',
             parameters=[{
                 'config_dir': config_dir,
-                'default_scenario': 'default',
+                'default_scenario': scenario,
                 'physics_enabled': True,
                 'record_metrics': True,
                 'error_simulation_rate': 0.0
             }],
             output='screen'
+        )
+    )
+
+    # Advanced perception stack
+    advanced_perception_pkg_share = get_package_share_directory('advanced_perception')
+    nodes.append(
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    advanced_perception_pkg_share,
+                    'launch',
+                    'advanced_perception_launch.py'
+                )
+            ),
+            condition=IfCondition(use_advanced_perception)
         )
     )
     
