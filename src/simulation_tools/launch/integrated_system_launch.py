@@ -2,7 +2,7 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, OpaqueFunction
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration, FindExecutable
 from launch_ros.actions import Node
@@ -41,8 +41,9 @@ def generate_launch_description():
             description='Directory for storing data and exports'),
     ]
     
-    # Create data directory
-    os.makedirs(LaunchConfiguration('data_dir').perform(None), exist_ok=True)
+    # Create data directory during launch execution
+    def create_data_dir(context):
+        os.makedirs(LaunchConfiguration('data_dir').perform(context), exist_ok=True)
     
     # Define nodes to launch
     nodes = []
@@ -180,7 +181,7 @@ def generate_launch_description():
         )
     )
     
-    # Create launch description
-    ld = LaunchDescription(launch_args + nodes)
+    # Create launch description with directory initialization
+    ld = LaunchDescription(launch_args + [OpaqueFunction(function=create_data_dir)] + nodes)
     
     return ld
