@@ -15,9 +15,12 @@ class WebInterfaceNode(Node):
     def __init__(self):
         super().__init__('web_interface_node')
         
-        # Declare parameters
-        self.declare_parameter('port', 5000)
-        self.declare_parameter('host', '0.0.0.0')
+        # Declare parameters using a single dictionary
+        param_defaults = {
+            'port': 5000,
+            'host': '0.0.0.0',
+        }
+        self.declare_parameters('', param_defaults)
         
         # Get parameters
         self.port = self.get_parameter('port').value

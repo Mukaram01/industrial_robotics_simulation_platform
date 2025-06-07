@@ -17,18 +17,21 @@ class CameraSimulatorNode(Node):
     def __init__(self):
         super().__init__('camera_simulator_node')
         
-        # Declare parameters
-        self.declare_parameter('simulation_mode', 'synthetic')
-        self.declare_parameter('frame_rate', 30.0)
-        self.declare_parameter('resolution_width', 640)
-        self.declare_parameter('resolution_height', 480)
-        self.declare_parameter('camera_name', 'camera')
-        self.declare_parameter('object_count', 5)
-        self.declare_parameter('object_types', ['red_cube', 'green_cylinder', 'blue_sphere'])
-        self.declare_parameter('background_type', 'conveyor_belt')
-        self.declare_parameter('noise_level', 0.02)
-        self.declare_parameter('simulate_lighting', True)
-        self.declare_parameter('simulate_occlusion', False)
+        # Declare parameters using a single dictionary
+        param_defaults = {
+            'simulation_mode': 'synthetic',
+            'frame_rate': 30.0,
+            'resolution_width': 640,
+            'resolution_height': 480,
+            'camera_name': 'camera',
+            'object_count': 5,
+            'object_types': ['red_cube', 'green_cylinder', 'blue_sphere'],
+            'background_type': 'conveyor_belt',
+            'noise_level': 0.02,
+            'simulate_lighting': True,
+            'simulate_occlusion': False,
+        }
+        self.declare_parameters('', param_defaults)
         
         # Get parameters
         self.simulation_mode = self.get_parameter('simulation_mode').value
