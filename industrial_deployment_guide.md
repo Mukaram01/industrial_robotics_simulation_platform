@@ -235,6 +235,9 @@ To start the complete system:
 source /opt/ros/humble/setup.bash
 source install/setup.bash
 ros2 launch simulation_tools integrated_system_launch.py
+
+# Use the built-in Werkzeug server (development only)
+# ros2 launch simulation_tools integrated_system_launch.py use_werkzeug:=true
 ```
 
 ### Accessing the Web Interface

@@ -50,6 +50,11 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
    ```bash
    ros2 launch simulation_tools integrated_system_launch.py
    ```
+   By default the web interface expects a production WSGI server (e.g. Gunicorn).
+   To use the built-in Werkzeug server for development, pass `use_werkzeug:=true`:
+   ```bash
+   ros2 launch simulation_tools integrated_system_launch.py use_werkzeug:=true
+   ```
 
 3. **Access the Web Interface**
    ```

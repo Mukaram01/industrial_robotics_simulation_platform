@@ -16,6 +16,7 @@ def generate_launch_description():
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
+    use_werkzeug = LaunchConfiguration('use_werkzeug', default='false')
     
     # Create launch configuration arguments
     launch_args = [
@@ -39,6 +40,10 @@ def generate_launch_description():
             'data_dir',
             default_value='/tmp/simulation_data',
             description='Directory for storing data and exports'),
+        DeclareLaunchArgument(
+            'use_werkzeug',
+            default_value='false',
+            description='Run Flask app with built-in Werkzeug server'),
     ]
     
     # Create data directory
@@ -121,7 +126,8 @@ def generate_launch_description():
                 'port': 8080,
                 'host': '0.0.0.0',
                 'config_dir': config_dir,
-                'data_dir': data_dir
+                'data_dir': data_dir,
+                'use_werkzeug': use_werkzeug
             }],
             output='screen'
         )

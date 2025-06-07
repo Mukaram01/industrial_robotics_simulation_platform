@@ -30,12 +30,14 @@ class WebInterfaceNode(Node):
         self.declare_parameter('host', '0.0.0.0')
         self.declare_parameter('config_dir', '')
         self.declare_parameter('data_dir', '')
+        self.declare_parameter('use_werkzeug', False)
         
         # Get parameters
         self.port = self.get_parameter('port').value
         self.host = self.get_parameter('host').value
         self.config_dir = self.get_parameter('config_dir').value
         self.data_dir = self.get_parameter('data_dir').value
+        self.use_werkzeug = self.get_parameter('use_werkzeug').value
         
         # Create data directory if it doesn't exist
         if self.data_dir and not os.path.exists(self.data_dir):
@@ -108,10 +110,15 @@ class WebInterfaceNode(Node):
         # Set up Socket.IO events
         self.setup_socketio_events()
         
-        # Start web server in a separate thread
-        self.server_thread = threading.Thread(target=self.run_server)
-        self.server_thread.daemon = True
-        self.server_thread.start()
+        # Start web server in a separate thread when using Werkzeug
+        if self.use_werkzeug:
+            self.server_thread = threading.Thread(target=self.run_server)
+            self.server_thread.daemon = True
+            self.server_thread.start()
+        else:
+            self.get_logger().info(
+                'use_werkzeug is False; launch an external WSGI server to serve the Flask app'
+            )
         
         self.get_logger().info(f'Web interface started at http://{self.host}:{self.port}')
     
@@ -339,7 +346,20 @@ class WebInterfaceNode(Node):
             })
     
     def run_server(self):
-        self.socketio.run(self.app, host=self.host, port=self.port, debug=False, use_reloader=False, allow_unsafe_werkzeug=True)
+        if not self.use_werkzeug:
+            self.get_logger().info(
+                'run_server called with use_werkzeug=False; the application should be served by an external WSGI server.'
+            )
+            return
+
+        self.socketio.run(
+            self.app,
+            host=self.host,
+            port=self.port,
+            debug=False,
+            use_reloader=False,
+            allow_unsafe_werkzeug=True,
+        )
 
 def main(args=None):
     rclpy.init(args=args)
