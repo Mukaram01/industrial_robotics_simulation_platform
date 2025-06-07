@@ -51,6 +51,18 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
    ros2 launch simulation_tools integrated_system_launch.py
    ```
 
+### Example Commands
+Run the UR5 with MoveIt enabled:
+```bash
+ros2 launch simulation_tools integrated_system_launch.py \
+  use_delta_robot:=false use_ur5_robot:=true use_moveit:=true
+```
+
+Launch the Delta robot inside Gazebo:
+```bash
+ros2 launch simulation_tools integrated_system_launch.py use_gazebo:=true
+```
+
 3. **Access the Web Interface**
    ```
    http://localhost:8080

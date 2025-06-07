@@ -2,16 +2,24 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, OpaqueFunction
+from launch.actions import (DeclareLaunchArgument, ExecuteProcess,
+                            RegisterEventHandler, OpaqueFunction,
+                            IncludeLaunchDescription)
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import LaunchConfiguration, FindExecutable
+from launch.substitutions import (LaunchConfiguration, FindExecutable,
+                                  PythonExpression)
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch.conditions import IfCondition
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     # Declare launch arguments
     use_realsense = LaunchConfiguration('use_realsense', default='false')
     use_delta_robot = LaunchConfiguration('use_delta_robot', default='true')
+    use_ur5_robot = LaunchConfiguration('use_ur5_robot', default='false')
+    use_gazebo = LaunchConfiguration('use_gazebo', default='false')
+    use_moveit = LaunchConfiguration('use_moveit', default='false')
     use_advanced_perception = LaunchConfiguration('use_advanced_perception', default='false')
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
         get_package_share_directory('simulation_tools'), 'config'))
@@ -28,6 +36,18 @@ def generate_launch_description():
             'use_delta_robot',
             default_value='true',
             description='Use delta robot for sorting'),
+        DeclareLaunchArgument(
+            'use_ur5_robot',
+            default_value='false',
+            description='Use UR5 robot for pick and place'),
+        DeclareLaunchArgument(
+            'use_gazebo',
+            default_value='false',
+            description='Launch Gazebo simulation'),
+        DeclareLaunchArgument(
+            'use_moveit',
+            default_value='false',
+            description='Launch MoveIt for motion planning'),
         DeclareLaunchArgument(
             'use_advanced_perception',
             default_value='false',
@@ -52,6 +72,58 @@ def generate_launch_description():
     
     # Define nodes to launch
     nodes = []
+
+    # Include robot descriptions
+    delta_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('delta_robot_description'),
+                'launch',
+                'display_headless.launch.py')),
+        condition=IfCondition(use_delta_robot)
+    )
+    nodes.append(delta_launch)
+
+    ur5_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('ur5_robot_description'),
+                'launch',
+                'display.launch.py')),
+        condition=IfCondition(use_ur5_robot)
+    )
+    nodes.append(ur5_launch)
+
+    # Optional Gazebo simulation
+    simulation_tools_dir = get_package_share_directory('simulation_tools')
+    gazebo_launch_file = os.path.join(simulation_tools_dir, 'launch', 'gazebo.launch.py')
+    if os.path.exists(gazebo_launch_file):
+        gazebo_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([gazebo_launch_file]),
+            condition=IfCondition(use_gazebo)
+        )
+        nodes.append(gazebo_launch)
+
+    # Optional MoveIt integration
+    delta_moveit_file = os.path.join(
+        get_package_share_directory('delta_robot_moveit_config'),
+        'launch', 'move_group_headless.launch.py')
+    if os.path.exists(delta_moveit_file):
+        delta_moveit = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([delta_moveit_file]),
+            condition=IfCondition(PythonExpression([use_moveit, " == 'true' and ", use_delta_robot, " == 'true' "]))
+        )
+        nodes.append(delta_moveit)
+
+    ur5_moveit_file = os.path.join(
+        get_package_share_directory('ur5_robot_moveit_config'),
+        'launch', 'move_group.launch.py')
+    if os.path.exists(ur5_moveit_file):
+        ur5_moveit = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([ur5_moveit_file]),
+            condition=IfCondition(PythonExpression([use_moveit, " == 'true' and ", use_ur5_robot, " == 'true' "]))
+        )
+        nodes.append(ur5_moveit)
     
     # Camera node (either RealSense or simulation)
     if use_realsense == 'true':
