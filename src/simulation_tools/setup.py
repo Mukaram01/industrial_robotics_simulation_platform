@@ -15,6 +15,7 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*.py'))),
         (os.path.join('share', package_name, 'config'), glob(os.path.join('config', '*'))),
         (os.path.join('share', package_name, 'templates'), glob(os.path.join('templates', '*.html'))),
+        (os.path.join('share', package_name, 'static'), glob(os.path.join('static', '*'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
