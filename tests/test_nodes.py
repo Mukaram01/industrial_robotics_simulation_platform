@@ -44,6 +44,7 @@ def test_environment_configurator_node_defaults():
     from simulation_tools.environment_configurator_node import EnvironmentConfiguratorNode
     node = _init_node(EnvironmentConfiguratorNode)
     assert node.get_parameter('default_scenario').value == 'default'
+    assert node.get_parameter('scenario').value == ''
     assert node.get_parameter('physics_enabled').value is True
     assert node.get_parameter('record_metrics').value is True
 

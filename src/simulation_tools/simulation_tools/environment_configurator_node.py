@@ -17,21 +17,24 @@ class EnvironmentConfiguratorNode(Node):
         param_defaults = {
             'config_dir': '',
             'default_scenario': 'default',
+            # Optional scenario to load at startup. If empty, default_scenario is used.
+            'scenario': '',
             'physics_enabled': True,
             'record_metrics': True,
             'error_simulation_rate': 0.0,
         }
         self.declare_parameters('', param_defaults)
-        
+
         # Get parameters
         self.config_dir = self.get_parameter('config_dir').value
         self.default_scenario = self.get_parameter('default_scenario').value
+        self.scenario = self.get_parameter('scenario').value
         self.physics_enabled = self.get_parameter('physics_enabled').value
         self.record_metrics = self.get_parameter('record_metrics').value
         self.error_simulation_rate = self.get_parameter('error_simulation_rate').value
-        
+
         # Initialize state
-        self.current_scenario = self.default_scenario
+        self.current_scenario = self.scenario if self.scenario else self.default_scenario
         self.running = False
         self.environment_config = {}
         self.load_scenario(self.current_scenario)

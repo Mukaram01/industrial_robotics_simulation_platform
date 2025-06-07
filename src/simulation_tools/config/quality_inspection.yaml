@@ -1,0 +1,33 @@
+description: Quality control inspection scenario
+environment:
+  type: factory
+  size: [10.0, 10.0, 3.0]
+  gravity: [0.0, 0.0, -9.81]
+  ambient_light: 0.7
+robots:
+  - id: inspection_robot
+    type: ur5
+    position: [0.0, 0.0, 0.5]
+    orientation: [0.0, 0.0, 0.0, 1.0]
+    parameters:
+      speed: 0.5
+      acceleration: 0.2
+      camera_attached: true
+conveyors:
+  - id: inspection_conveyor
+    type: belt
+    position: [0.0, 0.0, 0.1]
+    dimensions: [0.5, 2.0, 0.1]
+    speed: 0.1
+    direction: [0.0, 1.0, 0.0]
+containers:
+  - id: pass_bin
+    type: bin
+    position: [0.5, 0.5, 0.0]
+    dimensions: [0.3, 0.3, 0.3]
+    color: [0.0, 1.0, 0.0]
+  - id: fail_bin
+    type: bin
+    position: [-0.5, 0.5, 0.0]
+    dimensions: [0.3, 0.3, 0.3]
+    color: [1.0, 0.0, 0.0]
