@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from moveit_msgs.msg import PlanningScene, CollisionObject, AttachedCollisionObject
+from moveit_msgs.msg import PlanningScene, CollisionObject, AttachedCollisionObject, PlanningSceneComponents
 from moveit_msgs.srv import GetPlanningScene
 from geometry_msgs.msg import Pose, Point, Quaternion
 from shape_msgs.msg import SolidPrimitive
@@ -158,9 +158,48 @@ class PlanningSceneUpdaterNode(Node):
         """
         Periodic update of the planning scene
         """
-        # This method can be extended to remove stale objects or update the scene
-        # based on other inputs like robot state, etc.
-        pass
+        try:
+            # Request current planning scene with world objects
+            req = GetPlanningScene.Request()
+            req.components = PlanningSceneComponents()
+            req.components.components = (
+                PlanningSceneComponents.WORLD_OBJECT_NAMES |
+                PlanningSceneComponents.WORLD_OBJECT_GEOMETRY
+            )
+
+            future = self.get_planning_scene_client.call_async(req)
+            rclpy.spin_until_future_complete(self, future, timeout_sec=1.0)
+            response = future.result()
+            if response is None:
+                self.get_logger().warning('Failed to retrieve planning scene')
+                return
+
+            current_ids = {
+                co.id for co in response.scene.world.collision_objects
+            }
+
+            with self.object_lock:
+                tracked_ids = {
+                    f"object_{oid}" for oid in self.detected_object_ids
+                }
+
+            ids_to_remove = current_ids - tracked_ids
+
+            for obj_id in ids_to_remove:
+                co = CollisionObject()
+                co.header.frame_id = self.world_frame
+                co.id = obj_id
+                co.operation = CollisionObject.REMOVE
+
+                ps = PlanningScene()
+                ps.is_diff = True
+                ps.world.collision_objects.append(co)
+                self.planning_scene_pub.publish(ps)
+
+        except Exception as e:
+            self.get_logger().error(
+                f'Error updating planning scene: {str(e)}'
+            )
 
 def main(args=None):
     rclpy.init(args=args)
