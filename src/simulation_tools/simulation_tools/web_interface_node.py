@@ -31,6 +31,7 @@ class WebInterfaceNode(Node):
             'host': '0.0.0.0',
             'config_dir': '',
             'data_dir': '',
+            'allow_unsafe_werkzeug': False,
         }
         self.declare_parameters('', param_defaults)
         
@@ -39,6 +40,7 @@ class WebInterfaceNode(Node):
         self.host = self.get_parameter('host').value
         self.config_dir = self.get_parameter('config_dir').value
         self.data_dir = self.get_parameter('data_dir').value
+        self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
         
         # Create data directory if it doesn't exist
         if self.data_dir and not os.path.exists(self.data_dir):
@@ -342,7 +344,14 @@ class WebInterfaceNode(Node):
             })
     
     def run_server(self):
-        self.socketio.run(self.app, host=self.host, port=self.port, debug=False, use_reloader=False, allow_unsafe_werkzeug=True)
+        self.socketio.run(
+            self.app,
+            host=self.host,
+            port=self.port,
+            debug=False,
+            use_reloader=False,
+            allow_unsafe_werkzeug=self.allow_unsafe_werkzeug,
+        )
 
 def main(args=None):
     rclpy.init(args=args)

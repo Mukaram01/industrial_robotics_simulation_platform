@@ -54,3 +54,9 @@ def test_safety_monitor_node_defaults():
     assert node.get_parameter('safety_rules_file').value == 'safety_rules.yaml'
     assert node.get_parameter('emergency_stop_enabled').value is True
     assert node.get_parameter('collision_detection_enabled').value is True
+
+
+def test_web_interface_node_defaults():
+    from simulation_tools.web_interface_node import WebInterfaceNode
+    node = _init_node(WebInterfaceNode)
+    assert node.get_parameter('allow_unsafe_werkzeug').value is False
