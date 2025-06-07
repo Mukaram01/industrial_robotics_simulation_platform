@@ -41,7 +41,7 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
 1. **Installation**
    ```bash
    source /opt/ros/humble/setup.bash
-   cd ros2_final_package
+   cd industrial_robotics_simulation_platform
    colcon build --symlink-install
    source install/setup.bash
    ```
