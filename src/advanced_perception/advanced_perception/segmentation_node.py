@@ -2,13 +2,13 @@
 
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Image, CameraInfo
+from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
 import yaml
 import os
-from apm_msgs.msg import DetectedObject, DetectedObjectArray
+from apm_msgs.msg import Detection2D, Detection2DArray
 
 class SegmentationNode(Node):
     """
@@ -47,7 +47,7 @@ class SegmentationNode(Node):
         )
         
         self.segmented_objects_pub = self.create_publisher(
-            DetectedObjectArray,
+            Detection2DArray,
             '/apm/advanced_perception/segmented_objects',
             10
         )
@@ -97,9 +97,9 @@ class SegmentationNode(Node):
             self.segmented_image_pub.publish(segmented_image_msg)
             
             # Publish segmented objects
-            objects_msg = DetectedObjectArray()
+            objects_msg = Detection2DArray()
             objects_msg.header = msg.header
-            objects_msg.objects = objects
+            objects_msg.detections = objects
             self.segmented_objects_pub.publish(objects_msg)
             
             self.get_logger().debug(f'Processed image, found {len(objects)} objects')
@@ -115,7 +115,7 @@ class SegmentationNode(Node):
             
         Returns:
             segmented_image: Image with segmentation visualization
-            objects: List of DetectedObject messages
+            objects: List of Detection2D messages
         """
         # Convert to HSV for better color segmentation
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -160,22 +160,18 @@ class SegmentationNode(Node):
             # Draw center
             cv2.circle(segmented_image, (center_x, center_y), 5, (0, 0, 255), -1)
             
-            # Create detected object message
-            obj = DetectedObject()
-            obj.id = i + 1
+            # Create detection message
+            obj = Detection2D()
+            obj.class_id = 0
             obj.class_name = 'segmented_object'
-            obj.score = float(area) / (image.shape[0] * image.shape[1])  # Normalize by image size
-            
+            obj.score = float(area) / (image.shape[0] * image.shape[1])
+
             # Set bounding box
-            obj.bbox.x = x
-            obj.bbox.y = y
-            obj.bbox.width = w
-            obj.bbox.height = h
-            
-            # Set size (in pixels for now)
-            obj.size.x = float(w)
-            obj.size.y = float(h)
-            obj.size.z = 0.1  # Default depth
+            obj.bbox.x_offset = int(x)
+            obj.bbox.y_offset = int(y)
+            obj.bbox.width = int(w)
+            obj.bbox.height = int(h)
+            obj.bbox.do_rectify = False
             
             # Add to list
             objects.append(obj)
