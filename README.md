@@ -32,9 +32,18 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
    - Safety zone enforcement
 
 6. **Demonstration Tools**
-   - Scenario recording and playback
-   - Error simulation for robustness testing
-   - Data export for analysis and reporting
+  - Scenario recording and playback
+  - Error simulation for robustness testing
+  - Data export for analysis and reporting
+
+## UR5 Mesh Assets
+
+The `ur5_robot_description` package references UR5 mesh files which are not
+included in this repository. Before building the workspace you can either
+download the meshes from the
+[Universal Robots description package](https://github.com/ros-industrial/universal_robot)
+and place them in `src/ur5_robot_description/meshes`, or remove the `meshes`
+directory from `src/ur5_robot_description/CMakeLists.txt`.
 
 ## Getting Started
 
