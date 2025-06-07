@@ -1,0 +1,10 @@
+rclpy
+numpy
+opencv-python
+flask
+flask-socketio
+pyyaml
+matplotlib
+asyncua
+paho-mqtt
+onnxruntime
