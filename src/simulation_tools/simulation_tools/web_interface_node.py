@@ -264,7 +264,7 @@ class WebInterfaceNode(Node):
         
         @self.app.route('/static/<path:path>')
         def serve_static(path):
-            return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'), path)
+            return send_from_directory(self.app.static_folder, path)
     
     def setup_socketio_events(self):
         @self.socketio.on('connect')
