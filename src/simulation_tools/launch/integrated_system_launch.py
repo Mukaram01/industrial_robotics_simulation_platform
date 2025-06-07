@@ -16,6 +16,7 @@ def generate_launch_description():
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
+    allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='false')
     
     # Create launch configuration arguments
     launch_args = [
@@ -39,6 +40,10 @@ def generate_launch_description():
             'data_dir',
             default_value='/tmp/simulation_data',
             description='Directory for storing data and exports'),
+        DeclareLaunchArgument(
+            'allow_unsafe_werkzeug',
+            default_value='false',
+            description='Allow running the web server using Werkzeug in unsafe mode'),
     ]
     
     # Create data directory
@@ -121,7 +126,8 @@ def generate_launch_description():
                 'port': 8080,
                 'host': '0.0.0.0',
                 'config_dir': config_dir,
-                'data_dir': data_dir
+                'data_dir': data_dir,
+                'allow_unsafe_werkzeug': allow_unsafe_werkzeug,
             }],
             output='screen'
         )

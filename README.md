@@ -56,6 +56,17 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
    http://localhost:8080
    ```
 
+### Web Interface Configuration
+
+The web server uses Flask's development server via `socketio.run`. By default, the
+server refuses to start if Werkzeug is detected in a production environment. You
+can override this for development by enabling the `allow_unsafe_werkzeug`
+parameter:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=true
+```
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:
