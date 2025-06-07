@@ -81,3 +81,7 @@ This platform is designed to serve as the foundation for a robotics company, wit
 2. Explore the included industrial scenarios
 3. Customize the environment for your specific demonstration needs
 4. Consider hardware integration options for hybrid operation
+
+## License
+
+All packages in this repository are released under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file and each package's `package.xml` or `LICENSE` file for details.
