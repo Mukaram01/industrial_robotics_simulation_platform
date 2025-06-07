@@ -7,7 +7,7 @@ from rclpy.executors import MultiThreadedExecutor
 import threading
 import time
 import numpy as np
-from geometry_msgs.msg import Pose, PoseStamped
+from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion
 from std_msgs.msg import String, Header
 from apm_msgs.msg import DetectedObject, DetectedObjectArray
 import tf2_ros
@@ -246,11 +246,26 @@ class PickAndPlaceNode(Node):
         """
         # Define some predefined locations
         locations = {
-            "bin_a": Pose(position=Pose().position(x=0.3, y=0.3, z=0.1), orientation=Pose().orientation(w=1.0)),
-            "bin_b": Pose(position=Pose().position(x=0.3, y=-0.3, z=0.1), orientation=Pose().orientation(w=1.0)),
-            "bin_c": Pose(position=Pose().position(x=-0.3, y=0.3, z=0.1), orientation=Pose().orientation(w=1.0)),
-            "bin_d": Pose(position=Pose().position(x=-0.3, y=-0.3, z=0.1), orientation=Pose().orientation(w=1.0)),
-            "home": Pose(position=Pose().position(x=0.0, y=0.0, z=0.3), orientation=Pose().orientation(w=1.0))
+            "bin_a": Pose(
+                position=Point(x=0.3, y=0.3, z=0.1),
+                orientation=Quaternion(w=1.0)
+            ),
+            "bin_b": Pose(
+                position=Point(x=0.3, y=-0.3, z=0.1),
+                orientation=Quaternion(w=1.0)
+            ),
+            "bin_c": Pose(
+                position=Point(x=-0.3, y=0.3, z=0.1),
+                orientation=Quaternion(w=1.0)
+            ),
+            "bin_d": Pose(
+                position=Point(x=-0.3, y=-0.3, z=0.1),
+                orientation=Quaternion(w=1.0)
+            ),
+            "home": Pose(
+                position=Point(x=0.0, y=0.0, z=0.3),
+                orientation=Quaternion(w=1.0)
+            )
         }
         
         if location_name in locations:
