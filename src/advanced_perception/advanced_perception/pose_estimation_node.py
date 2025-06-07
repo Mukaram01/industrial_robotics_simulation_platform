@@ -9,7 +9,12 @@ import numpy as np
 import yaml
 import os
 from geometry_msgs.msg import PoseStamped
-from apm_msgs.msg import DetectedObject, DetectedObjectArray
+from apm_msgs.msg import (
+    DetectedObject,
+    DetectedObjectArray,
+    Detection2D,
+    Detection2DArray,
+)
 
 class PoseEstimationNode(Node):
     """
@@ -63,7 +68,7 @@ class PoseEstimationNode(Node):
         )
         
         self.segmented_objects_sub = self.create_subscription(
-            DetectedObjectArray,
+            Detection2DArray,
             '/apm/advanced_perception/segmented_objects',
             self.segmented_objects_callback,
             10
@@ -159,11 +164,14 @@ class PoseEstimationNode(Node):
             # Create output message
             objects_msg = DetectedObjectArray()
             objects_msg.header = self.latest_segmented_objects.header
-            
+
             # Process each segmented object
-            for segmented_obj in self.latest_segmented_objects.objects:
+            for idx, segmented_obj in enumerate(self.latest_segmented_objects.detections):
                 # Get object region from RGB and depth images
-                x, y, w, h = int(segmented_obj.bbox.x), int(segmented_obj.bbox.y), int(segmented_obj.bbox.width), int(segmented_obj.bbox.height)
+                x = int(segmented_obj.bbox.x_offset)
+                y = int(segmented_obj.bbox.y_offset)
+                w = int(segmented_obj.bbox.width)
+                h = int(segmented_obj.bbox.height)
                 
                 # Ensure bounds are within image
                 x = max(0, x)
@@ -215,27 +223,27 @@ class PoseEstimationNode(Node):
                 
                 # Create detected object with pose
                 obj = DetectedObject()
-                obj.id = segmented_obj.id
+                obj.header = self.latest_segmented_objects.header
+                obj.id = idx + 1
+                obj.class_id = segmented_obj.class_id
                 obj.class_name = segmented_obj.class_name
-                obj.score = segmented_obj.score
-                obj.bbox = segmented_obj.bbox
-                
+                obj.confidence = segmented_obj.score
+
                 # Set 3D position
-                obj.pose.header = self.latest_segmented_objects.header
-                obj.pose.pose.position.x = X
-                obj.pose.pose.position.y = Y
-                obj.pose.pose.position.z = Z
-                
+                obj.pose.position.x = X
+                obj.pose.position.y = Y
+                obj.pose.position.z = Z
+
                 # Set orientation (identity quaternion for now)
-                obj.pose.pose.orientation.w = 1.0
-                obj.pose.pose.orientation.x = 0.0
-                obj.pose.pose.orientation.y = 0.0
-                obj.pose.pose.orientation.z = 0.0
-                
-                # Set size based on depth and bounding box
-                obj.size.x = w * median_depth / fx
-                obj.size.y = h * median_depth / fy
-                obj.size.z = 0.1  # Default depth
+                obj.pose.orientation.w = 1.0
+                obj.pose.orientation.x = 0.0
+                obj.pose.orientation.y = 0.0
+                obj.pose.orientation.z = 0.0
+
+                # Set dimensions based on depth and bounding box
+                obj.dimensions.x = w * median_depth / fx
+                obj.dimensions.y = h * median_depth / fy
+                obj.dimensions.z = 0.1  # Default depth
                 
                 # Add to output message
                 objects_msg.objects.append(obj)
