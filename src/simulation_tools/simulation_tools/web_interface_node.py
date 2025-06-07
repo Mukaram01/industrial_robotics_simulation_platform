@@ -16,8 +16,6 @@ import cv2
 import numpy as np
 import base64
 
-### MODIFIED ###
-# Added the ROS 2 utility to find package directories
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -92,15 +90,11 @@ class WebInterfaceNode(Node):
             self.metrics_callback,
             10)
         
-        ### MODIFIED ###
-        # Get the ROS 2 package's share directory
         package_share_directory = get_package_share_directory('simulation_tools')
-        # Define the paths to your template and static folders correctly
         template_folder_path = os.path.join(package_share_directory, 'templates')
         static_folder_path = os.path.join(package_share_directory, 'static')
 
-        # Initialize Flask app using the correct ROS 2 paths
-        self.app = Flask(__name__, 
+        self.app = Flask(__name__,
                          template_folder=template_folder_path,
                          static_folder=static_folder_path)
         self.socketio = SocketIO(self.app, cors_allowed_origins="*")
