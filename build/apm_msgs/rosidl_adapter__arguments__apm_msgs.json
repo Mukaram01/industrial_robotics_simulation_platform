@@ -1,9 +1,0 @@
-{
-  "package_name": "apm_msgs",
-  "non_idl_tuples": [
-    "/home/user/industrial_robotics_simulation_platform/src/apm_msgs:msg/Detection2D.msg",
-    "/home/user/industrial_robotics_simulation_platform/src/apm_msgs:msg/Detection2DArray.msg",
-    "/home/user/industrial_robotics_simulation_platform/src/apm_msgs:msg/DetectedObject.msg",
-    "/home/user/industrial_robotics_simulation_platform/src/apm_msgs:msg/DetectedObjectArray.msg"
-  ]
-}

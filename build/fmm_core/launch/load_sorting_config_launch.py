@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/src/fmm_core/launch/load_sorting_config_launch.py

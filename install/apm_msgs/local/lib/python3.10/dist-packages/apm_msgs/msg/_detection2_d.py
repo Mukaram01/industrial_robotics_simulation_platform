@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/build/apm_msgs/rosidl_generator_py/apm_msgs/msg/_detection2_d.py

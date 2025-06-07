@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/src/ur5_robot_moveit_config/launch/move_group.launch.py

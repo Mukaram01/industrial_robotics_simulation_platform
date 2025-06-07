@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/src/delta_robot_description/launch/display_headless.launch.py

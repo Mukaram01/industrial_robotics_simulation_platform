@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/build/delta_robot_moveit_config/ament_cmake_core/delta_robot_moveit_configConfig.cmake

@@ -1,3 +1,0 @@
-[console_scripts]
-web_interface_node = web_interface.web_interface_node:main
-

@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/build/delta_robot_description/ament_cmake_environment_hooks/local_setup.sh

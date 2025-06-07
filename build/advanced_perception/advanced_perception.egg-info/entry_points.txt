@@ -1,4 +1,0 @@
-[console_scripts]
-pose_estimation_node = advanced_perception.pose_estimation_node:main
-segmentation_node = advanced_perception.segmentation_node:main
-

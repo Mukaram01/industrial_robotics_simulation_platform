@@ -1,4 +1,0 @@
-[console_scripts]
-fmm_moveit_interface_node = fmm_core.fmm_moveit_interface_node:main
-planning_scene_updater_node = fmm_core.planning_scene_updater_node:main
-

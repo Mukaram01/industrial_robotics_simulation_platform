@@ -1,1 +1,0 @@
-moveit_ros_move_group;moveit_kinematics;moveit_planners_ompl;moveit_ros_visualization;ur5_robot_description;joint_state_publisher;robot_state_publisher;xacro

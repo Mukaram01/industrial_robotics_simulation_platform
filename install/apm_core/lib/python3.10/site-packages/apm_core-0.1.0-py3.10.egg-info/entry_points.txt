@@ -1,5 +1,0 @@
-[console_scripts]
-image_subscriber_node = apm_core.image_subscriber_node:main
-onnx_inference_node = apm_core.onnx_inference_node:main
-point_cloud_subscriber_node = apm_core.point_cloud_subscriber_node:main
-

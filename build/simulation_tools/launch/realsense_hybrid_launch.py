@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/src/simulation_tools/launch/realsense_hybrid_launch.py

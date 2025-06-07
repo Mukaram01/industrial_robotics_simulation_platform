@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/src/web_interface/web_app/src/ros2_bridge.py

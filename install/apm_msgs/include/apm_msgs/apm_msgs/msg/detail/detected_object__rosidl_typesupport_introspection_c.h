@@ -1,1 +1,0 @@
-/home/user/industrial_robotics_simulation_platform/build/apm_msgs/rosidl_typesupport_introspection_c/apm_msgs/msg/detail/detected_object__rosidl_typesupport_introspection_c.h
