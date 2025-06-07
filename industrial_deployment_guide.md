@@ -543,6 +543,16 @@ Export simulation data for analysis:
 
 Exported data is saved in the `data/exports` directory.
 
+### Advanced Perception
+
+Enable additional perception algorithms for object segmentation and pose estimation by launching with `use_advanced_perception:=true`.
+
+```bash
+ros2 launch simulation_tools/integrated_system_launch.py use_advanced_perception:=true
+```
+
+When running in simulation, also pass `use_sim_time:=true` to synchronize time across nodes.
+
 ## Customization
 
 ### Adding New Object Types

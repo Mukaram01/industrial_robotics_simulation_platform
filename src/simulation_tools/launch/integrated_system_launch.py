@@ -2,9 +2,17 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, OpaqueFunction
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    RegisterEventHandler,
+    OpaqueFunction,
+    IncludeLaunchDescription,
+)
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration, FindExecutable
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
@@ -17,6 +25,7 @@ def generate_launch_description():
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='false')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     
     # Create launch configuration arguments
     launch_args = [
@@ -44,6 +53,10 @@ def generate_launch_description():
             'allow_unsafe_werkzeug',
             default_value='false',
             description='Allow running the web server using Werkzeug in unsafe mode'),
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='false',
+            description='Use simulation clock'),
     ]
     
     # Create data directory during launch execution
@@ -72,6 +85,7 @@ def generate_launch_description():
                     'depth_height': 480,
                     'depth_fps': 30,
                     'color_fps': 30
+                    'use_sim_time': use_sim_time
                 }],
                 output='screen'
             )
@@ -95,6 +109,7 @@ def generate_launch_description():
                     'noise_level': 0.02,
                     'simulate_lighting': True,
                     'simulate_occlusion': False
+                    'use_sim_time': use_sim_time
                 }],
                 output='screen'
             )
@@ -112,6 +127,7 @@ def generate_launch_description():
                 'physics_enabled': True,
                 'record_metrics': True,
                 'error_simulation_rate': 0.0
+                    'use_sim_time': use_sim_time
             }],
             output='screen'
         )
@@ -129,6 +145,7 @@ def generate_launch_description():
                 'config_dir': config_dir,
                 'data_dir': data_dir,
                 'allow_unsafe_werkzeug': allow_unsafe_werkzeug,
+                    'use_sim_time': use_sim_time
             }],
             output='screen'
         )
@@ -145,6 +162,7 @@ def generate_launch_description():
                 'export_enabled': True,
                 'export_interval': 60.0,
                 'visualization_rate': 10.0
+                    'use_sim_time': use_sim_time
             }],
             output='screen'
         )
@@ -164,6 +182,7 @@ def generate_launch_description():
                 'mqtt_broker': 'localhost',
                 'mqtt_port': 1883,
                 'hybrid_mode': use_realsense
+                    'use_sim_time': use_sim_time
             }],
             output='screen'
         )
@@ -181,9 +200,25 @@ def generate_launch_description():
                 'emergency_stop_enabled': True,
                 'collision_detection_enabled': True,
                 'safety_zone_monitoring_enabled': True,
-                'check_interval': 0.1
+                'check_interval': 0.1,
+                'use_sim_time': use_sim_time
             }],
             output='screen'
+        )
+    )
+
+    # Advanced perception launch
+    nodes.append(
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory('advanced_perception'),
+                    'launch',
+                    'advanced_perception_launch.py'
+                )
+            ),
+            condition=IfCondition(use_advanced_perception),
+            launch_arguments={'use_sim_time': use_sim_time}.items(),
         )
     )
     
