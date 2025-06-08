@@ -81,13 +81,13 @@ directory from `src/ur5_robot_description/CMakeLists.txt`.
 
 ### Web Interface Configuration
 
-The web server uses Flask's development server via `socketio.run`. By default, the
-server refuses to start if Werkzeug is detected in a production environment. You
-can override this for development by enabling the `allow_unsafe_werkzeug`
-parameter:
+The web server uses Flask's development server via `socketio.run`. By default,
+the system allows Werkzeug to run even if a production environment is
+detected. You can disable this override by setting the `allow_unsafe_werkzeug`
+parameter to `false`:
 
 ```bash
-ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=true
+ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=false
 ```
 
 ## Documentation
