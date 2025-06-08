@@ -89,9 +89,22 @@ The mesh resources are required for accurate visualization in both cases.
 
    To change the OPC UA server port, pass the `opcua_port` argument:
    ```bash
-   ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+  ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+  ```
+  This argument is also supported by `realsense_hybrid_launch.py`.
+
+   To secure MQTT communication, configure authentication and TLS in your
+   Mosquitto broker. Set the `password_file` option and create a dedicated
+   listener for TLS traffic:
    ```
-   This argument is also supported by `realsense_hybrid_launch.py`.
+   listener 8883
+   password_file /etc/mosquitto/passwd
+   cafile /etc/mosquitto/ca.crt
+   certfile /etc/mosquitto/server.crt
+   keyfile /etc/mosquitto/server.key
+   allow_anonymous false
+   ```
+   Refer to the [Mosquitto security documentation](https://mosquitto.org/man/mosquitto-conf-5.html) for details.
 
    The OPC UA server is configured with minimal security and, by default, only
    listens on `127.0.0.1`. If you need to allow remote connections, override the

@@ -250,6 +250,18 @@ The OPC UA server runs with minimal security configuration and listens only on
 parameter with an address accessible on your network, such as
 `opc.tcp://0.0.0.0:4840/freeopcua/server/`.
 
+For MQTT, you can enable authentication and TLS in your Mosquitto broker by
+specifying a `password_file` and a secure listener. Example `mosquitto.conf`:
+```
+listener 8883
+password_file /etc/mosquitto/passwd
+cafile /etc/mosquitto/ca.crt
+certfile /etc/mosquitto/server.crt
+keyfile /etc/mosquitto/server.key
+allow_anonymous false
+```
+See the [Mosquitto documentation](https://mosquitto.org/man/mosquitto-conf-5.html) for a full explanation of these options.
+
 ## Operation
 
 ### Starting the System
