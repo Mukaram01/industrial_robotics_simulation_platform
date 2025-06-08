@@ -17,6 +17,7 @@ def generate_launch_description():
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='false')
+    opcua_port = LaunchConfiguration('opcua_port', default='4840')
     
     # Create default data directory (using the default value, not the LaunchConfiguration)
     default_data_dir = '/tmp/simulation_data'
@@ -48,6 +49,10 @@ def generate_launch_description():
             'allow_unsafe_werkzeug',
             default_value='false',
             description='Allow running the web server using Werkzeug in unsafe mode'),
+        DeclareLaunchArgument(
+            'opcua_port',
+            default_value='4840',
+            description='Port for the OPC UA server'),
     ]
     
     # Define nodes to launch
@@ -134,7 +139,7 @@ def generate_launch_description():
             parameters=[{
                 'config_dir': config_dir,
                 'opcua_enabled': True,
-                'opcua_endpoint': 'opc.tcp://0.0.0.0:4840/freeopcua/server/',
+                'opcua_endpoint': ['opc.tcp://0.0.0.0:', opcua_port, '/freeopcua/server/'],
                 'mqtt_enabled': True,
                 'mqtt_broker': 'localhost',
                 'mqtt_port': 1883,

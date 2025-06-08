@@ -68,6 +68,12 @@ directory from `src/ur5_robot_description/CMakeLists.txt`.
    ```
    The `scenario` argument defaults to `default`.
 
+   To change the OPC UA server port, pass the `opcua_port` argument:
+   ```bash
+   ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+   ```
+   This argument is also supported by `realsense_hybrid_launch.py`.
+
 3. **Access the Web Interface**
    ```
    http://localhost:8080
