@@ -63,3 +63,14 @@ def test_web_interface_node_defaults():
     node = _init_node(WebInterfaceNode)
     assert node.get_parameter('allow_unsafe_werkzeug').value is True
     assert node.get_parameter('log_db_path').value == ''
+    assert node.get_parameter('jpeg_quality').value == 75
+
+
+def test_visualization_server_node_defaults():
+    from simulation_tools.visualization_server_node import VisualizationServerNode
+    node = _init_node(VisualizationServerNode)
+    assert node.get_parameter('data_dir').value == ''
+    assert node.get_parameter('export_enabled').value is True
+    assert node.get_parameter('export_interval').value == 60.0
+    assert node.get_parameter('visualization_rate').value == 10.0
+    assert node.get_parameter('jpeg_quality').value == 75

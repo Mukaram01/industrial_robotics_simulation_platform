@@ -130,6 +130,9 @@ parameter to `false`:
 ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=false
 ```
 
+Both `web_interface_node` and `visualization_server_node` support a `jpeg_quality`
+parameter to control JPEG compression (0-100). The default value is `75`.
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:

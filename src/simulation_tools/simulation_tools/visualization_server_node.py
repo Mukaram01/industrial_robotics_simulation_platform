@@ -20,12 +20,14 @@ class VisualizationServerNode(Node):
         self.declare_parameter('export_enabled', True)
         self.declare_parameter('export_interval', 60.0)
         self.declare_parameter('visualization_rate', 10.0)
+        self.declare_parameter('jpeg_quality', 75)
         
         # Get parameters
         self.data_dir = self.get_parameter('data_dir').value
         self.export_enabled = self.get_parameter('export_enabled').value
         self.export_interval = self.get_parameter('export_interval').value
         self.visualization_rate = self.get_parameter('visualization_rate').value
+        self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
         
         # Create data directory if it doesn't exist
         if self.data_dir and not os.path.exists(self.data_dir):
@@ -147,7 +149,16 @@ class VisualizationServerNode(Node):
             
             # Save combined view
             if self.data_dir:
-                cv2.imwrite(os.path.join(self.data_dir, 'combined_view.jpg'), combined_view)
+                success, buffer = cv2.imencode(
+                    '.jpg',
+                    combined_view,
+                    [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+                )
+                if success:
+                    with open(
+                        os.path.join(self.data_dir, 'combined_view.jpg'), 'wb'
+                    ) as f:
+                        f.write(buffer.tobytes())
         
         # Create metrics visualization
         metrics_view = self.create_metrics_visualization()
@@ -160,7 +171,16 @@ class VisualizationServerNode(Node):
             
             # Save metrics view
             if self.data_dir:
-                cv2.imwrite(os.path.join(self.data_dir, 'metrics_view.jpg'), metrics_view)
+                success, buffer = cv2.imencode(
+                    '.jpg',
+                    metrics_view,
+                    [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+                )
+                if success:
+                    with open(
+                        os.path.join(self.data_dir, 'metrics_view.jpg'), 'wb'
+                    ) as f:
+                        f.write(buffer.tobytes())
     
     def export_callback(self):
         if not self.export_enabled or not self.data_dir:
@@ -179,23 +199,55 @@ class VisualizationServerNode(Node):
         
         # Export images
         if self.rgb_image is not None:
-            cv2.imwrite(os.path.join(export_path, 'rgb.jpg'), self.rgb_image)
+            success, buffer = cv2.imencode(
+                '.jpg',
+                self.rgb_image,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+            if success:
+                with open(os.path.join(export_path, 'rgb.jpg'), 'wb') as f:
+                    f.write(buffer.tobytes())
         
         if self.depth_image is not None:
             # Normalize depth for visualization
             depth_normalized = cv2.normalize(self.depth_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
             depth_colormap = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
-            cv2.imwrite(os.path.join(export_path, 'depth.jpg'), depth_colormap)
+            success, buffer = cv2.imencode(
+                '.jpg',
+                depth_colormap,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+            if success:
+                with open(os.path.join(export_path, 'depth.jpg'), 'wb') as f:
+                    f.write(buffer.tobytes())
         
         # Export combined view
         combined_view = self.create_combined_view()
         if combined_view is not None:
-            cv2.imwrite(os.path.join(export_path, 'combined_view.jpg'), combined_view)
+            success, buffer = cv2.imencode(
+                '.jpg',
+                combined_view,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+            if success:
+                with open(
+                    os.path.join(export_path, 'combined_view.jpg'), 'wb'
+                ) as f:
+                    f.write(buffer.tobytes())
         
         # Export metrics visualization
         metrics_view = self.create_metrics_visualization()
         if metrics_view is not None:
-            cv2.imwrite(os.path.join(export_path, 'metrics_view.jpg'), metrics_view)
+            success, buffer = cv2.imencode(
+                '.jpg',
+                metrics_view,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+            if success:
+                with open(
+                    os.path.join(export_path, 'metrics_view.jpg'), 'wb'
+                ) as f:
+                    f.write(buffer.tobytes())
         
         # Export metrics data
         if self.metrics:

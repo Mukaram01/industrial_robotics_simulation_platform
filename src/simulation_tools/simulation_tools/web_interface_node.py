@@ -35,6 +35,7 @@ class WebInterfaceNode(Node):
             'data_dir': '',
             'allow_unsafe_werkzeug': True,
             'log_db_path': '',
+            'jpeg_quality': 75,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
@@ -45,6 +46,7 @@ class WebInterfaceNode(Node):
         self.data_dir = self.get_parameter('data_dir').value
         self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
         self.log_db_path = self.get_parameter('log_db_path').value
+        self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
 
         if not self.log_db_path:
             if self.data_dir:
@@ -147,13 +149,19 @@ class WebInterfaceNode(Node):
         try:
             self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             
+            success, buffer = cv2.imencode(
+                '.jpg',
+                self.latest_rgb_image,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+
             # Optionally save image to file
-            if self.data_dir:
+            if self.data_dir and success:
                 image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')
-                cv2.imwrite(image_path, self.latest_rgb_image)
+                with open(image_path, 'wb') as f:
+                    f.write(buffer.tobytes())
 
             # Encode image and emit directly to clients
-            success, buffer = cv2.imencode('.jpg', self.latest_rgb_image)
             if success:
                 b64_data = base64.b64encode(buffer.tobytes()).decode('utf-8')
                 self.socketio.emit('image_data', {'rgb': b64_data})
@@ -168,13 +176,19 @@ class WebInterfaceNode(Node):
             depth_normalized = cv2.normalize(self.latest_depth_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
             depth_colormap = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
             
+            success, buffer = cv2.imencode(
+                '.jpg',
+                depth_colormap,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+
             # Optionally save image to file
-            if self.data_dir:
+            if self.data_dir and success:
                 image_path = os.path.join(self.data_dir, 'latest_depth.jpg')
-                cv2.imwrite(image_path, depth_colormap)
+                with open(image_path, 'wb') as f:
+                    f.write(buffer.tobytes())
 
             # Encode depth image and emit directly to clients
-            success, buffer = cv2.imencode('.jpg', depth_colormap)
             if success:
                 b64_data = base64.b64encode(buffer.tobytes()).decode('utf-8')
                 self.socketio.emit('image_data', {'depth': b64_data})
