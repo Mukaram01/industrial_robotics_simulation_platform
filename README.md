@@ -159,6 +159,19 @@ This platform is designed to serve as the foundation for a robotics company, wit
 3. Customize the environment for your specific demonstration needs
 4. Consider hardware integration options for hybrid operation
 
+## Handling Large Files
+
+This repository excludes large binary artifacts such as ONNX models and
+compressed archives via `.gitignore`. If you need to keep these files under
+version control, configure [Git LFS](https://git-lfs.github.com/) before
+committing them:
+
+```bash
+git lfs install
+git lfs track "*.onnx" "*.tar.gz" "*.ckpt"
+git add .gitattributes
+```
+
 ## Running Tests
 
 `pytest` is used for running the unit tests. After building the workspace,
