@@ -23,7 +23,7 @@ class EnvironmentConfiguratorNode(Node):
             'record_metrics': True,
             'error_simulation_rate': 0.0,
         }
-        self.declare_parameters('', param_defaults)
+        self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
 
         # Get parameters
         self.config_dir = self.get_parameter('config_dir').value
