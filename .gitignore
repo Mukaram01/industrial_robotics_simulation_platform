@@ -3,3 +3,23 @@ install/
 log/
 *.pyc
 __pycache__/
+# Large binary formats
+*.onnx
+*.tar.gz
+*.ckpt
+*.pt
+*.pth
+*.pb
+*.h5
+
+# Model checkpoint directories
+checkpoint/
+checkpoints/
+
+# Temporary data generated at runtime
+*.npy
+*.npz
+*.tmp
+*.log
+tmp/
+temp/
