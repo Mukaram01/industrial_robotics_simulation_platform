@@ -21,7 +21,14 @@ setup(
         # Include class labels
         (os.path.join('share', package_name, 'config'), glob('config/*.txt')),
     ],
-    install_requires=['setuptools'],
+    install_requires=[
+        'setuptools',
+        'rclpy',
+        'numpy',
+        'opencv-python',
+        'onnxruntime',
+        'pyyaml',
+    ],
     zip_safe=True,
     maintainer='ubuntu',
     maintainer_email='user@example.com',
