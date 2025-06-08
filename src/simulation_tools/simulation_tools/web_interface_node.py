@@ -33,6 +33,7 @@ class WebInterfaceNode(Node):
             'config_dir': '',
             'data_dir': '',
             'allow_unsafe_werkzeug': True,
+            'jpeg_quality': 75,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
@@ -42,6 +43,7 @@ class WebInterfaceNode(Node):
         self.config_dir = self.get_parameter('config_dir').value
         self.data_dir = self.get_parameter('data_dir').value
         self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
+        self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
         
         # Create data directory if it doesn't exist
         if self.data_dir and not os.path.exists(self.data_dir):
@@ -135,19 +137,34 @@ class WebInterfaceNode(Node):
     def rgb_callback(self, msg):
         try:
             self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-            
-            # Save image to file
+
+            # Encode JPEG with configurable quality
+            success, buffer = cv2.imencode(
+                '.jpg',
+                self.latest_rgb_image,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+            if not success:
+                raise RuntimeError('Failed to encode RGB image')
+
             if self.data_dir:
+                # Save encoded bytes to file
                 image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')
-                cv2.imwrite(image_path, self.latest_rgb_image)
-                
-                # Emit image update to clients
+                with open(image_path, 'wb') as f:
+                    f.write(buffer.tobytes())
+
+                # Emit image update to clients so they fetch the updated URL
                 self.socketio.emit('image_update', {
                     'url': f'/api/image/latest?type=rgb&t={time.time()}'
                 })
+            else:
+                # Send encoded bytes directly if no data directory is configured
+                self.socketio.emit('image_update', {
+                    'data': base64.b64encode(buffer).decode('utf-8')
+                })
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {e}')
-    
+
     def depth_callback(self, msg):
         try:
             self.latest_depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
@@ -156,14 +173,26 @@ class WebInterfaceNode(Node):
             depth_normalized = cv2.normalize(self.latest_depth_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
             depth_colormap = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
             
-            # Save image to file
+            # Encode JPEG with configurable quality
+            success, buffer = cv2.imencode(
+                '.jpg',
+                depth_colormap,
+                [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
+            )
+            if not success:
+                raise RuntimeError('Failed to encode depth image')
+
             if self.data_dir:
                 image_path = os.path.join(self.data_dir, 'latest_depth.jpg')
-                cv2.imwrite(image_path, depth_colormap)
-                
-                # Emit depth update to clients
+                with open(image_path, 'wb') as f:
+                    f.write(buffer.tobytes())
+
                 self.socketio.emit('depth_update', {
                     'url': f'/api/image/latest?type=depth&t={time.time()}'
+                })
+            else:
+                self.socketio.emit('depth_update', {
+                    'data': base64.b64encode(buffer).decode('utf-8')
                 })
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {e}')
