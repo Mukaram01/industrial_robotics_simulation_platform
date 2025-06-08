@@ -241,6 +241,24 @@ argument. For example:
 ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
 ```
 
+#### MQTT Broker Configuration
+
+By default the MQTT broker expected by the system runs on `localhost:1883`
+with no authentication enabled. This unsecured setup simplifies evaluation but
+is not appropriate for production deployments.
+
+Bind your broker to a secure network interface and configure credentials or
+TLS encryption. Adjust the `mqtt_broker` and `mqtt_port` parameters in your
+configuration or on the command line:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py \
+    mqtt_broker:=your.broker.host mqtt_port:=8883
+```
+
+Refer to your broker's documentation (e.g., Mosquitto) for enabling
+username/password files and SSL certificates.
+
 ## Operation
 
 ### Starting the System

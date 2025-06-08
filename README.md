@@ -90,6 +90,25 @@ parameter to `false`:
 ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=false
 ```
 
+### MQTT Broker Configuration
+
+The system's example launch files assume a local MQTT broker running on
+`localhost:1883`. This broker is started without any authentication or
+encryption, which is convenient for testing but **not** recommended for
+production deployments.
+
+For a secure setup, bind the broker to an appropriate network interface and
+enable credentials or TLS. Update the `mqtt_broker` and `mqtt_port` arguments in
+the launch file or your YAML configuration:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py \
+    mqtt_broker:=your.broker.host mqtt_port:=8883
+```
+
+Consult your broker's documentation for enabling username/password files or SSL
+certificates before exposing the service to other machines.
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:
