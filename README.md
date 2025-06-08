@@ -45,6 +45,22 @@ download the meshes from the
 and place them in `src/ur5_robot_description/meshes`, or remove the `meshes`
 directory from `src/ur5_robot_description/CMakeLists.txt`.
 
+## Visualizing the UR5
+
+Once the meshes are in place, you can visualize the UR5 model in RViz:
+
+```bash
+ros2 launch ur5_robot_description display.launch.py
+```
+
+To start MoveIt for the UR5, run:
+
+```bash
+ros2 launch ur5_robot_moveit_config move_group.launch.py use_sim_time:=false
+```
+
+The mesh resources are required for accurate visualization in both cases.
+
 ## Getting Started
 
 1. **Installation**
