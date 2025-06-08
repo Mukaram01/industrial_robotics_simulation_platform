@@ -20,6 +20,7 @@ import base64
 SCENARIO_ID_PATTERN = re.compile(r'^[A-Za-z0-9_]+$')
 
 from ament_index_python.packages import get_package_share_directory
+from .action_logger import ActionLogger
 
 
 class WebInterfaceNode(Node):
@@ -33,6 +34,7 @@ class WebInterfaceNode(Node):
             'config_dir': '',
             'data_dir': '',
             'allow_unsafe_werkzeug': True,
+            'log_db_path': '',
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
@@ -42,6 +44,15 @@ class WebInterfaceNode(Node):
         self.config_dir = self.get_parameter('config_dir').value
         self.data_dir = self.get_parameter('data_dir').value
         self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
+        self.log_db_path = self.get_parameter('log_db_path').value
+
+        if not self.log_db_path:
+            if self.data_dir:
+                self.log_db_path = os.path.join(self.data_dir, 'actions.db')
+            else:
+                self.log_db_path = os.path.join(os.getcwd(), 'actions.db')
+
+        self.action_logger = ActionLogger(self.log_db_path)
         
         # Create data directory if it doesn't exist
         if self.data_dir and not os.path.exists(self.data_dir):
@@ -216,6 +227,7 @@ class WebInterfaceNode(Node):
             self.command_pub.publish(cmd_msg)
             self.get_logger().info(
                 f"Received place command from web UI: '{cmd}' published to /simulation/command." )
+            self.action_logger.log('place', {'location': location})
 
             return jsonify({"success": True, "message": "Place command sent"}), 200
         
@@ -279,6 +291,7 @@ class WebInterfaceNode(Node):
             scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
             try:
                 file.save(scenario_path)
+                self.action_logger.log('upload_scenario', {'id': scenario_id})
                 return jsonify({'success': True, 'id': scenario_id})
             except Exception as e:
                 self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
@@ -322,6 +335,7 @@ class WebInterfaceNode(Node):
             if os.path.exists(scenario_path):
                 try:
                     os.remove(scenario_path)
+                    self.action_logger.log('delete_scenario', {'id': scenario_id})
                     return jsonify({'success': True})
                 except Exception as e:
                     self.get_logger().error(f'Error deleting scenario file {scenario_id}: {e}')
@@ -364,6 +378,8 @@ class WebInterfaceNode(Node):
                 'scenario': scenario
             })
             self.config_pub.publish(config_msg)
+
+            self.action_logger.log('start_simulation', {'scenario': scenario})
             
             self.socketio.emit('command_sent', {
                 'command': 'start',
@@ -376,6 +392,8 @@ class WebInterfaceNode(Node):
             cmd_msg = String()
             cmd_msg.data = 'stop'
             self.command_pub.publish(cmd_msg)
+
+            self.action_logger.log('stop_simulation')
             
             self.socketio.emit('command_sent', {
                 'command': 'stop'
@@ -389,6 +407,8 @@ class WebInterfaceNode(Node):
             cmd_msg = String()
             cmd_msg.data = command
             self.command_pub.publish(cmd_msg)
+
+            self.action_logger.log('send_command', {'command': command})
             
             self.socketio.emit('command_sent', {
                 'command': command
@@ -400,6 +420,8 @@ class WebInterfaceNode(Node):
             config_msg = String()
             config_msg.data = json.dumps(data)
             self.config_pub.publish(config_msg)
+
+            self.action_logger.log('update_config', data)
             
             self.socketio.emit('config_updated', {
                 'config': data
