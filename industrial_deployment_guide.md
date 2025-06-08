@@ -234,6 +234,13 @@ mqtt:
 hybrid_mode: false
 ```
 
+The OPC UA server port can also be overridden at launch using the `opcua_port`
+argument. For example:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+```
+
 ## Operation
 
 ### Starting the System
