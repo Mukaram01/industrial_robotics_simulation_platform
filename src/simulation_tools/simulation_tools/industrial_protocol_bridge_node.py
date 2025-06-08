@@ -19,7 +19,7 @@ class IndustrialProtocolBridgeNode(Node):
         # Declare parameters
         self.declare_parameter('config_dir', '')
         self.declare_parameter('opcua_enabled', True)
-        self.declare_parameter('opcua_endpoint', 'opc.tcp://0.0.0.0:4840/freeopcua/server/')
+        self.declare_parameter('opcua_endpoint', 'opc.tcp://127.0.0.1:4840/freeopcua/server/')
         self.declare_parameter('mqtt_enabled', True)
         self.declare_parameter('mqtt_broker', 'localhost')
         self.declare_parameter('mqtt_port', 1883)

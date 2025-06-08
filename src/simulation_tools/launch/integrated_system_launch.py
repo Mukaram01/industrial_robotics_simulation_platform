@@ -186,7 +186,7 @@ def generate_launch_description():
             parameters=[{
                 'config_dir': config_dir,
                 'opcua_enabled': True,
-                'opcua_endpoint': ['opc.tcp://0.0.0.0:', opcua_port, '/freeopcua/server/'],
+                'opcua_endpoint': ['opc.tcp://127.0.0.1:', opcua_port, '/freeopcua/server/'],
                 'mqtt_enabled': True,
                 'mqtt_broker': 'localhost',
                 'mqtt_port': 1883,

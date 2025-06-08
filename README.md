@@ -74,6 +74,14 @@ directory from `src/ur5_robot_description/CMakeLists.txt`.
    ```
    This argument is also supported by `realsense_hybrid_launch.py`.
 
+   The OPC UA server is configured with minimal security and, by default, only
+   listens on `127.0.0.1`. If you need to allow remote connections, override the
+   `opcua_endpoint` parameter with a host accessible on your network, e.g.:
+   ```bash
+   ros2 launch simulation_tools integrated_system_launch.py \
+       opcua_endpoint:=opc.tcp://0.0.0.0:4840/freeopcua/server/
+   ```
+
 3. **Access the Web Interface**
    ```
    http://localhost:8080

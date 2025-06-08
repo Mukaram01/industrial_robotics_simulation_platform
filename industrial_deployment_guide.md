@@ -226,7 +226,7 @@ Example industrial protocol configuration:
 ```yaml
 opcua:
   enabled: true
-  endpoint: opc.tcp://0.0.0.0:4840/freeopcua/server/
+  endpoint: opc.tcp://127.0.0.1:4840/freeopcua/server/
 mqtt:
   enabled: true
   broker: localhost
@@ -240,6 +240,11 @@ argument. For example:
 ```bash
 ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
 ```
+
+The OPC UA server runs with minimal security configuration and listens only on
+`127.0.0.1` by default. To allow remote clients, override the `opcua_endpoint`
+parameter with an address accessible on your network, such as
+`opc.tcp://0.0.0.0:4840/freeopcua/server/`.
 
 ## Operation
 
