@@ -34,7 +34,7 @@ class WebInterfaceNode(Node):
             'data_dir': '',
             'allow_unsafe_werkzeug': False,
         }
-        self.declare_parameters('', param_defaults)
+        self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
         # Get parameters
         self.port = self.get_parameter('port').value
