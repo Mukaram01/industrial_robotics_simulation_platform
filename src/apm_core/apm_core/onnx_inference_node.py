@@ -2,6 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from concurrent.futures import ThreadPoolExecutor
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
@@ -89,12 +91,15 @@ class OnnxInferenceNode(Node):
             '/apm/detection/markers',
             10
         )
-        
+
         # Initialize state variables
         self.latest_rgb_image = None
         self.latest_depth_image = None
         self.camera_info = None
         self.detection_counter = 0
+
+        # Thread pool executor for inference processing
+        self.processing_executor = ThreadPoolExecutor(max_workers=2)
         
         self.get_logger().info('ONNX Inference Node initialized')
         
@@ -231,16 +236,14 @@ class OnnxInferenceNode(Node):
             ]
     
     def rgb_callback(self, msg):
-        """Process RGB image for object detection."""
+        """Schedule inference on a background thread."""
         try:
-            # Convert ROS Image message to OpenCV image
             cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             self.latest_rgb_image = cv_image
-            
-            # Perform inference if we have all required data
+
             if self.session is not None and self.camera_info is not None:
-                self.perform_inference(cv_image, msg.header)
-                
+                self.processing_executor.submit(self.perform_inference, cv_image, msg.header)
+
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {str(e)}')
     
@@ -651,14 +654,18 @@ class OnnxInferenceNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = OnnxInferenceNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+
     try:
-        rclpy.spin(node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
         # Clean up
+        node.processing_executor.shutdown()
         node.destroy_node()
+        executor.shutdown()
         rclpy.shutdown()
 
 if __name__ == '__main__':
