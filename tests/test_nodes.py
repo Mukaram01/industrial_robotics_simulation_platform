@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
 
 rclpy = pytest.importorskip('rclpy')
+apm_msgs = pytest.importorskip("apm_msgs")
 
 
 def _init_node(node_cls):
