@@ -214,7 +214,6 @@ class WebInterfaceNode(Node):
         def index():
             return render_template('index.html')
         
-        # ADD THESE TWO ROUTES
         @self.app.route('/dashboard')
         def dashboard():
             return render_template('dashboard.html')
