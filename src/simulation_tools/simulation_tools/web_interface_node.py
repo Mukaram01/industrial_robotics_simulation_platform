@@ -193,13 +193,31 @@ class WebInterfaceNode(Node):
         @self.app.route('/control')
         def control():
             return render_template('control.html')
-            
+
         @self.app.route('/api/status')
         def get_status():
             return jsonify({
                 'status': self.system_status,
                 'current_scenario': self.current_scenario
             })
+
+        @self.app.route('/api/place', methods=['POST'])
+        def api_place():
+            """Handle place command requests."""
+            data = request.get_json(silent=True) or {}
+            location = data.get('location')
+
+            cmd = 'place'
+            if location:
+                cmd += f' {location}'
+
+            cmd_msg = String()
+            cmd_msg.data = cmd
+            self.command_pub.publish(cmd_msg)
+            self.get_logger().info(
+                f"Received place command from web UI: '{cmd}' published to /simulation/command." )
+
+            return jsonify({"success": True, "message": "Place command sent"}), 200
         
         @self.app.route('/api/image/latest')
         def get_latest_image():
