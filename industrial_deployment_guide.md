@@ -120,8 +120,8 @@ entry from `src/ur5_robot_description/CMakeLists.txt`.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-organization/industrial-robotics-simulation.git
-cd industrial-robotics-simulation
+git clone https://github.com/your-organization/industrial_robotics_simulation_platform.git
+cd industrial_robotics_simulation_platform
 ```
 
 2. Build the workspace:
