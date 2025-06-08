@@ -136,15 +136,16 @@ class WebInterfaceNode(Node):
         try:
             self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             
-            # Save image to file
+            # Optionally save image to file
             if self.data_dir:
                 image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')
                 cv2.imwrite(image_path, self.latest_rgb_image)
-                
-                # Emit image update to clients
-                self.socketio.emit('image_update', {
-                    'url': f'/api/image/latest?type=rgb&t={time.time()}'
-                })
+
+            # Encode image and emit directly to clients
+            success, buffer = cv2.imencode('.jpg', self.latest_rgb_image)
+            if success:
+                b64_data = base64.b64encode(buffer.tobytes()).decode('utf-8')
+                self.socketio.emit('image_data', {'rgb': b64_data})
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {e}')
     
@@ -156,15 +157,16 @@ class WebInterfaceNode(Node):
             depth_normalized = cv2.normalize(self.latest_depth_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
             depth_colormap = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
             
-            # Save image to file
+            # Optionally save image to file
             if self.data_dir:
                 image_path = os.path.join(self.data_dir, 'latest_depth.jpg')
                 cv2.imwrite(image_path, depth_colormap)
-                
-                # Emit depth update to clients
-                self.socketio.emit('depth_update', {
-                    'url': f'/api/image/latest?type=depth&t={time.time()}'
-                })
+
+            # Encode depth image and emit directly to clients
+            success, buffer = cv2.imencode('.jpg', depth_colormap)
+            if success:
+                b64_data = base64.b64encode(buffer.tobytes()).decode('utf-8')
+                self.socketio.emit('image_data', {'depth': b64_data})
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {e}')
     
