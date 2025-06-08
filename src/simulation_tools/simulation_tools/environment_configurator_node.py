@@ -8,6 +8,7 @@ import yaml
 import json
 import threading
 import time
+import random
 
 class EnvironmentConfiguratorNode(Node):
     def __init__(self):
@@ -21,6 +22,7 @@ class EnvironmentConfiguratorNode(Node):
             'scenario': '',
             'physics_enabled': True,
             'record_metrics': True,
+            # Probability (0-1) of triggering a random error during metrics update
             'error_simulation_rate': 0.0,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
@@ -264,6 +266,7 @@ class EnvironmentConfiguratorNode(Node):
             sim_settings = settings['simulation']
             self.physics_enabled = sim_settings.get('physics_enabled', self.physics_enabled)
             self.record_metrics = sim_settings.get('record_metrics', self.record_metrics)
+            # Value should be between 0 and 1
             self.error_simulation_rate = sim_settings.get('error_simulation_rate', self.error_simulation_rate)
         
         self.get_logger().info('Updated settings')
@@ -316,11 +319,9 @@ class EnvironmentConfiguratorNode(Node):
             self.metrics['objects_processed'] += new_objects
             self.metrics['throughput'] = 60.0 * new_objects / elapsed if elapsed > 0 else 0
             
-            # Randomly decrease accuracy based on error rate
-            if self.error_simulation_rate > 0 and time.time() % 10 < 1:
-                error_chance = self.error_simulation_rate * 100
-                if time.time() % 100 < error_chance:
-                    self.simulate_error('random')
+            # Randomly trigger an error based on the configured rate
+            if self.error_simulation_rate > 0 and random.random() < self.error_simulation_rate:
+                self.simulate_error('random')
         
         # Publish metrics
         metrics_msg = String()
