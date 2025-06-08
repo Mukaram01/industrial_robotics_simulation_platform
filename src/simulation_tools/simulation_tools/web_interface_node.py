@@ -158,7 +158,7 @@ class WebInterfaceNode(Node):
             )
 
             if self.save_images and self.data_dir and success:
-                image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')  # or 'latest_depth.jpg'
+                image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')
                 with open(image_path, 'wb') as f:
                     f.write(buffer.tobytes())
 
@@ -187,9 +187,9 @@ class WebInterfaceNode(Node):
             # Optionally save image to file
 
             if self.save_images and self.data_dir and success:
-              image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')  # or 'latest_depth.jpg'
-              with open(image_path, 'wb') as f:
-                  f.write(buffer.tobytes())
+                image_path = os.path.join(self.data_dir, 'latest_depth.jpg')
+                with open(image_path, 'wb') as f:
+                    f.write(buffer.tobytes())
 
 
             # Encode depth image and emit directly to clients
