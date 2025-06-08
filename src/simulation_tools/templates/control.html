@@ -103,6 +103,15 @@
             </div>
             
             <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">Camera Feed</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <img id="rgb-image" class="img-fluid mb-2" alt="RGB">
+                        <img id="depth-image" class="img-fluid" alt="Depth">
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Workspace Visualization</h5>
@@ -143,6 +152,8 @@
         const placeCustomBtn = document.getElementById('place-custom-btn');
         const commandLog = document.getElementById('command-log');
         const workspaceCanvas = document.getElementById('workspace-canvas');
+        const rgbImage = document.getElementById('rgb-image');
+        const depthImage = document.getElementById('depth-image');
         
         // Canvas context
         const ctx = workspaceCanvas.getContext('2d');
@@ -183,12 +194,22 @@
         socket.on('objects_update', function(data) {
             objects = data.objects;
             objectsCount.textContent = objects.length;
-            
+
             // Update object dropdown
             updateObjectDropdown();
-            
+
             // Draw workspace
             drawWorkspace();
+        });
+
+        // Camera image handler
+        socket.on('image_data', function(data) {
+            if (data.rgb && rgbImage) {
+                rgbImage.src = 'data:image/jpeg;base64,' + data.rgb;
+            }
+            if (data.depth && depthImage) {
+                depthImage.src = 'data:image/jpeg;base64,' + data.depth;
+            }
         });
         
         // Update object dropdown

@@ -93,6 +93,15 @@
             </div>
             
             <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">Camera Feed</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <img id="rgb-image" class="img-fluid mb-2" alt="RGB">
+                        <img id="depth-image" class="img-fluid" alt="Depth">
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Detected Objects</h5>
@@ -122,6 +131,8 @@
         const noObjectsMessage = document.getElementById('no-objects-message');
         const objectsList = document.getElementById('objects-list');
         const refreshBtn = document.getElementById('refresh-btn');
+        const rgbImage = document.getElementById('rgb-image');
+        const depthImage = document.getElementById('depth-image');
         
         // Update last update time
         function updateLastUpdateTime() {
@@ -240,6 +251,16 @@
                     });
                 });
             });
+        });
+
+        // Camera image handler
+        socket.on('image_data', function(data) {
+            if (data.rgb && rgbImage) {
+                rgbImage.src = 'data:image/jpeg;base64,' + data.rgb;
+            }
+            if (data.depth && depthImage) {
+                depthImage.src = 'data:image/jpeg;base64,' + data.depth;
+            }
         });
         
         // Refresh button handler

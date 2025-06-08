@@ -21,6 +21,7 @@ def generate_launch_description():
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
+    save_images = LaunchConfiguration('save_images', default='true')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='true')
     opcua_port = LaunchConfiguration('opcua_port', default='4840')
     
@@ -50,6 +51,10 @@ def generate_launch_description():
             'data_dir',
             default_value='/tmp/simulation_data',
             description='Directory for storing data and exports'),
+        DeclareLaunchArgument(
+            'save_images',
+            default_value='true',
+            description='Save latest images to disk'),
         DeclareLaunchArgument(
             'allow_unsafe_werkzeug',
             default_value='true',
@@ -155,6 +160,7 @@ def generate_launch_description():
                 'host': '0.0.0.0',
                 'config_dir': config_dir,
                 'data_dir': data_dir,
+                'save_images': save_images,
                 'allow_unsafe_werkzeug': allow_unsafe_werkzeug,
             }],
             output='screen'
