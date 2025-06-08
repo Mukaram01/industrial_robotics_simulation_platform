@@ -109,12 +109,16 @@ pip3 install asyncua paho-mqtt  # For industrial protocol support
 
 ### UR5 Mesh Assets
 
-The `ur5_robot_description` package provided in this repository installs a
-`meshes` directory, but the actual UR5 mesh files are not included.
-Before building the workspace either download the meshes from the
-[Universal Robots description package](https://github.com/ros-industrial/universal_robot)
-and place them in `src/ur5_robot_description/meshes`, or remove the `meshes`
-entry from `src/ur5_robot_description/CMakeLists.txt`.
+The UR5 mesh files required by `ur5_robot_description` are automatically
+downloaded or included with the repository. Manual download and CMake
+modifications are unnecessary. After installing dependencies, build the
+workspace:
+
+```bash
+source /opt/ros/humble/setup.bash
+colcon build --symlink-install
+source install/setup.bash
+```
 
 ### Building the Workspace
 
