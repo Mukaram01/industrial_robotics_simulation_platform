@@ -33,6 +33,7 @@ class WebInterfaceNode(Node):
             'host': '0.0.0.0',
             'config_dir': '',
             'data_dir': '',
+            'save_images': True,
             'allow_unsafe_werkzeug': True,
             'log_db_path': '',
             'jpeg_quality': 75,
@@ -44,6 +45,7 @@ class WebInterfaceNode(Node):
         self.host = self.get_parameter('host').value
         self.config_dir = self.get_parameter('config_dir').value
         self.data_dir = self.get_parameter('data_dir').value
+        self.save_images = self.get_parameter('save_images').value
         self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
@@ -155,11 +157,11 @@ class WebInterfaceNode(Node):
                 [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
             )
 
-            # Optionally save image to file
-            if self.data_dir and success:
-                image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')
+            if self.save_images and self.data_dir and success:
+                image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')  # or 'latest_depth.jpg'
                 with open(image_path, 'wb') as f:
                     f.write(buffer.tobytes())
+
 
             # Encode image and emit directly to clients
             if success:
@@ -183,10 +185,12 @@ class WebInterfaceNode(Node):
             )
 
             # Optionally save image to file
-            if self.data_dir and success:
-                image_path = os.path.join(self.data_dir, 'latest_depth.jpg')
-                with open(image_path, 'wb') as f:
-                    f.write(buffer.tobytes())
+
+            if self.save_images and self.data_dir and success:
+              image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')  # or 'latest_depth.jpg'
+              with open(image_path, 'wb') as f:
+                  f.write(buffer.tobytes())
+
 
             # Encode depth image and emit directly to clients
             if success:
@@ -250,18 +254,30 @@ class WebInterfaceNode(Node):
         @self.app.route('/api/image/latest')
         def get_latest_image():
             image_type = request.args.get('type', 'rgb')
-            
-            if image_type == 'rgb':
-                image_path = os.path.join(self.data_dir, 'latest_rgb.jpg')
-            elif image_type == 'depth':
-                image_path = os.path.join(self.data_dir, 'latest_depth.jpg')
-            else:
+            if image_type not in ('rgb', 'depth'):
                 return jsonify({'error': 'Invalid image type'}), 400
-            
-            if os.path.exists(image_path):
-                return send_from_directory(self.data_dir, os.path.basename(image_path))
+
+            if self.save_images and self.data_dir:
+                image_path = os.path.join(self.data_dir, f'latest_{image_type}.jpg')
+                if os.path.exists(image_path):
+                    return send_from_directory(self.data_dir, os.path.basename(image_path))
+
+            # Fallback to in-memory image encoded as base64
+            image = None
+            if image_type == 'rgb':
+                image = self.latest_rgb_image
             else:
-                return jsonify({'error': 'Image not available'}), 404
+                if self.latest_depth_image is not None:
+                    depth_normalized = cv2.normalize(self.latest_depth_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+                    image = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
+
+            if image is not None:
+                success, buffer = cv2.imencode('.jpg', image)
+                if success:
+                    b64_data = base64.b64encode(buffer.tobytes()).decode('utf-8')
+                    return jsonify({'base64': b64_data})
+
+            return jsonify({'error': 'Image not available'}), 404
         
         @self.app.route('/api/scenarios')
         def get_scenarios():
