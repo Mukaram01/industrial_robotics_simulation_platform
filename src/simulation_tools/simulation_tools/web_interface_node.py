@@ -32,7 +32,7 @@ class WebInterfaceNode(Node):
             'host': '0.0.0.0',
             'config_dir': '',
             'data_dir': '',
-            'allow_unsafe_werkzeug': False,
+            'allow_unsafe_werkzeug': True,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         

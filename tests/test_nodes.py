@@ -60,4 +60,4 @@ def test_safety_monitor_node_defaults():
 def test_web_interface_node_defaults():
     from simulation_tools.web_interface_node import WebInterfaceNode
     node = _init_node(WebInterfaceNode)
-    assert node.get_parameter('allow_unsafe_werkzeug').value is False
+    assert node.get_parameter('allow_unsafe_werkzeug').value is True
