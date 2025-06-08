@@ -2,6 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from concurrent.futures import ThreadPoolExecutor
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
@@ -51,7 +53,10 @@ class SegmentationNode(Node):
             '/apm/advanced_perception/segmented_objects',
             10
         )
-        
+
+        # Thread pool for heavy image processing
+        self.thread_pool = ThreadPoolExecutor(max_workers=2)
+
         self.get_logger().info('Segmentation node initialized')
     
     def load_config(self):
@@ -88,27 +93,28 @@ class SegmentationNode(Node):
             self.min_contour_area = 1000
     
     def image_callback(self, msg):
-        """
-        Process incoming image and perform segmentation
-        """
+        """Schedule image processing in a worker thread."""
+        self.thread_pool.submit(self._process_image, msg)
+
+    def _process_image(self, msg):
         try:
             # Convert ROS Image message to OpenCV image
             cv_image = self.cv_bridge.imgmsg_to_cv2(msg, 'bgr8')
-            
+
             # Perform segmentation
             segmented_image, objects = self.segment_image(cv_image)
-            
+
             # Publish segmented image
             segmented_image_msg = self.cv_bridge.cv2_to_imgmsg(segmented_image, 'bgr8')
             segmented_image_msg.header = msg.header
             self.segmented_image_pub.publish(segmented_image_msg)
-            
+
             # Publish segmented objects
             objects_msg = Detection2DArray()
             objects_msg.header = msg.header
             objects_msg.detections = objects
             self.segmented_objects_pub.publish(objects_msg)
-            
+
             self.get_logger().debug(f'Processed image, found {len(objects)} objects')
         except Exception as e:
             self.get_logger().error(f'Error processing image: {str(e)}')
@@ -187,14 +193,18 @@ class SegmentationNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    
+
     segmentation_node = SegmentationNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(segmentation_node)
+
     try:
-        rclpy.spin(segmentation_node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
+        executor.shutdown()
+        segmentation_node.thread_pool.shutdown()
         segmentation_node.destroy_node()
         rclpy.shutdown()
 

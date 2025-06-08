@@ -10,6 +10,8 @@ from launch.substitutions import LaunchConfiguration, FindExecutable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
+
+# All simulation nodes are executed with rclpy's MultiThreadedExecutor
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():

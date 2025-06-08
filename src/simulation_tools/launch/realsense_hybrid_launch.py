@@ -6,6 +6,8 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventH
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration, FindExecutable
 from launch_ros.actions import Node
+
+# Nodes launched here use MultiThreadedExecutor internally
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():

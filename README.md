@@ -36,6 +36,10 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
   - Error simulation for robustness testing
   - Data export for analysis and reporting
 
+7. **Concurrency Improvements**
+  - All ROS 2 nodes now run under the `MultiThreadedExecutor`
+  - Image processing intensive nodes use worker threads for faster response
+
 ## UR5 Mesh Assets
 
 The `ur5_robot_description` package references UR5 mesh files which are not

@@ -3,6 +3,8 @@
 import os
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from concurrent.futures import ThreadPoolExecutor
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import String, Bool
 from cv_bridge import CvBridge
@@ -77,7 +79,10 @@ class CameraSimulatorNode(Node):
         self.running = False
         self.objects = []
         self.generate_objects()
-        
+
+        # Thread pool for image generation
+        self.thread_pool = ThreadPoolExecutor(max_workers=2)
+
         # Start publishing timer
         self.timer_period = 1.0 / self.frame_rate
         self.timer = self.create_timer(self.timer_period, self.timer_callback)
@@ -99,29 +104,33 @@ class CameraSimulatorNode(Node):
     def timer_callback(self):
         if not self.running:
             return
-        
+
+        # Offload image generation and publishing
+        self.thread_pool.submit(self._publish_images)
+
+    def _publish_images(self):
         # Generate images
         rgb_image, depth_image = self.generate_images()
-        
+
         # Add noise if specified
         if self.noise_level > 0:
             rgb_image = self.add_noise(rgb_image, self.noise_level)
             depth_image = self.add_noise(depth_image, self.noise_level)
-        
+
         # Convert to ROS messages
         rgb_msg = self.bridge.cv2_to_imgmsg(rgb_image, encoding='bgr8')
         depth_msg = self.bridge.cv2_to_imgmsg(depth_image, encoding='32FC1')
-        
+
         # Set headers
         now = self.get_clock().now().to_msg()
         rgb_msg.header.stamp = now
         rgb_msg.header.frame_id = f'{self.camera_name}_color_optical_frame'
         depth_msg.header.stamp = now
         depth_msg.header.frame_id = f'{self.camera_name}_depth_optical_frame'
-        
+
         # Update camera info timestamp
         self.camera_info.header.stamp = now
-        
+
         # Publish messages
         self.rgb_pub.publish(rgb_msg)
         self.depth_pub.publish(depth_msg)
@@ -305,12 +314,16 @@ class CameraSimulatorNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = CameraSimulatorNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+
     try:
-        rclpy.spin(node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
+        executor.shutdown()
+        node.thread_pool.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 

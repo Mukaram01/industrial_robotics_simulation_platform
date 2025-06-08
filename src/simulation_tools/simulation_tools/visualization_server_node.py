@@ -3,6 +3,7 @@
 import os
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from std_msgs.msg import String, Bool
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
@@ -287,12 +288,15 @@ class VisualizationServerNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = VisualizationServerNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+
     try:
-        rclpy.spin(node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
+        executor.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 

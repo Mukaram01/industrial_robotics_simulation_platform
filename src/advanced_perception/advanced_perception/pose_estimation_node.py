@@ -2,6 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from concurrent.futures import ThreadPoolExecutor
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
@@ -80,12 +82,15 @@ class PoseEstimationNode(Node):
             '/apm/advanced_perception/objects',
             10
         )
-        
+
         # Initialize state
         self.latest_rgb_image = None
         self.latest_depth_image = None
         self.latest_segmented_objects = None
-        
+
+        # Thread pool for heavy pose estimation work
+        self.thread_pool = ThreadPoolExecutor(max_workers=2)
+
         self.get_logger().info('Pose estimation node initialized')
     
     def load_config(self):
@@ -130,31 +135,29 @@ class PoseEstimationNode(Node):
         self.get_logger().debug('Received camera intrinsics')
     
     def image_callback(self, msg):
-        """
-        Process incoming RGB image
-        """
+        """Handle incoming RGB image."""
         try:
             self.latest_rgb_image = self.cv_bridge.imgmsg_to_cv2(msg, 'bgr8')
-            self.process_data()
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {str(e)}')
+            return
+        self.thread_pool.submit(self.process_data)
     
     def depth_callback(self, msg):
-        """
-        Process incoming depth image
-        """
+        """Handle incoming depth image."""
         try:
             self.latest_depth_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-            self.process_data()
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {str(e)}')
+            return
+        self.thread_pool.submit(self.process_data)
     
     def segmented_objects_callback(self, msg):
         """
         Process segmented objects message
         """
         self.latest_segmented_objects = msg
-        self.process_data()
+        self.thread_pool.submit(self.process_data)
     
     def process_data(self):
         """
@@ -264,14 +267,18 @@ class PoseEstimationNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    
+
     pose_estimation_node = PoseEstimationNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(pose_estimation_node)
+
     try:
-        rclpy.spin(pose_estimation_node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
+        executor.shutdown()
+        pose_estimation_node.thread_pool.shutdown()
         pose_estimation_node.destroy_node()
         rclpy.shutdown()
 

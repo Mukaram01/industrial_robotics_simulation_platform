@@ -2,6 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 import os
 from ament_index_python.packages import get_package_share_directory
 
@@ -17,14 +18,17 @@ class AdvancedPerceptionNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    
+
     advanced_perception_node = AdvancedPerceptionNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(advanced_perception_node)
+
     try:
-        rclpy.spin(advanced_perception_node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
+        executor.shutdown()
         advanced_perception_node.destroy_node()
         rclpy.shutdown()
 

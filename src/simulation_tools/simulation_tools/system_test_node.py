@@ -3,6 +3,7 @@
 import os
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from std_msgs.msg import String, Bool
 import yaml
 import json
@@ -196,17 +197,20 @@ class SystemTestNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = SystemTestNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+
     try:
         # Start test
         node.start_test()
-        
+
         # Spin until test completes
-        rclpy.spin(node)
+        executor.spin()
     except KeyboardInterrupt:
         node.get_logger().info('Test interrupted')
         node.stop_test()
     finally:
+        executor.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 

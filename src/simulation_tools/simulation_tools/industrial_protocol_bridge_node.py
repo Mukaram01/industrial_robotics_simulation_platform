@@ -3,6 +3,7 @@
 import os
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from std_msgs.msg import String, Bool
 import yaml
 import json
@@ -242,9 +243,11 @@ class IndustrialProtocolBridgeNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = IndustrialProtocolBridgeNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
+
     try:
-        rclpy.spin(node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
@@ -252,7 +255,8 @@ def main(args=None):
         if node.mqtt_enabled and node.mqtt_client:
             node.mqtt_client.loop_stop()
             node.mqtt_client.disconnect()
-        
+
+        executor.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 
