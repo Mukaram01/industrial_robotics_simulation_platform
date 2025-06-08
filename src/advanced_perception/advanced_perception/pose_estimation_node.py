@@ -2,6 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
@@ -264,15 +265,18 @@ class PoseEstimationNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    
+
     pose_estimation_node = PoseEstimationNode()
-    
+    executor = MultiThreadedExecutor()
+    executor.add_node(pose_estimation_node)
+
     try:
-        rclpy.spin(pose_estimation_node)
+        executor.spin()
     except KeyboardInterrupt:
         pass
     finally:
         pose_estimation_node.destroy_node()
+        executor.shutdown()
         rclpy.shutdown()
 
 if __name__ == '__main__':
