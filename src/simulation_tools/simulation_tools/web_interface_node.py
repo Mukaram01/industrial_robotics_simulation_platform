@@ -261,6 +261,28 @@ class WebInterfaceNode(Node):
                         })
             
             return jsonify(scenarios)
+
+        @self.app.route('/api/scenarios', methods=['POST'])
+        def upload_scenario():
+            if not self.config_dir:
+                return jsonify({'error': 'Config directory not set'}), 500
+
+            scenario_id = request.form.get('scenario_id', '').strip()
+            file = request.files.get('file')
+
+            if not scenario_id or not file:
+                return jsonify({'error': 'scenario_id and file are required'}), 400
+
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
+            scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
+            try:
+                file.save(scenario_path)
+                return jsonify({'success': True, 'id': scenario_id})
+            except Exception as e:
+                self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
+                return jsonify({'error': f'Error saving scenario: {e}'}), 500
         
         @self.app.route('/api/scenarios/<scenario_id>')
         def get_scenario(scenario_id):
@@ -283,6 +305,28 @@ class WebInterfaceNode(Node):
                         self.get_logger().error(f'Error reading scenario file {scenario_id}: {e}')
                         return jsonify({'error': f'Error reading scenario: {e}'}), 500
             
+            return jsonify({'error': 'Scenario not found'}), 404
+
+        @self.app.route('/api/scenarios/<scenario_id>', methods=['DELETE'])
+        def delete_scenario(scenario_id):
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
+            if not self.config_dir:
+                return jsonify({'error': 'Config directory not set'}), 500
+
+            if scenario_id == 'default':
+                return jsonify({'error': 'Cannot delete default scenario'}), 400
+
+            scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
+            if os.path.exists(scenario_path):
+                try:
+                    os.remove(scenario_path)
+                    return jsonify({'success': True})
+                except Exception as e:
+                    self.get_logger().error(f'Error deleting scenario file {scenario_id}: {e}')
+                    return jsonify({'error': f'Error deleting scenario: {e}'}), 500
+
             return jsonify({'error': 'Scenario not found'}), 404
         
         @self.app.route('/static/<path:path>')
