@@ -73,6 +73,23 @@
                         <button id="refresh-btn" class="btn btn-secondary w-100">Refresh Data</button>
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Scenario Management</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="scenario-upload-form" enctype="multipart/form-data" class="mb-3">
+                            <input type="text" id="scenario-id" class="form-control mb-2" placeholder="Scenario ID" required>
+                            <input type="file" id="scenario-file" class="form-control mb-2" accept=".yaml" required>
+                            <button type="submit" class="btn btn-primary w-100">Upload</button>
+                        </form>
+                        <div class="input-group">
+                            <select id="scenario-select" class="form-select"></select>
+                            <button id="delete-scenario-btn" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="col-md-8">
@@ -246,6 +263,71 @@
                     console.error('Error:', error);
                 });
         });
+
+        // Scenario management elements
+        const scenarioSelect = document.getElementById('scenario-select');
+        const scenarioUploadForm = document.getElementById('scenario-upload-form');
+        const scenarioIdInput = document.getElementById('scenario-id');
+        const scenarioFileInput = document.getElementById('scenario-file');
+        const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
+
+        function loadScenarios() {
+            fetch('/api/scenarios')
+                .then(r => r.json())
+                .then(list => {
+                    scenarioSelect.innerHTML = '';
+                    list.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = s.name;
+                        scenarioSelect.appendChild(opt);
+                    });
+                });
+        }
+
+        scenarioUploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = new FormData();
+            data.append('scenario_id', scenarioIdInput.value);
+            if (scenarioFileInput.files.length > 0) {
+                data.append('file', scenarioFileInput.files[0]);
+            }
+            fetch('/api/scenarios', {
+                method: 'POST',
+                body: data
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) {
+                    alert('Scenario uploaded');
+                    scenarioUploadForm.reset();
+                    loadScenarios();
+                } else {
+                    alert(res.error || 'Upload failed');
+                }
+            })
+            .catch(() => alert('Upload failed'));
+        });
+
+        deleteScenarioBtn.addEventListener('click', function() {
+            const id = scenarioSelect.value;
+            if (!id) return;
+            if (!confirm(`Delete scenario ${id}?`)) return;
+            fetch(`/api/scenarios/${id}`, { method: 'DELETE' })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        alert('Scenario deleted');
+                        loadScenarios();
+                    } else {
+                        alert(res.error || 'Delete failed');
+                    }
+                })
+                .catch(() => alert('Delete failed'));
+        });
+
+        // Load scenarios on page load
+        loadScenarios();
     </script>
 </body>
 </html>
