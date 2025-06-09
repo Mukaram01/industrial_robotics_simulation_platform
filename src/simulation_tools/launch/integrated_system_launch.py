@@ -2,39 +2,43 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import (DeclareLaunchArgument, ExecuteProcess,
-                            RegisterEventHandler, OpaqueFunction,
-                            IncludeLaunchDescription)
-from launch.event_handlers import OnProcessExit
-from launch.substitutions import LaunchConfiguration, FindExecutable
+from launch.actions import (
+    DeclareLaunchArgument,
+    OpaqueFunction,
+    IncludeLaunchDescription,
+)
+from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
+
 def generate_launch_description():
     # Declare launch arguments
     use_realsense = LaunchConfiguration('use_realsense', default='false')
-    use_delta_robot = LaunchConfiguration('use_delta_robot', default='true')
-    use_advanced_perception = LaunchConfiguration('use_advanced_perception', default='false')
+    use_advanced_perception = LaunchConfiguration(
+        'use_advanced_perception', default='false'
+    )
     scenario = LaunchConfiguration('scenario', default='default')
-    config_dir = LaunchConfiguration('config_dir', default=os.path.join(
-        get_package_share_directory('simulation_tools'), 'config'))
+    config_dir = LaunchConfiguration(
+        'config_dir',
+        default=os.path.join(
+            get_package_share_directory('simulation_tools'),
+            'config',
+        ),
+    )
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
     save_images = LaunchConfiguration('save_images', default='true')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='true')
     opcua_port = LaunchConfiguration('opcua_port', default='4840')
-    
+
     # Create launch configuration arguments
     launch_args = [
         DeclareLaunchArgument(
             'use_realsense',
             default_value='false',
             description='Use RealSense camera instead of simulation'),
-        DeclareLaunchArgument(
-            'use_delta_robot',
-            default_value='true',
-            description='Use delta robot for sorting'),
         DeclareLaunchArgument(
             'use_advanced_perception',
             default_value='false',
@@ -45,8 +49,12 @@ def generate_launch_description():
             description='Scenario configuration to load'),
         DeclareLaunchArgument(
             'config_dir',
-            default_value=os.path.join(get_package_share_directory('simulation_tools'), 'config'),
-            description='Directory containing configuration files'),
+            default_value=os.path.join(
+                get_package_share_directory('simulation_tools'),
+                'config',
+            ),
+            description='Directory containing configuration files',
+        ),
         DeclareLaunchArgument(
             'data_dir',
             default_value='/tmp/simulation_data',
@@ -64,14 +72,14 @@ def generate_launch_description():
             default_value='4840',
             description='Port for the OPC UA server'),
     ]
-    
+
     # Create data directory during launch execution
     def create_data_dir(context):
         os.makedirs(LaunchConfiguration('data_dir').perform(context), exist_ok=True)
-    
+
     # Define nodes to launch
     nodes = []
-    
+
     # Camera node (either RealSense or simulation)
     nodes.append(
         Node(
@@ -116,7 +124,7 @@ def generate_launch_description():
             condition=UnlessCondition(use_realsense)
         )
     )
-    
+
     # Environment configurator node
     nodes.append(
         Node(
@@ -148,7 +156,7 @@ def generate_launch_description():
             condition=IfCondition(use_advanced_perception)
         )
     )
-    
+
     # Web interface node
     nodes.append(
         Node(
@@ -166,7 +174,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Visualization server node
     nodes.append(
         Node(
@@ -182,7 +190,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Industrial protocol bridge node
     nodes.append(
         Node(
@@ -192,7 +200,11 @@ def generate_launch_description():
             parameters=[{
                 'config_dir': config_dir,
                 'opcua_enabled': True,
-                'opcua_endpoint': ['opc.tcp://127.0.0.1:', opcua_port, '/freeopcua/server/'],
+                'opcua_endpoint': [
+                    'opc.tcp://127.0.0.1:',
+                    opcua_port,
+                    '/freeopcua/server/',
+                ],
                 'mqtt_enabled': True,
                 'mqtt_broker': 'localhost',
                 'mqtt_port': 1883,
@@ -201,7 +213,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Safety monitor node
     nodes.append(
         Node(
@@ -219,8 +231,10 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Create launch description with directory initialization
-    ld = LaunchDescription(launch_args + [OpaqueFunction(function=create_data_dir)] + nodes)
-    
+    ld = LaunchDescription(
+        launch_args + [OpaqueFunction(function=create_data_dir)] + nodes
+    )
+
     return ld

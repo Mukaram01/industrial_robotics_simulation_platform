@@ -181,6 +181,16 @@ install any Python dependencies and execute:
 pytest
 ```
 
+### Code Style
+
+`flake8` checks are provided to help maintain consistent code formatting.
+Install the tool and run it against the source tree before submitting changes:
+
+```bash
+pip install flake8
+flake8 src tests
+```
+
 ## License
 
 All packages in this repository are released under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file and each package's `package.xml` or `LICENSE` file for details.
