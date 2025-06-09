@@ -155,7 +155,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
                 'host': '0.0.0.0',
                 'config_dir': '',
                 'data_dir': str(data_dir),
-                'save_images': True,
+                'save_images': False,
                 'allow_unsafe_werkzeug': True,
                 'log_db_path': '',
                 'jpeg_quality': 75,
@@ -276,3 +276,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
     finally:
         for name in stub_modules.keys():
             sys.modules.pop(name, None)
+        sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+        pkg = sys.modules.get('simulation_tools.simulation_tools')
+        if pkg and hasattr(pkg, 'web_interface_node'):
+            delattr(pkg, 'web_interface_node')
