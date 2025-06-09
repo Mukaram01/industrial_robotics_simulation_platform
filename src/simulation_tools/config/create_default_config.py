@@ -81,6 +81,6 @@ os.makedirs(os.path.dirname(os.path.abspath(__file__)), exist_ok=True)
 
 # Write default configuration to file
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'default.yaml'), 'w') as f:
-    yaml.dump(default_config, f, default_flow_style=False)
+    yaml.safe_dump(default_config, f, default_flow_style=False)
 
 print("Default configuration created successfully.")
