@@ -96,15 +96,15 @@ class PlanningSceneUpdaterNode(Node):
                 
                 try:
                     # Transform pose to planning frame if needed
-                    if obj.pose.header.frame_id != self.world_frame:
+                    if obj.header.frame_id != self.world_frame:
                         transform = self.tf_buffer.lookup_transform(
                             self.world_frame,
-                            obj.pose.header.frame_id,
+                            obj.header.frame_id,
                             rclpy.time.Time()
                         )
-                        transformed_pose = do_transform_pose(obj.pose.pose, transform)
+                        transformed_pose = do_transform_pose(obj.pose, transform)
                     else:
-                        transformed_pose = obj.pose.pose
+                        transformed_pose = obj.pose
                     
                     # Create collision object
                     co = CollisionObject()
@@ -113,34 +113,14 @@ class PlanningSceneUpdaterNode(Node):
                     co.id = f"object_{obj.id}"
                     co.operation = CollisionObject.ADD
                     
-                    # Create primitive based on object type
+                    # Create a box primitive using the object's dimensions
                     primitive = SolidPrimitive()
-                    if obj.shape == "box":
-                        primitive.type = SolidPrimitive.BOX
-                        primitive.dimensions = [
-                            obj.dimensions.x + self.object_padding,
-                            obj.dimensions.y + self.object_padding,
-                            obj.dimensions.z + self.object_padding
-                        ]
-                    elif obj.shape == "cylinder":
-                        primitive.type = SolidPrimitive.CYLINDER
-                        primitive.dimensions = [
-                            obj.dimensions.z + self.object_padding,  # height
-                            obj.dimensions.x / 2.0 + self.object_padding  # radius
-                        ]
-                    elif obj.shape == "sphere":
-                        primitive.type = SolidPrimitive.SPHERE
-                        primitive.dimensions = [
-                            obj.dimensions.x / 2.0 + self.object_padding  # radius
-                        ]
-                    else:
-                        # Default to box
-                        primitive.type = SolidPrimitive.BOX
-                        primitive.dimensions = [
-                            obj.dimensions.x + self.object_padding,
-                            obj.dimensions.y + self.object_padding,
-                            obj.dimensions.z + self.object_padding
-                        ]
+                    primitive.type = SolidPrimitive.BOX
+                    primitive.dimensions = [
+                        obj.dimensions.x + self.object_padding,
+                        obj.dimensions.y + self.object_padding,
+                        obj.dimensions.z + self.object_padding,
+                    ]
                     
                     co.primitives.append(primitive)
                     co.primitive_poses.append(transformed_pose)
