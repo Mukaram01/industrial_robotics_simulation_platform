@@ -1,6 +1,6 @@
 [flake8]
 max-line-length = 88
-extend-ignore = E203,W503,E501
+extend-ignore = E203, W503, E501
 exclude =
     .git,
     __pycache__,
@@ -13,14 +13,13 @@ exclude =
     src/delta_robot_description,
     src/delta_robot_moveit_config,
     src/ur5_robot_description,
-    src/ur5_robot_moveit_config
+    src/ur5_robot_moveit_config,
     src/simulation_tools/simulation_tools/environment_configurator_node.py,
     src/simulation_tools/simulation_tools/web_interface_node.py,
     src/simulation_tools/simulation_tools/camera_simulator_node.py,
     src/simulation_tools/simulation_tools/action_logger.py,
-    src/simulation_tools/simulation_tools/industrial_protocol_bridge_node.py
-    src/simulation_tools/simulation_tools/safety_monitor_node.py
-    src/simulation_tools/simulation_tools/system_test_node.py
-    src/simulation_tools/simulation_tools/visualization_server_node.py
+    src/simulation_tools/simulation_tools/industrial_protocol_bridge_node.py,
+    src/simulation_tools/simulation_tools/safety_monitor_node.py,
+    src/simulation_tools/simulation_tools/system_test_node.py,
+    src/simulation_tools/simulation_tools/visualization_server_node.py,
     tests/test_core_logic.py
-
