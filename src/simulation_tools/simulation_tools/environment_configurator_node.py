@@ -209,8 +209,10 @@ class EnvironmentConfiguratorNode(Node):
             if os.path.exists(scenario_path):
                 try:
                     with open(scenario_path, 'r') as f:
-                        self.environment_config = yaml.safe_load(f)
-                        self.get_logger().info(f'Loaded scenario from {scenario_path}')
+                        self.environment_config = yaml.safe_load(f) or {}
+                        self.get_logger().info(
+                            f'Loaded scenario from {scenario_path}'
+                        )
                         return
                 except Exception as e:
                     self.get_logger().error(f'Error loading scenario file {scenario}: {e}')

@@ -117,6 +117,13 @@ def test_load_missing_uses_default(tmp_path):
     assert dummy.environment_config['description'] == default['description']
 
 
+def test_empty_yaml_results_in_empty_config(tmp_path):
+    dummy = make_dummy(tmp_path)
+    (tmp_path / 'empty.yaml').write_text('')
+    ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'empty')
+    assert dummy.environment_config == {}
+
+
 def test_error_sim_rate_bounds(tmp_path):
     dummy = make_dummy(tmp_path)
     ec.EnvironmentConfiguratorNode.update_settings(
