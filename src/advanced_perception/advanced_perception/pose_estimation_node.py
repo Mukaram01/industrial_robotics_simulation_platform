@@ -3,6 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
+from concurrent.futures import ThreadPoolExecutor
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
@@ -81,12 +82,15 @@ class PoseEstimationNode(Node):
             '/apm/advanced_perception/objects',
             10
         )
-        
+
         # Initialize state
         self.latest_rgb_image = None
         self.latest_depth_image = None
         self.latest_segmented_objects = None
-        
+
+        # Thread pool executor for processing
+        self.processing_executor = ThreadPoolExecutor(max_workers=2)
+
         self.get_logger().info('Pose estimation node initialized')
     
     def load_config(self):
@@ -136,7 +140,7 @@ class PoseEstimationNode(Node):
         """
         try:
             self.latest_rgb_image = self.cv_bridge.imgmsg_to_cv2(msg, 'bgr8')
-            self.process_data()
+            self.processing_executor.submit(self.process_data)
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {str(e)}')
     
@@ -146,7 +150,7 @@ class PoseEstimationNode(Node):
         """
         try:
             self.latest_depth_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-            self.process_data()
+            self.processing_executor.submit(self.process_data)
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {str(e)}')
     
@@ -155,7 +159,7 @@ class PoseEstimationNode(Node):
         Process segmented objects message
         """
         self.latest_segmented_objects = msg
-        self.process_data()
+        self.processing_executor.submit(self.process_data)
     
     def process_data(self):
         """
@@ -275,6 +279,7 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
+        pose_estimation_node.processing_executor.shutdown()
         pose_estimation_node.destroy_node()
         executor.shutdown()
         rclpy.shutdown()
