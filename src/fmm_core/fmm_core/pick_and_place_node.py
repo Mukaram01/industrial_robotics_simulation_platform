@@ -180,7 +180,7 @@ class PickAndPlaceNode(Node):
         Callback for pick commands
         """
         if self.current_state != "idle":
-            self.get_logger().warn(f"Cannot execute pick command, current state: {self.current_state}")
+            self.get_logger().warning(f"Cannot execute pick command, current state: {self.current_state}")
             return
         
         self.current_state = "picking"
@@ -204,11 +204,11 @@ class PickAndPlaceNode(Node):
         Callback for place commands
         """
         if self.current_state != "idle":
-            self.get_logger().warn(f"Cannot execute place command, current state: {self.current_state}")
+            self.get_logger().warning(f"Cannot execute place command, current state: {self.current_state}")
             return
         
         if self.attached_object_id is None:
-            self.get_logger().warn("No object attached to end effector")
+            self.get_logger().warning("No object attached to end effector")
             self.publish_status("error")
             return
         

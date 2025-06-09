@@ -64,7 +64,7 @@ class SegmentationNode(Node):
         Load segmentation configuration from YAML file
         """
         if not self.segmentation_config_path:
-            self.get_logger().warn('No segmentation config file provided, using default values')
+            self.get_logger().warning('No segmentation config file provided, using default values')
             self.threshold_min = np.array([0, 0, 0])
             self.threshold_max = np.array([255, 255, 255])
             self.min_contour_area = 1000

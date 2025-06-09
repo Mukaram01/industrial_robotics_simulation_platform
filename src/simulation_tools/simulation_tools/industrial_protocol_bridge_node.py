@@ -155,7 +155,7 @@ class IndustrialProtocolBridgeNode(Node):
     
     def on_mqtt_disconnect(self, client, userdata, rc):
         if rc != 0:
-            self.get_logger().warn(f'MQTT disconnected with result code {rc}')
+            self.get_logger().warning(f'MQTT disconnected with result code {rc}')
             # Try to reconnect
             try:
                 client.reconnect()

@@ -179,7 +179,7 @@ class SafetyMonitorNode(Node):
             return
         
         self.emergency_stop_active = True
-        self.get_logger().warn(f'Emergency stop triggered: {reason}')
+        self.get_logger().warning(f'Emergency stop triggered: {reason}')
         
         # Publish emergency stop
         stop_msg = Bool()
@@ -200,7 +200,7 @@ class SafetyMonitorNode(Node):
         
         # Check if it's safe to reset
         if reset_requires_confirmation and self.safety_violations:
-            self.get_logger().warn('Cannot reset emergency stop: safety violations still present')
+            self.get_logger().warning('Cannot reset emergency stop: safety violations still present')
             return
         
         self.emergency_stop_active = False
