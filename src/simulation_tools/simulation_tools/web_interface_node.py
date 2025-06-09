@@ -50,6 +50,10 @@ class WebInterfaceNode(Node):
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
 
+        # Create data directory if it doesn't exist before using it
+        if self.data_dir and not os.path.exists(self.data_dir):
+            os.makedirs(self.data_dir)
+
         if not self.log_db_path:
             if self.data_dir:
                 self.log_db_path = os.path.join(self.data_dir, 'actions.db')
@@ -57,10 +61,6 @@ class WebInterfaceNode(Node):
                 self.log_db_path = os.path.join(os.getcwd(), 'actions.db')
 
         self.action_logger = ActionLogger(self.log_db_path)
-        
-        # Create data directory if it doesn't exist
-        if self.data_dir and not os.path.exists(self.data_dir):
-            os.makedirs(self.data_dir)
             
         # Initialize CV bridge
         self.bridge = CvBridge()
@@ -478,6 +478,7 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
+        node.action_logger.close()
         node.destroy_node()
         rclpy.shutdown()
 

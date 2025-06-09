@@ -71,6 +71,16 @@ def test_action_logger_basic(tmp_path):
     assert json.loads(row[1]) == {'item': 1}
 
 
+def test_action_logger_close(tmp_path):
+    db_path = tmp_path / 'actions.db'
+    with ActionLogger(str(db_path)) as logger:
+        logger.log('foo')
+    assert logger._conn is None
+    conn = sqlite3.connect(db_path)
+    count = conn.execute('SELECT COUNT(*) FROM actions').fetchone()[0]
+    assert count == 1
+
+
 def test_scenario_file_cycle(tmp_path):
     dummy = make_dummy(tmp_path)
 

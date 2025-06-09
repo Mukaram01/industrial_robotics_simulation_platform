@@ -34,3 +34,17 @@ class ActionLogger:
                 (timestamp, action, detail_str)
             )
             self._conn.commit()
+
+    def close(self):
+        """Close the underlying SQLite connection."""
+        if self._conn is not None:
+            with self._lock:
+                self._conn.close()
+                self._conn = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
+        return False
