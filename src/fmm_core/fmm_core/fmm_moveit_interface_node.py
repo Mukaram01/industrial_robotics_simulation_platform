@@ -207,11 +207,11 @@ class FMMMoveitInterfaceNode(Node):
                 target_object = self.detected_objects[object_id]
             
             # Transform object pose to planning frame if needed
-            object_pose = target_object.pose.pose
-            if target_object.pose.header.frame_id != self.base_link:
+            object_pose = target_object.pose
+            if target_object.header.frame_id != self.base_link:
                 transform = self.tf_buffer.lookup_transform(
                     self.base_link,
-                    target_object.pose.header.frame_id,
+                    target_object.header.frame_id,
                     rclpy.time.Time()
                 )
                 object_pose = do_transform_pose(object_pose, transform)
