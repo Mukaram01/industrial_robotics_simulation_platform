@@ -40,6 +40,8 @@ class IndustrialProtocolBridgeNode(Node):
         self.metrics = {}
         self.opcua_server = None
         self.mqtt_client = None
+        # Used to signal the OPC UA server thread to exit cleanly
+        self._opcua_stop_event = threading.Event()
         
         # Create subscribers
         self.status_sub = self.create_subscription(
@@ -69,6 +71,7 @@ class IndustrialProtocolBridgeNode(Node):
             self.opcua_thread = threading.Thread(target=self.run_opcua_server)
             self.opcua_thread.daemon = True
             self.opcua_thread.start()
+            # Thread will be joined during shutdown
         
         # Start MQTT client if enabled
         if self.mqtt_enabled:
@@ -165,6 +168,19 @@ class IndustrialProtocolBridgeNode(Node):
     def run_opcua_server(self):
         # This runs in a separate thread
         asyncio.run(self.opcua_server_main())
+
+    def stop_opcua_server(self):
+        """Signal the OPC UA thread to stop and wait for it."""
+        self._opcua_stop_event.set()
+
+        if hasattr(self, "opcua_thread") and self.opcua_thread.is_alive():
+            self.opcua_thread.join()
+        # Ensure server is stopped
+        if self.opcua_server is not None:
+            try:
+                asyncio.run(self.opcua_server.stop())
+            except Exception as e:
+                self.get_logger().error(f'Error stopping OPC UA server: {e}')
     
     async def opcua_server_main(self):
         try:
@@ -210,7 +226,7 @@ class IndustrialProtocolBridgeNode(Node):
                 self.get_logger().info(f'OPC UA server started at {self.opcua_endpoint}')
                 
                 # Update loop
-                while True:
+                while not self._opcua_stop_event.is_set():
                     # Update status
                     await self.opcua_status.write_value(self.system_status)
                     
@@ -252,7 +268,10 @@ def main(args=None):
         if node.mqtt_enabled and node.mqtt_client:
             node.mqtt_client.loop_stop()
             node.mqtt_client.disconnect()
-        
+
+        if node.opcua_enabled:
+            node.stop_opcua_server()
+
         node.destroy_node()
         rclpy.shutdown()
 
