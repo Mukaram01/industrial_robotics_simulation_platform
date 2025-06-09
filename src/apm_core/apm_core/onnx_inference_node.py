@@ -264,7 +264,7 @@ class OnnxInferenceNode(Node):
     def perform_inference(self, image, header):
         """Perform object detection inference on the image."""
         if self.session is None:
-            self.get_logger().warn('ONNX session not initialized, skipping inference')
+            self.get_logger().warning('ONNX session not initialized, skipping inference')
             return
         
         try:

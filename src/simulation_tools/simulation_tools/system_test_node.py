@@ -62,7 +62,7 @@ class SystemTestNode(Node):
     
     def start_test(self):
         if self.test_running:
-            self.get_logger().warn('Test already running')
+            self.get_logger().warning('Test already running')
             return
         
         self.test_running = True

@@ -145,7 +145,7 @@ class FMMMoveitInterfaceNode(Node):
         Callback for pick commands
         """
         if self.current_state != "idle":
-            self.get_logger().warn(f"Cannot execute pick command, current state: {self.current_state}")
+            self.get_logger().warning(f"Cannot execute pick command, current state: {self.current_state}")
             return
         
         self.current_state = "picking"
@@ -169,7 +169,7 @@ class FMMMoveitInterfaceNode(Node):
         Callback for place commands
         """
         if self.current_state != "idle":
-            self.get_logger().warn(f"Cannot execute place command, current state: {self.current_state}")
+            self.get_logger().warning(f"Cannot execute place command, current state: {self.current_state}")
             return
         
         self.current_state = "placing"

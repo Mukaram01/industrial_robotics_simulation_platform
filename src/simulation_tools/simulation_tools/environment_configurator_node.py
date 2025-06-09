@@ -119,7 +119,7 @@ class EnvironmentConfiguratorNode(Node):
         
         elif command == 'emergency_stop':
             self.running = False
-            self.get_logger().warn('Emergency stop triggered')
+            self.get_logger().warning('Emergency stop triggered')
         
         elif command == 'start_recording':
             self.get_logger().info('Starting recording')
@@ -249,7 +249,7 @@ class EnvironmentConfiguratorNode(Node):
         
         # Don't delete default scenario
         if scenario_id == 'default':
-            self.get_logger().warn('Cannot delete default scenario')
+            self.get_logger().warning('Cannot delete default scenario')
             return
         
         scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')

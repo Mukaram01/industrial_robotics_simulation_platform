@@ -98,7 +98,7 @@ class PoseEstimationNode(Node):
         Load pose estimation configuration from YAML file
         """
         if not self.pose_estimation_config_path:
-            self.get_logger().warn('No pose estimation config file provided, using default values')
+            self.get_logger().warning('No pose estimation config file provided, using default values')
             self.min_depth = 0.1
             self.max_depth = 5.0
             self.depth_scale = 0.001  # Convert mm to meters
