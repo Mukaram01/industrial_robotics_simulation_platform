@@ -36,13 +36,21 @@ def test_pose_estimation_node_defaults():
     from advanced_perception.pose_estimation_node import PoseEstimationNode
     node = _init_node(PoseEstimationNode)
     assert node.get_parameter('camera_topic').value == '/camera/color/image_raw'
-    assert node.get_parameter('depth_topic').value == '/camera/depth/image_rect_raw'
-    assert node.get_parameter('camera_info_topic').value == '/camera/color/camera_info'
+    assert (
+        node.get_parameter('depth_topic').value
+        == '/camera/depth/image_rect_raw'
+    )
+    assert (
+        node.get_parameter('camera_info_topic').value
+        == '/camera/color/camera_info'
+    )
     assert node.get_parameter('pose_estimation_config').value == ''
 
 
 def test_environment_configurator_node_defaults():
-    from simulation_tools.environment_configurator_node import EnvironmentConfiguratorNode
+    from simulation_tools.environment_configurator_node import (
+        EnvironmentConfiguratorNode,
+    )
     node = _init_node(EnvironmentConfiguratorNode)
     assert node.get_parameter('default_scenario').value == 'default'
     assert node.get_parameter('scenario').value == ''

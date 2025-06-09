@@ -1,8 +1,5 @@
-import os
 import sqlite3
 import json
-
-import pytest
 
 # Ensure packages under src/ are importable
 import sys
@@ -28,12 +25,13 @@ sys.modules['rclpy.node'] = rclpy_stub.node
 sys.modules['std_msgs'] = std_msgs_stub
 sys.modules['std_msgs.msg'] = std_msgs_stub.msg
 
-from simulation_tools.simulation_tools.action_logger import ActionLogger
-from simulation_tools.simulation_tools import environment_configurator_node as ec
+from simulation_tools.simulation_tools.action_logger import ActionLogger  # noqa: E402
+from simulation_tools.simulation_tools import environment_configurator_node as ec  # noqa: E402
 
 # Remove stub modules so other tests that expect missing ROS will skip
 for mod in ['rclpy', 'rclpy.node', 'std_msgs', 'std_msgs.msg']:
     sys.modules.pop(mod, None)
+
 
 class DummyLogger:
     def info(self, *args, **kwargs):

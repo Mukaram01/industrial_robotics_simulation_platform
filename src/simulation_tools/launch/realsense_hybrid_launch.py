@@ -2,42 +2,43 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
-from launch.event_handlers import OnProcessExit
-from launch.substitutions import LaunchConfiguration, FindExecutable
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
+
 def generate_launch_description():
     # Declare launch arguments
-    use_realsense = LaunchConfiguration('use_realsense', default='true')
-    use_delta_robot = LaunchConfiguration('use_delta_robot', default='true')
-    use_advanced_perception = LaunchConfiguration('use_advanced_perception', default='false')
+    # Launch parameters
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
         get_package_share_directory('simulation_tools'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
     save_images = LaunchConfiguration('save_images', default='true')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='true')
     opcua_port = LaunchConfiguration('opcua_port', default='4840')
-    
+
     # Create default data directory (using the default value, not the LaunchConfiguration)
     default_data_dir = '/tmp/simulation_data'
     os.makedirs(default_data_dir, exist_ok=True)
-    
+
     # Create launch configuration arguments
     launch_args = [
         DeclareLaunchArgument(
             'use_realsense',
             default_value='true',
-            description='Use RealSense camera instead of simulation'),
+            description='Use RealSense camera instead of simulation',
+        ),
         DeclareLaunchArgument(
             'use_delta_robot',
             default_value='true',
-            description='Use delta robot for sorting'),
+            description='Use delta robot for sorting',
+        ),
         DeclareLaunchArgument(
             'use_advanced_perception',
             default_value='false',
-            description='Use advanced perception algorithms'),
+            description='Use advanced perception algorithms',
+        ),
         DeclareLaunchArgument(
             'config_dir',
             default_value=os.path.join(get_package_share_directory('simulation_tools'), 'config'),
@@ -59,10 +60,10 @@ def generate_launch_description():
             default_value='4840',
             description='Port for the OPC UA server'),
     ]
-    
+
     # Define nodes to launch
     nodes = []
-    
+
     # Launch RealSense camera node
     nodes.append(
         Node(
@@ -84,7 +85,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Environment configurator node
     nodes.append(
         Node(
@@ -101,7 +102,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Web interface node
     nodes.append(
         Node(
@@ -119,7 +120,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Visualization server node
     nodes.append(
         Node(
@@ -135,7 +136,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Industrial protocol bridge node
     nodes.append(
         Node(
@@ -154,7 +155,7 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Safety monitor node
     nodes.append(
         Node(
@@ -172,8 +173,8 @@ def generate_launch_description():
             output='screen'
         )
     )
-    
+
     # Create launch description
     ld = LaunchDescription(launch_args + nodes)
-    
+
     return ld

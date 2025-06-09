@@ -23,7 +23,11 @@ def _collect_node_names(description):
 def test_integrated_system_launch_realsense_disabled(monkeypatch):
     from simulation_tools.launch import integrated_system_launch
 
-    monkeypatch.setattr(integrated_system_launch, 'LaunchConfiguration', lambda *args, **kwargs: 'false')
+    monkeypatch.setattr(
+        integrated_system_launch,
+        'LaunchConfiguration',
+        lambda *args, **kwargs: 'false',
+    )
     ld = integrated_system_launch.generate_launch_description()
     names = _collect_node_names(ld)
     assert 'realsense2_camera' not in names
@@ -33,7 +37,11 @@ def test_integrated_system_launch_realsense_disabled(monkeypatch):
 def test_integrated_system_launch_realsense_enabled(monkeypatch):
     from simulation_tools.launch import integrated_system_launch
 
-    monkeypatch.setattr(integrated_system_launch, 'LaunchConfiguration', lambda *args, **kwargs: 'true')
+    monkeypatch.setattr(
+        integrated_system_launch,
+        'LaunchConfiguration',
+        lambda *args, **kwargs: 'true',
+    )
     ld = integrated_system_launch.generate_launch_description()
     names = _collect_node_names(ld)
     assert 'realsense2_camera' in names
