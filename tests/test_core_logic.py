@@ -117,3 +117,18 @@ def test_load_missing_uses_default(tmp_path):
     ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'missing')
     default = ec.EnvironmentConfiguratorNode.get_default_config(dummy)
     assert dummy.environment_config['description'] == default['description']
+
+
+def test_error_sim_rate_bounds(tmp_path):
+    dummy = make_dummy(tmp_path)
+    ec.EnvironmentConfiguratorNode.update_settings(
+        dummy,
+        {'simulation': {'error_simulation_rate': 1.5}}
+    )
+    assert dummy.error_simulation_rate == 1.0
+
+    ec.EnvironmentConfiguratorNode.update_settings(
+        dummy,
+        {'simulation': {'error_simulation_rate': -0.5}}
+    )
+    assert dummy.error_simulation_rate == 0.0
