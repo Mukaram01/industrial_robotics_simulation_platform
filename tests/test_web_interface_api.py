@@ -3,7 +3,6 @@ import types
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
 
 # Ensure packages under src/ are importable
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,9 +40,11 @@ def _setup_ros_stubs(monkeypatch):
             return MagicMock()
 
         def get_logger(self):
+
             class Logger:
                 def info(self, *a, **k):
                     pass
+
                 def error(self, *a, **k):
                     pass
             return Logger()
@@ -75,11 +76,19 @@ def _setup_ros_stubs(monkeypatch):
     monkeypatch.setitem(sys.modules, 'sensor_msgs.msg', sensor_stub.msg)
 
     cv_bridge_stub = types.ModuleType('cv_bridge')
+
     class CvBridge:
         def imgmsg_to_cv2(self, *a, **k):
             return None
     cv_bridge_stub.CvBridge = CvBridge
     monkeypatch.setitem(sys.modules, 'cv_bridge', cv_bridge_stub)
+
+    cv2_stub = types.ModuleType('cv2')
+    cv2_stub.imencode = lambda *a, **k: (True, b'')
+    monkeypatch.setitem(sys.modules, 'cv2', cv2_stub)
+
+    import flask
+    monkeypatch.setitem(sys.modules, 'flask', flask)
 
     ament_stub = types.ModuleType('ament_index_python')
     ament_stub.packages = types.ModuleType('ament_index_python.packages')
@@ -94,7 +103,11 @@ def _setup_ros_stubs(monkeypatch):
 def test_place_api_publishes_and_logs(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
+    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+
     from simulation_tools.simulation_tools import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
 
     logger_mock = MagicMock()
     monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
