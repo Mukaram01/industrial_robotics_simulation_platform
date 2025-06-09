@@ -33,7 +33,7 @@ class WebInterfaceNode(Node):
             'host': '0.0.0.0',
             'config_dir': '',
             'data_dir': '',
-            'save_images': True,
+            'save_images': False,
             'allow_unsafe_werkzeug': True,
             'log_db_path': '',
             'jpeg_quality': 75,

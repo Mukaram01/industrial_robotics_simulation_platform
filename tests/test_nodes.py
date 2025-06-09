@@ -70,7 +70,7 @@ def test_web_interface_node_defaults():
     from simulation_tools.web_interface_node import WebInterfaceNode
     node = _init_node(WebInterfaceNode)
     assert node.get_parameter('allow_unsafe_werkzeug').value is True
-    assert node.get_parameter('save_images').value is True
+    assert node.get_parameter('save_images').value is False
     assert node.get_parameter('log_db_path').value == ''
     assert node.get_parameter('jpeg_quality').value == 75
 
