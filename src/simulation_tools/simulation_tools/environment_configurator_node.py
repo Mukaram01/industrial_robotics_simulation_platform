@@ -239,7 +239,7 @@ class EnvironmentConfiguratorNode(Node):
         
         try:
             with open(scenario_path, 'w') as f:
-                yaml.dump(config, f, default_flow_style=False)
+                yaml.safe_dump(config, f, default_flow_style=False)
             self.get_logger().info(f'Saved scenario to {scenario_path}')
         except Exception as e:
             self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
