@@ -3,7 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from sensor_msgs.msg import Image, CameraInfo
+from sensor_msgs.msg import Image, CameraInfo, CompressedImage
 from std_msgs.msg import String
 from cv_bridge import CvBridge
 import cv2
@@ -26,6 +26,8 @@ class CameraSimulatorNode(Node):
             'noise_level': 0.02,
             'simulate_lighting': True,
             'simulate_occlusion': False,
+            'publish_compressed': False,
+            'compression_format': 'jpeg',
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
 
@@ -41,6 +43,8 @@ class CameraSimulatorNode(Node):
         self.noise_level = self.get_parameter('noise_level').value
         self.simulate_lighting = self.get_parameter('simulate_lighting').value
         self.simulate_occlusion = self.get_parameter('simulate_occlusion').value
+        self.publish_compressed = self.get_parameter('publish_compressed').value
+        self.compression_format = self.get_parameter('compression_format').value
 
         # Initialize CV bridge
         self.bridge = CvBridge()
@@ -54,6 +58,15 @@ class CameraSimulatorNode(Node):
             Image,
             f'/{self.camera_name}/depth/image_rect_raw',
             10)
+        if self.publish_compressed:
+            self.rgb_compressed_pub = self.create_publisher(
+                CompressedImage,
+                f'/{self.camera_name}/color/image_raw/compressed',
+                10)
+            self.depth_compressed_pub = self.create_publisher(
+                CompressedImage,
+                f'/{self.camera_name}/depth/image_rect_raw/compressed',
+                10)
         self.camera_info_pub = self.create_publisher(
             CameraInfo,
             f'/{self.camera_name}/color/camera_info',
@@ -122,6 +135,27 @@ class CameraSimulatorNode(Node):
         self.rgb_pub.publish(rgb_msg)
         self.depth_pub.publish(depth_msg)
         self.camera_info_pub.publish(self.camera_info)
+
+        if self.publish_compressed:
+            rgb_comp_msg = CompressedImage()
+            rgb_comp_msg.header = rgb_msg.header
+            rgb_comp_msg.format = self.compression_format
+            success, buffer = cv2.imencode(
+                '.jpg' if self.compression_format == 'jpeg' else '.png',
+                rgb_image,
+            )
+            if success:
+                rgb_comp_msg.data = buffer.tobytes()
+                self.rgb_compressed_pub.publish(rgb_comp_msg)
+
+            depth_comp_msg = CompressedImage()
+            depth_comp_msg.header = depth_msg.header
+            depth_comp_msg.format = 'png'
+            depth_uint16 = np.clip(depth_image * 1000.0, 0, 65535).astype(np.uint16)
+            success, buffer = cv2.imencode('.png', depth_uint16)
+            if success:
+                depth_comp_msg.data = buffer.tobytes()
+                self.depth_compressed_pub.publish(depth_comp_msg)
 
     def generate_images(self):
         # Create background
