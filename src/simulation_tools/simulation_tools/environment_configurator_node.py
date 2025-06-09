@@ -267,7 +267,8 @@ class EnvironmentConfiguratorNode(Node):
             self.physics_enabled = sim_settings.get('physics_enabled', self.physics_enabled)
             self.record_metrics = sim_settings.get('record_metrics', self.record_metrics)
             # Value should be between 0 and 1
-            self.error_simulation_rate = sim_settings.get('error_simulation_rate', self.error_simulation_rate)
+            rate = sim_settings.get('error_simulation_rate', self.error_simulation_rate)
+            self.error_simulation_rate = max(0.0, min(rate, 1.0))
         
         self.get_logger().info('Updated settings')
     
