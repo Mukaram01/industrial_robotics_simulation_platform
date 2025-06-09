@@ -130,3 +130,149 @@ def test_error_sim_rate_bounds(tmp_path):
         {'simulation': {'error_simulation_rate': -0.5}}
     )
     assert dummy.error_simulation_rate == 0.0
+
+
+def test_web_interface_logger_initialization_order(tmp_path):
+    """Ensure data directory exists before ActionLogger is created."""
+    import types
+    import importlib
+    import threading
+
+    data_dir = tmp_path / "data"
+
+    class DummyLogger:
+        def info(self, *a, **k):
+            pass
+        def error(self, *a, **k):
+            pass
+        def warn(self, *a, **k):
+            pass
+
+    class DummyNode:
+        def __init__(self, name):
+            self.params = {
+                'port': 8080,
+                'host': '0.0.0.0',
+                'config_dir': '',
+                'data_dir': str(data_dir),
+                'save_images': True,
+                'allow_unsafe_werkzeug': True,
+                'log_db_path': '',
+                'jpeg_quality': 75,
+            }
+
+        def declare_parameters(self, ns, params):
+            pass
+
+        class Param:
+            def __init__(self, val):
+                self.value = val
+
+        def get_parameter(self, name):
+            return self.Param(self.params[name])
+
+        def create_publisher(self, *a, **kw):
+            pass
+
+        def create_subscription(self, *a, **kw):
+            pass
+
+        def get_logger(self):
+            return DummyLogger()
+
+    stub_modules = {
+        'rclpy': types.ModuleType('rclpy'),
+        'rclpy.node': types.ModuleType('rclpy.node'),
+        'std_msgs': types.ModuleType('std_msgs'),
+        'std_msgs.msg': types.ModuleType('std_msgs.msg'),
+        'sensor_msgs': types.ModuleType('sensor_msgs'),
+        'sensor_msgs.msg': types.ModuleType('sensor_msgs.msg'),
+        'cv_bridge': types.ModuleType('cv_bridge'),
+        'flask': types.ModuleType('flask'),
+        'flask_socketio': types.ModuleType('flask_socketio'),
+        'ament_index_python': types.ModuleType('ament_index_python'),
+        'ament_index_python.packages': types.ModuleType('ament_index_python.packages'),
+        'cv2': types.ModuleType('cv2'),
+        'numpy': types.ModuleType('numpy'),
+        'yaml': types.ModuleType('yaml'),
+    }
+
+    stub_modules['rclpy'].node = stub_modules['rclpy.node']
+    stub_modules['rclpy.node'].Node = DummyNode
+
+    stub_modules['std_msgs'].msg = stub_modules['std_msgs.msg']
+    stub_modules['std_msgs.msg'].String = object
+    stub_modules['std_msgs.msg'].Bool = object
+
+    stub_modules['sensor_msgs'].msg = stub_modules['sensor_msgs.msg']
+    stub_modules['sensor_msgs.msg'].Image = object
+
+    class DummyCvBridge:
+        pass
+    stub_modules['cv_bridge'].CvBridge = DummyCvBridge
+
+    class DummyFlask:
+        def __init__(self, *a, **k):
+            pass
+
+        def route(self, *a, **k):
+            def decorator(f):
+                return f
+
+            return decorator
+
+    stub_modules['flask'].Flask = DummyFlask
+    stub_modules['flask'].render_template = lambda *a, **k: ''
+    stub_modules['flask'].request = types.SimpleNamespace(
+        get_json=lambda silent=True: {}, args={}, files={}, form={}
+    )
+    stub_modules['flask'].jsonify = lambda *a, **k: {}
+    stub_modules['flask'].send_from_directory = lambda *a, **k: ''
+
+    class DummySocketIO:
+        def __init__(self, app, cors_allowed_origins=None):
+            pass
+
+        def on(self, *a, **k):
+            def decorator(f):
+                return f
+
+            return decorator
+
+        def emit(self, *a, **k):
+            pass
+
+        def run(self, *a, **k):
+            pass
+
+    stub_modules['flask_socketio'].SocketIO = DummySocketIO
+
+    stub_modules['ament_index_python'].packages = stub_modules['ament_index_python.packages']
+    stub_modules['ament_index_python.packages'].get_package_share_directory = lambda pkg: str(data_dir)
+
+    stub_modules['yaml'].safe_load = lambda *a, **k: {}
+
+    for name, mod in stub_modules.items():
+        sys.modules[name] = mod
+
+    win = importlib.import_module('simulation_tools.simulation_tools.web_interface_node')
+
+    class DummyThread:
+        def __init__(self, target):
+            self.target = target
+
+        def start(self):
+            pass
+
+    threading.Thread = DummyThread
+
+    node = win.WebInterfaceNode()
+
+    try:
+        assert data_dir.exists()
+        expected = str(data_dir / 'actions.db')
+        assert node.log_db_path == expected
+        assert node.action_logger.db_path == expected
+    finally:
+        for name in stub_modules.keys():
+            sys.modules.pop(name, None)

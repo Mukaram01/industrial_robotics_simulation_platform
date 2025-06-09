@@ -50,15 +50,15 @@ class WebInterfaceNode(Node):
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
 
-        # Create data directory if it doesn't exist before using it
-        if self.data_dir and not os.path.exists(self.data_dir):
-            os.makedirs(self.data_dir)
-
         if not self.log_db_path:
             if self.data_dir:
                 self.log_db_path = os.path.join(self.data_dir, 'actions.db')
             else:
                 self.log_db_path = os.path.join(os.getcwd(), 'actions.db')
+
+        # Ensure data directory exists before the logger uses it
+        if self.data_dir and not os.path.exists(self.data_dir):
+            os.makedirs(self.data_dir)
 
         self.action_logger = ActionLogger(self.log_db_path)
             
