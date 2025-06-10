@@ -22,6 +22,11 @@ SCENARIO_ID_PATTERN = re.compile(r'^[A-Za-z0-9_]+$')
 from ament_index_python.packages import get_package_share_directory
 from .action_logger import ActionLogger
 
+try:
+    from apm_msgs.msg import DetectedObjectArray
+except Exception:  # pragma: no cover - optional dependency
+    DetectedObjectArray = None
+
 
 class WebInterfaceNode(Node):
     def __init__(self):
@@ -37,6 +42,7 @@ class WebInterfaceNode(Node):
             'allow_unsafe_werkzeug': True,
             'log_db_path': '',
             'jpeg_quality': 75,
+            'detected_objects_topic': '/apm/detection/objects',
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
@@ -49,6 +55,7 @@ class WebInterfaceNode(Node):
         self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
+        self.detected_objects_topic = self.get_parameter('detected_objects_topic').value
 
         if not self.log_db_path:
             if self.data_dir:
@@ -77,6 +84,7 @@ class WebInterfaceNode(Node):
             'errors': 0,
             'objects_processed': 0
         }
+        self.latest_objects = []
         
         # Create publishers
         self.command_pub = self.create_publisher(
@@ -109,6 +117,17 @@ class WebInterfaceNode(Node):
             '/simulation/metrics',
             self.metrics_callback,
             10)
+
+        # Subscribe to detected objects if message type is available
+        if DetectedObjectArray is not None:
+            self.objects_sub = self.create_subscription(
+                DetectedObjectArray,
+                self.detected_objects_topic,
+                self.objects_callback,
+                10)
+        else:
+            self.get_logger().warning(
+                'apm_msgs not available, object updates disabled')
         
         package_share_directory = get_package_share_directory('simulation_tools')
         template_folder_path = os.path.join(package_share_directory, 'templates')
@@ -210,6 +229,30 @@ class WebInterfaceNode(Node):
             })
         except Exception as e:
             self.get_logger().error(f'Error parsing metrics message: {e}')
+
+    def objects_callback(self, msg):
+        try:
+            objects = []
+            for obj in msg.objects:
+                objects.append({
+                    'id': obj.id,
+                    'class': getattr(obj, 'class_name', str(obj.class_id)),
+                    'score': getattr(obj, 'confidence', 0.0),
+                    'position': {
+                        'x': obj.pose.position.x,
+                        'y': obj.pose.position.y,
+                        'z': obj.pose.position.z,
+                    },
+                    'size': {
+                        'x': obj.dimensions.x,
+                        'y': obj.dimensions.y,
+                        'z': obj.dimensions.z,
+                    },
+                })
+            self.latest_objects = objects
+            self.socketio.emit('objects_update', {'objects': objects})
+        except Exception as e:
+            self.get_logger().error(f'Error processing detected objects: {e}')
     
     def setup_routes(self):
         @self.app.route('/')
@@ -249,6 +292,23 @@ class WebInterfaceNode(Node):
             self.action_logger.log('place', {'location': location})
 
             return jsonify({"success": True, "message": "Place command sent"}), 200
+
+        @self.app.route('/api/pick', methods=['POST'])
+        def api_pick():
+            """Handle pick command requests."""
+            data = request.get_json(silent=True) or {}
+            object_id = data.get('object_id')
+            if not object_id:
+                return jsonify({'error': 'object_id required'}), 400
+
+            cmd_msg = String()
+            cmd_msg.data = f'pick {object_id}'
+            self.command_pub.publish(cmd_msg)
+            self.get_logger().info(
+                f"Received pick command from web UI: 'pick {object_id}' published to /simulation/command.")
+            self.action_logger.log('pick', {'object_id': object_id})
+
+            return jsonify({'success': True, 'message': 'Pick command sent'}), 200
         
         @self.app.route('/api/image/latest')
         def get_latest_image():
@@ -277,6 +337,10 @@ class WebInterfaceNode(Node):
                     return jsonify({'base64': b64_data})
 
             return jsonify({'error': 'Image not available'}), 404
+
+        @self.app.route('/api/objects')
+        def get_objects():
+            return jsonify({'objects': self.latest_objects})
         
         @self.app.route('/api/scenarios')
         def get_scenarios():
