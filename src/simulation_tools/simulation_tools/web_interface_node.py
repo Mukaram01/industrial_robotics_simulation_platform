@@ -320,12 +320,18 @@ class WebInterfaceNode(Node):
                 return jsonify({'error': 'Invalid scenario ID'}), 400
 
             scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
+
+            if os.path.exists(scenario_path):
+                return jsonify({'error': 'Scenario already exists'}), 409
+
             try:
                 file.save(scenario_path)
                 self.action_logger.log('upload_scenario', {'id': scenario_id})
                 return jsonify({'success': True, 'id': scenario_id})
             except Exception as e:
-                self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
+                self.get_logger().error(
+                    f'Error saving scenario file {scenario_id}: {e}'
+                )
                 return jsonify({'error': f'Error saving scenario: {e}'}), 500
         
         @self.app.route('/api/scenarios/<scenario_id>')
