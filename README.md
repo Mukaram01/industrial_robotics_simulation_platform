@@ -114,6 +114,23 @@ The mesh resources are required for accurate visualization in both cases.
        opcua_endpoint:=opc.tcp://0.0.0.0:4840/freeopcua/server/
    ```
 
+### Configuration Directory and Data Storage
+
+By default, configuration files are loaded from
+`src/simulation_tools/config/`. Pass `config_dir:=<path>` when launching to
+use a custom directory. The `data_dir` parameter controls where log files and
+optional saved images are written (default: `/tmp/simulation_data`).
+
+Example:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py \
+    config_dir:=/my/configs data_dir:=/tmp/my_data
+```
+
+Scenario YAML files such as `pick_and_place.yaml` can be duplicated and
+modified in your custom directory to define new scenarios.
+
 3. **Access the Web Interface**
    ```
    http://localhost:8080
