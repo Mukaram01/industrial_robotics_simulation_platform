@@ -71,9 +71,14 @@ The mesh resources are required for accurate visualization in both cases.
    source /opt/ros/humble/setup.bash
    cd industrial_robotics_simulation_platform
    pip install -r requirements.txt
+   sudo apt install python3-rosdep
+   sudo rosdep init
+   rosdep update
+   rosdep install --from-paths src -y --ignore-src
    colcon build --symlink-install
    source install/setup.bash
    ```
+   The `rosdep` commands resolve additional ROS packages required for the workspace.
 
 2. **Launch the System**
    ```bash
