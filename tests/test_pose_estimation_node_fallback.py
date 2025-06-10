@@ -78,6 +78,7 @@ def _setup_stubs(monkeypatch):
     monkeypatch.setitem(sys.modules, 'geometry_msgs.msg', geometry_stub.msg)
 
     cv_bridge_stub = types.ModuleType('cv_bridge')
+
     class DummyBridge:
         def imgmsg_to_cv2(self, *a, **k):
             return np.zeros((10, 10), dtype=np.uint8)
