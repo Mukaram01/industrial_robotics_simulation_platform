@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ur5">
   <!-- Common properties -->
-  <xacro:property name="pi" value="3.14159265359" />
   
   <!-- UR5 specific properties -->
   <xacro:property name="shoulder_height" value="0.089159" />

@@ -48,6 +48,7 @@ def _setup_ros_stubs(monkeypatch):
 
                 def error(self, *a, **k):
                     pass
+
                 def warning(self, *a, **k):
                     pass
             return Logger()
