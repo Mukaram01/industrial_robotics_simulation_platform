@@ -1,13 +1,15 @@
 import sqlite3
 import time
 import json
+import logging
 from threading import Lock
 
 class ActionLogger:
     """Simple SQLite-based logger for web UI actions."""
 
-    def __init__(self, db_path: str):
+    def __init__(self, db_path: str, raise_errors: bool = False):
         self.db_path = db_path
+        self.raise_errors = raise_errors
         self._lock = Lock()
         self._conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self._initialize()
@@ -29,11 +31,18 @@ class ActionLogger:
         timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
         detail_str = json.dumps(details) if details is not None else None
         with self._lock:
-            self._conn.execute(
-                "INSERT INTO actions (timestamp, action, details) VALUES (?, ?, ?)",
-                (timestamp, action, detail_str)
-            )
-            self._conn.commit()
+            try:
+                if self._conn is None:
+                    raise sqlite3.Error("Database connection is closed")
+                self._conn.execute(
+                    "INSERT INTO actions (timestamp, action, details) VALUES (?, ?, ?)",
+                    (timestamp, action, detail_str)
+                )
+                self._conn.commit()
+            except sqlite3.Error as e:
+                logging.error(f"Failed to log action: {e}")
+                if self.raise_errors:
+                    raise
 
     def close(self):
         """Close the underlying SQLite connection."""

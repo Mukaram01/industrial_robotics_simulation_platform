@@ -79,6 +79,16 @@ def test_action_logger_close(tmp_path):
     assert count == 1
 
 
+def test_action_logger_handles_db_error(tmp_path):
+    db_path = tmp_path / 'actions.db'
+    logger = ActionLogger(str(db_path))
+    logger._conn.close()  # simulate broken connection without updating attribute
+    logger.log('bad')  # should not raise
+    conn = sqlite3.connect(db_path)
+    count = conn.execute('SELECT COUNT(*) FROM actions').fetchone()[0]
+    assert count == 0
+
+
 def test_scenario_file_cycle(tmp_path):
     dummy = make_dummy(tmp_path)
 
