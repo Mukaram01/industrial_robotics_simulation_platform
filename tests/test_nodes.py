@@ -73,6 +73,10 @@ def test_web_interface_node_defaults():
     assert node.get_parameter('save_images').value is False
     assert node.get_parameter('log_db_path').value == ''
     assert node.get_parameter('jpeg_quality').value == 75
+    assert (
+        node.get_parameter('detected_objects_topic').value
+        == '/apm/detection/objects'
+    )
 
 
 def test_visualization_server_node_defaults():

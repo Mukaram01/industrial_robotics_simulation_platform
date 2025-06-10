@@ -40,6 +40,8 @@ class DummyLogger:
         pass
     def warn(self, *args, **kwargs):
         pass
+    def warning(self, *args, **kwargs):
+        pass
 
 
 class DummyEC(ec.EnvironmentConfiguratorNode):
@@ -164,6 +166,8 @@ def test_web_interface_logger_initialization_order(tmp_path):
             pass
         def warn(self, *a, **k):
             pass
+        def warning(self, *a, **k):
+            pass
 
     class DummyNode:
         def __init__(self, name):
@@ -176,6 +180,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
                 'allow_unsafe_werkzeug': True,
                 'log_db_path': '',
                 'jpeg_quality': 75,
+                'detected_objects_topic': '/apm/detection/objects',
             }
 
         def declare_parameters(self, ns, params):

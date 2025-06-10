@@ -48,6 +48,8 @@ def _setup_ros_stubs(monkeypatch):
 
                 def error(self, *a, **k):
                     pass
+                def warning(self, *a, **k):
+                    pass
             return Logger()
 
     node_mod.Node = DummyNode
@@ -155,3 +157,51 @@ def test_upload_scenario_duplicate_rejected(monkeypatch, tmp_path):
     res = client.post('/api/scenarios', data=data, content_type='multipart/form-data')
 
     assert res.status_code == 409
+
+
+def test_pick_api_publishes_and_logs(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+
+    from simulation_tools.simulation_tools import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    logger_mock = MagicMock()
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+
+    res = client.post('/api/pick', json={'object_id': '42'})
+    assert res.status_code == 200
+
+    assert node.command_pub.publish.called
+    msg = node.command_pub.publish.call_args[0][0]
+    assert msg.data == 'pick 42'
+    assert node.command_pub._topic == '/simulation/command'
+
+    logger_mock.log.assert_called_once_with('pick', {'object_id': '42'})
+
+
+def test_objects_api_returns_latest(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+
+    from simulation_tools.simulation_tools import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.latest_objects = [{'id': 1, 'class': 'red'}]
+    client = node.app.test_client()
+
+    res = client.get('/api/objects')
+    assert res.status_code == 200
+    assert res.json['objects'][0]['id'] == 1
