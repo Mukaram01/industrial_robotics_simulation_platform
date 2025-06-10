@@ -2,6 +2,7 @@ import sys
 import types
 from pathlib import Path
 from unittest.mock import MagicMock
+import io
 
 
 # Ensure packages under src/ are importable
@@ -125,3 +126,32 @@ def test_place_api_publishes_and_logs(monkeypatch):
     assert node.command_pub._topic == '/simulation/command'
 
     logger_mock.log.assert_called_once_with('place', {'location': 'bin_red'})
+
+
+def test_upload_scenario_duplicate_rejected(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+
+    from simulation_tools.simulation_tools import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.config_dir = str(tmp_path)
+
+    # create an existing scenario file
+    existing = tmp_path / 'foo.yaml'
+    existing.write_text('name: foo')
+
+    client = node.app.test_client()
+    data = {
+        'scenario_id': 'foo',
+        'file': (io.BytesIO(b'name: foo2'), 'foo.yaml'),
+    }
+    res = client.post('/api/scenarios', data=data, content_type='multipart/form-data')
+
+    assert res.status_code == 409
