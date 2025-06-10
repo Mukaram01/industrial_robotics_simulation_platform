@@ -216,13 +216,14 @@ class PoseEstimationNode(Node):
                 center_y = y + h // 2
                 
                 # Convert from image coordinates to camera coordinates
+                fx = fy = 1.0
                 if self.camera_matrix is not None:
                     # Get focal length and principal point
                     fx = self.camera_matrix[0, 0]
                     fy = self.camera_matrix[1, 1]
                     cx = self.camera_matrix[0, 2]
                     cy = self.camera_matrix[1, 2]
-                    
+
                     # Calculate 3D position in camera frame
                     X = (center_x - cx) * median_depth / fx
                     Y = (center_y - cy) * median_depth / fy
