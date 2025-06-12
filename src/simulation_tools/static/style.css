@@ -1,2 +1,13 @@
-/* Placeholder style file for simulation tools web interface */
-body { margin: 0; padding: 0; }
+body {
+    margin: 0;
+    padding-top: 4rem;
+}
+.jumbotron {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: 0.3rem;
+}
+.card {
+    margin-bottom: 1.5rem;
+}

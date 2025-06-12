@@ -1,354 +1,262 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - ROS2 Perception and Manipulation System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-        .card {
-            margin-bottom: 1.5rem;
-        }
-        .object-card {
-            margin-bottom: 1rem;
-        }
-        .object-card .card-header {
-            padding: 0.5rem 1rem;
-        }
-        .object-card .card-body {
-            padding: 0.75rem;
-        }
-        .object-property {
-            margin-bottom: 0.25rem;
-        }
-        #objects-container {
-            max-height: 600px;
-            overflow-y: auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-            </ol>
-        </nav>
-        
-        <h1 class="mb-4">System Dashboard</h1>
-        
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">System Status</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span>Current Status:</span>
-                            <span id="status-badge" class="badge bg-secondary">Unknown</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span>Detected Objects:</span>
-                            <span id="objects-count" class="badge bg-info">0</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Last Update:</span>
-                            <span id="last-update" class="text-muted">Never</span>
-                        </div>
-                    </div>
+{% extends "base.html" %}
+{% block title %}Dashboard - ROS2 Perception and Manipulation System{% endblock %}
+{% block head_extra %}
+<style>
+    .object-card { margin-bottom: 1rem; }
+    .object-card .card-header { padding: 0.5rem 1rem; }
+    .object-card .card-body { padding: 0.75rem; }
+    .object-property { margin-bottom: 0.25rem; }
+    #objects-container { max-height: 600px; overflow-y: auto; }
+</style>
+{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+    </ol>
+</nav>
+<h1 class="mb-4">System Dashboard</h1>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">System Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Current Status:</span>
+                    <span id="status-badge" class="badge bg-secondary">Unknown</span>
                 </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <a href="/control" class="btn btn-primary w-100 mb-2">Go to Control Panel</a>
-                        <button id="refresh-btn" class="btn btn-secondary w-100">Refresh Data</button>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Detected Objects:</span>
+                    <span id="objects-count" class="badge bg-info">0</span>
                 </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Scenario Management</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="scenario-upload-form" enctype="multipart/form-data" class="mb-3">
-                            <input type="text" id="scenario-id" class="form-control mb-2" placeholder="Scenario ID" required>
-                            <input type="file" id="scenario-file" class="form-control mb-2" accept=".yaml" required>
-                            <button type="submit" class="btn btn-primary w-100">Upload</button>
-                        </form>
-                        <div class="input-group">
-                            <select id="scenario-select" class="form-select"></select>
-                            <button id="delete-scenario-btn" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Last Update:</span>
+                    <span id="last-update" class="text-muted">Never</span>
                 </div>
             </div>
-            
-            <div class="col-md-8">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Camera Feed</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <img id="rgb-image" class="img-fluid mb-2" alt="RGB">
-                        <img id="depth-image" class="img-fluid" alt="Depth">
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Detected Objects</h5>
-                    </div>
-                    <div class="card-body" id="objects-container">
-                        <div class="text-center text-muted" id="no-objects-message">
-                            <p>No objects detected</p>
-                        </div>
-                        <div id="objects-list">
-                            <!-- Objects will be added here dynamically -->
-                        </div>
-                    </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="/control" class="btn btn-primary w-100 mb-2">Go to Control Panel</a>
+                <button id="refresh-btn" class="btn btn-secondary w-100">Refresh Data</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Scenario Management</h5>
+            </div>
+            <div class="card-body">
+                <form id="scenario-upload-form" enctype="multipart/form-data" class="mb-3">
+                    <input type="text" id="scenario-id" class="form-control mb-2" placeholder="Scenario ID" required>
+                    <input type="file" id="scenario-file" class="form-control mb-2" accept=".yaml" required>
+                    <button type="submit" class="btn btn-primary w-100">Upload</button>
+                </form>
+                <div class="input-group">
+                    <select id="scenario-select" class="form-select"></select>
+                    <button id="delete-scenario-btn" class="btn btn-danger">Delete</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
-    <script>
-        const socket = io();
-        
-        // Elements
-        const statusBadge = document.getElementById('status-badge');
-        const objectsCount = document.getElementById('objects-count');
-        const lastUpdate = document.getElementById('last-update');
-        const noObjectsMessage = document.getElementById('no-objects-message');
-        const objectsList = document.getElementById('objects-list');
-        const refreshBtn = document.getElementById('refresh-btn');
-        const rgbImage = document.getElementById('rgb-image');
-        const depthImage = document.getElementById('depth-image');
-        
-        // Update last update time
-        function updateLastUpdateTime() {
-            const now = new Date();
-            lastUpdate.textContent = now.toLocaleTimeString();
-        }
-        
-        // Status update handler
-        socket.on('status_update', function(data) {
-            statusBadge.textContent = data.status;
-            updateLastUpdateTime();
-            
-            // Update badge color based on status
-            statusBadge.className = 'badge';
-            switch (data.status) {
-                case 'ready':
-                    statusBadge.classList.add('bg-success');
-                    break;
-                case 'error':
-                    statusBadge.classList.add('bg-danger');
-                    break;
-                case 'picking':
-                case 'placing':
-                    statusBadge.classList.add('bg-warning');
-                    break;
-                case 'pick_complete':
-                case 'place_complete':
-                    statusBadge.classList.add('bg-info');
-                    break;
-                default:
-                    statusBadge.classList.add('bg-secondary');
-            }
-        });
-        
-        // Objects update handler
-        socket.on('objects_update', function(data) {
-            const objects = data.objects;
-            objectsCount.textContent = objects.length;
-            updateLastUpdateTime();
-            
-            // Show/hide no objects message
-            if (objects.length === 0) {
-                noObjectsMessage.style.display = 'block';
-                objectsList.innerHTML = '';
-                return;
-            }
-            
-            noObjectsMessage.style.display = 'none';
-            
-            // Clear objects list
-            objectsList.innerHTML = '';
-            
-            // Add objects to list
-            objects.forEach(obj => {
-                const objectCard = document.createElement('div');
-                objectCard.className = 'card object-card';
-                
-                // Determine card color based on object class
-                let headerClass = 'bg-light';
-                if (obj.class === 'red') headerClass = 'bg-danger text-white';
-                else if (obj.class === 'green') headerClass = 'bg-success text-white';
-                else if (obj.class === 'blue') headerClass = 'bg-primary text-white';
-                
-                objectCard.innerHTML = `
-                    <div class="card-header ${headerClass}">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Object #${obj.id}</span>
-                            <span class="badge bg-light text-dark">${obj.class}</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="object-property">
-                            <strong>Position:</strong> 
-                            X: ${obj.position.x.toFixed(3)}, 
-                            Y: ${obj.position.y.toFixed(3)}, 
-                            Z: ${obj.position.z.toFixed(3)}
-                        </div>
-                        <div class="object-property">
-                            <strong>Size:</strong> 
-                            X: ${obj.size.x.toFixed(3)}, 
-                            Y: ${obj.size.y.toFixed(3)}, 
-                            Z: ${obj.size.z.toFixed(3)}
-                        </div>
-                        <div class="object-property">
-                            <strong>Score:</strong> ${obj.score.toFixed(2)}
-                        </div>
-                        <button class="btn btn-sm btn-primary mt-2 pick-btn" data-id="${obj.id}">Pick</button>
-                    </div>
-                `;
-                
-                objectsList.appendChild(objectCard);
-            });
-            
-            // Add event listeners to pick buttons
-            document.querySelectorAll('.pick-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const objectId = this.getAttribute('data-id');
-                    fetch('/api/pick', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ object_id: objectId })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(`Pick command sent for object #${objectId}`);
-                        } else {
-                            alert(`Error: ${data.error}`);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error sending pick command');
-                    });
-                });
-            });
-        });
-
-        // Camera image handler
-        socket.on('image_data', function(data) {
-            if (data.rgb && rgbImage) {
-                rgbImage.src = 'data:image/jpeg;base64,' + data.rgb;
-            }
-            if (data.depth && depthImage) {
-                depthImage.src = 'data:image/jpeg;base64,' + data.depth;
-            }
-        });
-        
-        // Refresh button handler
-        refreshBtn.addEventListener('click', function() {
-            fetch('/api/objects')
-                .then(response => response.json())
-                .then(data => {
-                    socket.emit('objects_update', data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error refreshing data');
-                });
-            
-            fetch('/api/status')
-                .then(response => response.json())
-                .then(data => {
-                    socket.emit('status_update', { status: data.status });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-
-        // Scenario management elements
-        const scenarioSelect = document.getElementById('scenario-select');
-        const scenarioUploadForm = document.getElementById('scenario-upload-form');
-        const scenarioIdInput = document.getElementById('scenario-id');
-        const scenarioFileInput = document.getElementById('scenario-file');
-        const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
-
-        function loadScenarios() {
-            fetch('/api/scenarios')
-                .then(r => r.json())
-                .then(list => {
-                    scenarioSelect.innerHTML = '';
-                    list.forEach(s => {
-                        const opt = document.createElement('option');
-                        opt.value = s.id;
-                        opt.textContent = s.name;
-                        scenarioSelect.appendChild(opt);
-                    });
-                });
-        }
-
-        scenarioUploadForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const data = new FormData();
-            data.append('scenario_id', scenarioIdInput.value);
-            if (scenarioFileInput.files.length > 0) {
-                data.append('file', scenarioFileInput.files[0]);
-            }
-            fetch('/api/scenarios', {
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title">Camera Feed</h5>
+            </div>
+            <div class="card-body text-center">
+                <img id="rgb-image" class="img-fluid mb-2" alt="RGB">
+                <img id="depth-image" class="img-fluid" alt="Depth">
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Detected Objects</h5>
+            </div>
+            <div class="card-body" id="objects-container">
+                <div class="text-center text-muted" id="no-objects-message">
+                    <p>No objects detected</p>
+                </div>
+                <div id="objects-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const socket = io();
+const statusBadge = document.getElementById('status-badge');
+const objectsCount = document.getElementById('objects-count');
+const lastUpdate = document.getElementById('last-update');
+const noObjectsMessage = document.getElementById('no-objects-message');
+const objectsList = document.getElementById('objects-list');
+const refreshBtn = document.getElementById('refresh-btn');
+const rgbImage = document.getElementById('rgb-image');
+const depthImage = document.getElementById('depth-image');
+function updateLastUpdateTime() {
+    const now = new Date();
+    lastUpdate.textContent = now.toLocaleTimeString();
+}
+socket.on('status_update', function(data) {
+    statusBadge.textContent = data.status;
+    updateLastUpdateTime();
+    statusBadge.className = 'badge';
+    switch (data.status) {
+        case 'ready':
+            statusBadge.classList.add('bg-success');
+            break;
+        case 'error':
+            statusBadge.classList.add('bg-danger');
+            break;
+        case 'picking':
+        case 'placing':
+            statusBadge.classList.add('bg-warning');
+            break;
+        case 'pick_complete':
+        case 'place_complete':
+            statusBadge.classList.add('bg-info');
+            break;
+        default:
+            statusBadge.classList.add('bg-secondary');
+    }
+});
+socket.on('objects_update', function(data) {
+    const objects = data.objects;
+    objectsCount.textContent = objects.length;
+    updateLastUpdateTime();
+    if (objects.length === 0) {
+        noObjectsMessage.style.display = 'block';
+        objectsList.innerHTML = '';
+        return;
+    }
+    noObjectsMessage.style.display = 'none';
+    objectsList.innerHTML = '';
+    objects.forEach(obj => {
+        const objectCard = document.createElement('div');
+        objectCard.className = 'card object-card';
+        let headerClass = 'bg-light';
+        if (obj.class === 'red') headerClass = 'bg-danger text-white';
+        else if (obj.class === 'green') headerClass = 'bg-success text-white';
+        else if (obj.class === 'blue') headerClass = 'bg-primary text-white';
+        objectCard.innerHTML = `
+            <div class="card-header ${headerClass}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Object #${obj.id}</span>
+                    <span class="badge bg-light text-dark">${obj.class}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="object-property">
+                    <strong>Position:</strong>
+                    X: ${obj.position.x.toFixed(3)},
+                    Y: ${obj.position.y.toFixed(3)},
+                    Z: ${obj.position.z.toFixed(3)}
+                </div>
+                <div class="object-property">
+                    <strong>Size:</strong>
+                    X: ${obj.size.x.toFixed(3)},
+                    Y: ${obj.size.y.toFixed(3)},
+                    Z: ${obj.size.z.toFixed(3)}
+                </div>
+                <div class="object-property">
+                    <strong>Score:</strong> ${obj.score.toFixed(2)}
+                </div>
+                <button class="btn btn-sm btn-primary mt-2 pick-btn" data-id="${obj.id}">Pick</button>
+            </div>`;
+        objectsList.appendChild(objectCard);
+    });
+    document.querySelectorAll('.pick-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const objectId = this.getAttribute('data-id');
+            fetch('/api/pick', {
                 method: 'POST',
-                body: data
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ object_id: objectId })
             })
-            .then(r => r.json())
-            .then(res => {
-                if (res.success) {
-                    alert('Scenario uploaded');
-                    scenarioUploadForm.reset();
-                    loadScenarios();
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Pick command sent for object #${objectId}`);
                 } else {
-                    alert(res.error || 'Upload failed');
+                    alert(`Error: ${data.error}`);
                 }
             })
-            .catch(() => alert('Upload failed'));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending pick command');
+            });
         });
-
-        deleteScenarioBtn.addEventListener('click', function() {
-            const id = scenarioSelect.value;
-            if (!id) return;
-            if (!confirm(`Delete scenario ${id}?`)) return;
-            fetch(`/api/scenarios/${id}`, { method: 'DELETE' })
-                .then(r => r.json())
-                .then(res => {
-                    if (res.success) {
-                        alert('Scenario deleted');
-                        loadScenarios();
-                    } else {
-                        alert(res.error || 'Delete failed');
-                    }
-                })
-                .catch(() => alert('Delete failed'));
+    });
+});
+socket.on('image_data', function(data) {
+    if (data.rgb && rgbImage) {
+        rgbImage.src = 'data:image/jpeg;base64,' + data.rgb;
+    }
+    if (data.depth && depthImage) {
+        depthImage.src = 'data:image/jpeg;base64,' + data.depth;
+    }
+});
+refreshBtn.addEventListener('click', function() {
+    fetch('/api/objects')
+        .then(response => response.json())
+        .then(data => { socket.emit('objects_update', data); })
+        .catch(error => { console.error('Error:', error); alert('Error refreshing data'); });
+    fetch('/api/status')
+        .then(response => response.json())
+        .then(data => { socket.emit('status_update', { status: data.status }); })
+        .catch(error => { console.error('Error:', error); });
+});
+const scenarioSelect = document.getElementById('scenario-select');
+const scenarioUploadForm = document.getElementById('scenario-upload-form');
+const scenarioIdInput = document.getElementById('scenario-id');
+const scenarioFileInput = document.getElementById('scenario-file');
+const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
+function loadScenarios() {
+    fetch('/api/scenarios')
+        .then(r => r.json())
+        .then(list => {
+            scenarioSelect.innerHTML = '';
+            list.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                scenarioSelect.appendChild(opt);
+            });
         });
-
-        // Load scenarios on page load
-        loadScenarios();
-    </script>
-</body>
-</html>
+}
+scenarioUploadForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = new FormData();
+    data.append('scenario_id', scenarioIdInput.value);
+    if (scenarioFileInput.files.length > 0) {
+        data.append('file', scenarioFileInput.files[0]);
+    }
+    fetch('/api/scenarios', { method: 'POST', body: data })
+        .then(r => r.json())
+        .then(res => {
+            if (res.success) { alert('Scenario uploaded'); scenarioUploadForm.reset(); loadScenarios(); } else {
+                alert(res.error || 'Upload failed'); }
+        })
+        .catch(() => alert('Upload failed'));
+});
+deleteScenarioBtn.addEventListener('click', function() {
+    const id = scenarioSelect.value;
+    if (!id) return;
+    if (!confirm(`Delete scenario ${id}?`)) return;
+    fetch(`/api/scenarios/${id}`, { method: 'DELETE' })
+        .then(r => r.json())
+        .then(res => {
+            if (res.success) { alert('Scenario deleted'); loadScenarios(); } else {
+                alert(res.error || 'Delete failed'); }
+        })
+        .catch(() => alert('Delete failed'));
+});
+loadScenarios();
+</script>
+{% endblock %}
