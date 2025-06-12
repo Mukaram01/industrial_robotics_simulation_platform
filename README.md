@@ -38,9 +38,23 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
 
 ## UR5 Mesh Assets
 
-The UR5 mesh files used by `ur5_robot_description` are automatically downloaded
-or bundled with this repository. No manual download or CMake modification is
-required. Once dependencies are installed, build the workspace:
+The UR5 mesh files used by `ur5_robot_description` are not stored directly in
+this repository. Install the `ur_description` package for your ROS&nbsp;2
+distribution so that these meshes are available. On Ubuntu you can install the
+package with:
+
+```bash
+sudo apt-get install ros-<distro>-ur-description
+```
+
+The mesh files will then be located under
+`/opt/ros/<distro>/share/ur_description/meshes`. If you build
+`ur_description` from source or place the meshes elsewhere, make sure the path
+is reachable via `ROS_PACKAGE_PATH` or copy the meshes into
+`src/ur5_robot_description/meshes`.
+
+Once the package is installed and other dependencies are available, build the
+workspace:
 
 ```bash
 source /opt/ros/humble/setup.bash

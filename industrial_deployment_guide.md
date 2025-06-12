@@ -109,10 +109,21 @@ pip3 install asyncua paho-mqtt  # For industrial protocol support
 
 ### UR5 Mesh Assets
 
-The UR5 mesh files required by `ur5_robot_description` are automatically
-downloaded or included with the repository. Manual download and CMake
-modifications are unnecessary. After installing dependencies, build the
-workspace:
+The UR5 meshes are provided by the `ur_description` package for your ROS 2
+distribution. Install this package using apt so that the URDF can locate the
+meshes:
+
+```bash
+sudo apt-get install ros-<distro>-ur-description
+```
+
+The meshes will then reside under
+`/opt/ros/<distro>/share/ur_description/meshes`. If you built the package from
+source or installed it to a custom location, ensure that directory is included
+in your `ROS_PACKAGE_PATH` or create a symlink to
+`src/ur5_robot_description/meshes`.
+
+After installing dependencies and the package, build the workspace:
 
 ```bash
 source /opt/ros/humble/setup.bash
