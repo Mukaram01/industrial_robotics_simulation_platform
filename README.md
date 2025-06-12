@@ -127,6 +127,16 @@ The mesh resources are required for accurate visualization in both cases.
    ```
    Refer to the [Mosquitto security documentation](https://mosquitto.org/man/mosquitto-conf-5.html) for details.
 
+   The industrial protocol bridge expects a local MQTT broker. Install and start
+   Mosquitto with:
+
+   ```bash
+   sudo apt install mosquitto
+   sudo systemctl start mosquitto
+   ```
+
+   Launch with `mqtt_enabled:=false` if a broker is not available.
+
    The OPC UA server is configured with minimal security and, by default, only
    listens on `127.0.0.1`. If you need to allow remote connections, override the
    `opcua_endpoint` parameter with a host accessible on your network, e.g.:
