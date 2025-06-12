@@ -27,6 +27,14 @@ ros2 launch simulation_tools integrated_system_launch.py \
     use_realsense:=false use_advanced_perception:=true
 ```
 
+To begin publishing camera data and metrics, send a start command:
+
+```bash
+ros2 topic pub /simulation/command std_msgs/msg/String '{data: "start"}'
+```
+
+Using the "Start" button on the web interface performs the same action.
+
 This also starts the Flask-based web interface on port `8080`.
 
 ## 3. Launch Object Detection
