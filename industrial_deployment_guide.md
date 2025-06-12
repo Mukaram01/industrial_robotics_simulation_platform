@@ -160,6 +160,7 @@ The system can be configured through YAML files located in the `config` director
 - `default_sorting_config.yaml`: Object sorting parameters
 - `safety_rules.yaml`: Safety monitoring rules
 - `*.yaml`: Scenario configuration files
+The **safety_rules.yaml** file defines the default collision detection, safety zones, and emergency stop behavior loaded by the Safety Monitor Node. Modify this file to customize safety constraints for your deployment.
 
 ### Camera Configuration
 
