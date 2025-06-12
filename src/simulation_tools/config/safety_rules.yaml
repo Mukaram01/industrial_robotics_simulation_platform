@@ -1,0 +1,21 @@
+collision_detection:
+  enabled: true
+  min_distance: 0.1
+  objects:
+    - robot
+    - human
+    - obstacle
+safety_zones:
+  - name: robot_workspace
+    type: cylinder
+    center: [0.0, 0.0, 0.0]
+    radius: 1.0
+    height: 2.0
+    restricted_objects:
+      - human
+emergency_stop:
+  auto_triggers:
+    - collision
+    - zone_violation
+    - speed_violation
+  reset_requires_confirmation: true
