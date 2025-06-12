@@ -154,7 +154,7 @@ source install/setup.bash
 
 ### System Configuration
 
-The system can be configured through YAML files located in the `config` directory:
+The system can be configured through YAML files found in each package's `config` directory. Key examples include:
 
 - `realsense_config.yaml`: Settings for RealSense camera integration and perception pipelines
 - `default_sorting_config.yaml`: Template that defines color categories and robot sorting behavior
