@@ -8,6 +8,7 @@
     .object-property { margin-bottom: 0.25rem; }
     #objects-container { max-height: 600px; overflow-y: auto; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 {% block content %}
 <nav aria-label="breadcrumb">
@@ -74,6 +75,14 @@
                 <img id="depth-image" class="img-fluid" alt="Depth">
             </div>
         </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title">Performance Metrics</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="metrics-chart" height="180"></canvas>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Detected Objects</h5>
@@ -99,6 +108,16 @@ const objectsList = document.getElementById('objects-list');
 const refreshBtn = document.getElementById('refresh-btn');
 const rgbImage = document.getElementById('rgb-image');
 const depthImage = document.getElementById('depth-image');
+const metricsChartCtx = document.getElementById('metrics-chart').getContext('2d');
+const metricsData = {
+    labels: [],
+    datasets: [
+        { label: 'Cycle Time', data: [], borderColor: '#007bff', fill: false },
+        { label: 'Throughput', data: [], borderColor: '#28a745', fill: false },
+        { label: 'Accuracy', data: [], borderColor: '#dc3545', fill: false }
+    ]
+};
+const metricsChart = new Chart(metricsChartCtx, { type: 'line', data: metricsData, options: { animation: false, scales: { y: { beginAtZero: true } } }});
 function updateLastUpdateTime() {
     const now = new Date();
     lastUpdate.textContent = now.toLocaleTimeString();
@@ -201,6 +220,19 @@ socket.on('image_data', function(data) {
     if (data.depth && depthImage) {
         depthImage.src = 'data:image/jpeg;base64,' + data.depth;
     }
+});
+socket.on('metrics_update', function(data) {
+    const m = data.metrics || {};
+    const now = new Date().toLocaleTimeString();
+    metricsData.labels.push(now);
+    metricsData.datasets[0].data.push(m.cycle_time || 0);
+    metricsData.datasets[1].data.push(m.throughput || 0);
+    metricsData.datasets[2].data.push(m.accuracy || 0);
+    if (metricsData.labels.length > 20) {
+        metricsData.labels.shift();
+        metricsData.datasets.forEach(ds => ds.data.shift());
+    }
+    metricsChart.update();
 });
 refreshBtn.addEventListener('click', function() {
     fetch('/api/objects')

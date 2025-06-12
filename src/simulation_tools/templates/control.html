@@ -5,6 +5,7 @@
     .form-group { margin-bottom: 1rem; }
     #workspace-canvas { border: 1px solid #ccc; background-color: #f8f9fa; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 {% endblock %}
 {% block content %}
 <nav aria-label="breadcrumb">
@@ -79,6 +80,29 @@
                 <button id="place-custom-btn" class="btn btn-success w-100">Send Custom Place Command</button>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Recording & Playback</h5>
+            </div>
+            <div class="card-body d-grid gap-2">
+                <button id="start-rec" class="btn btn-outline-primary">Start Recording</button>
+                <button id="stop-rec" class="btn btn-outline-primary">Stop Recording</button>
+                <button id="start-play" class="btn btn-outline-secondary">Start Playback</button>
+                <button id="stop-play" class="btn btn-outline-secondary">Stop Playback</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Data Export</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="export-toggle">
+                    <label class="form-check-label" for="export-toggle">Enable Export</label>
+                </div>
+                <ul id="export-list" class="list-group"></ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
         <div class="card mb-3">
@@ -96,6 +120,14 @@
             </div>
             <div class="card-body">
                 <canvas id="workspace-canvas" width="600" height="400"></canvas>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title">3D Environment View</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="env-canvas" style="width:100%; height:400px;"></canvas>
             </div>
         </div>
         <div class="card">
@@ -125,8 +157,42 @@ const commandLog = document.getElementById('command-log');
 const workspaceCanvas = document.getElementById('workspace-canvas');
 const rgbImage = document.getElementById('rgb-image');
 const depthImage = document.getElementById('depth-image');
+const startRecBtn = document.getElementById('start-rec');
+const stopRecBtn = document.getElementById('stop-rec');
+const startPlayBtn = document.getElementById('start-play');
+const stopPlayBtn = document.getElementById('stop-play');
+const exportToggle = document.getElementById('export-toggle');
+const exportList = document.getElementById('export-list');
 const ctx = workspaceCanvas.getContext('2d');
 let objects = [];
+let scene, camera, renderer;
+const envCanvas = document.getElementById('env-canvas');
+function initThree() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, envCanvas.clientWidth/envCanvas.clientHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({canvas: envCanvas});
+    renderer.setSize(envCanvas.clientWidth, envCanvas.clientHeight);
+    camera.position.z = 2;
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0,0,2).add(new THREE.Vector3(1,1,1));
+    scene.add(light);
+    animate();
+}
+function animate(){
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+function updateThreeObjects(){
+    if(!scene)return;
+    scene.clear();
+    const material = new THREE.MeshNormalMaterial();
+    objects.forEach(o=>{
+        const geo = new THREE.BoxGeometry(0.05,0.05,0.05);
+        const mesh = new THREE.Mesh(geo, material);
+        mesh.position.set(o.position.x,o.position.y,o.position.z);
+        scene.add(mesh);
+    });
+}
 socket.on('status_update', function(data) {
     statusBadge.textContent = data.status;
     statusBadge.className = 'badge';
@@ -155,6 +221,7 @@ socket.on('objects_update', function(data) {
     objectsCount.textContent = objects.length;
     updateObjectDropdown();
     drawWorkspace();
+    updateThreeObjects();
 });
 socket.on('image_data', function(data) {
     if (data.rgb && rgbImage) {
@@ -318,6 +385,36 @@ placeCustomBtn.addEventListener('click', function() {
     .then(data => { if (data.success) { addToCommandLog(`Sent place command for location (${x}, ${y}, ${z})`); } else { addToCommandLog(`Error: ${data.error}`); } })
     .catch(error => { console.error('Error:', error); addToCommandLog('Error sending place command'); });
 });
+startRecBtn.addEventListener('click', () => sendCommand('start_recording'));
+stopRecBtn.addEventListener('click', () => sendCommand('stop_recording'));
+startPlayBtn.addEventListener('click', () => sendCommand('start_playback'));
+stopPlayBtn.addEventListener('click', () => sendCommand('stop_playback'));
+exportToggle.addEventListener('change', () => {
+    sendCommand(exportToggle.checked ? 'enable_export' : 'disable_export');
+});
+function loadExports() {
+    fetch('/api/exports')
+        .then(r => r.json())
+        .then(data => {
+            exportList.innerHTML = '';
+            data.exports.forEach(e => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.innerHTML = `<a href="/api/exports/${e.name}">${e.name}</a>`;
+                exportList.appendChild(li);
+            });
+        });
+}
+function sendCommand(cmd) {
+    fetch('/api/command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command: cmd })
+    }).then(() => addToCommandLog('Command: ' + cmd));
+}
+initThree();
+loadScenarios();
+loadExports();
 drawWorkspace();
 </script>
 {% endblock %}
