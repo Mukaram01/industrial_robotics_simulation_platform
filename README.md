@@ -219,6 +219,14 @@ install any Python dependencies and execute:
 pytest
 ```
 
+### Tests Directory
+
+All unit tests are located in the `tests/` folder. Each file targets a specific
+package or ROS2 node and uses lightweight stub modules so the suite can run
+without a full ROS installation. After installing the dependencies, run
+`pytest` from the repository root to execute all tests. When adding new
+functionality, place the corresponding test cases in this directory.
+
 ### Code Style
 
 `flake8` checks are provided to help maintain consistent code formatting.
