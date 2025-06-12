@@ -80,6 +80,8 @@ ros2 launch ur5_robot_moveit_config move_group.launch.py use_sim_time:=false
 
 The mesh resources are required for accurate visualization in both cases.
 
+- If RViz opens without showing the robot, confirm you have a working graphical desktop and that the workspace has been built and sourced.
+
 ## Getting Started
 
 1. **Installation**
