@@ -17,9 +17,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
          <ul class="navbar-nav ms-auto">
-             <li class="nav-item"><a class="nav-link{% if request.path == '/' %} active{% endif %}" href="/">Home</a></li>
-             <li class="nav-item"><a class="nav-link{% if request.path.startswith('/dashboard') %} active{% endif %}" href="/dashboard">Dashboard</a></li>
-             <li class="nav-item"><a class="nav-link{% if request.path.startswith('/control') %} active{% endif %}" href="/control">Control</a></li>
+            <li class="nav-item"><a class="nav-link{% if request.path == '/' %} active{% endif %}" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link{% if request.path.startswith('/dashboard') %} active{% endif %}" href="/dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link{% if request.path.startswith('/control') %} active{% endif %}" href="/control">Control</a></li>
+            <li class="nav-item"><a class="nav-link{% if request.path.startswith('/log') %} active{% endif %}" href="/log">Log</a></li>
          </ul>
       </div>
    </div>

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Action Log - ROS2 System{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Log</li>
+    </ol>
+</nav>
+<h1 class="mb-4">Action Log</h1>
+<table class="table table-striped" id="log-table">
+    <thead>
+        <tr><th>Timestamp</th><th>Action</th><th>Details</th></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+{% endblock %}
+{% block scripts %}
+<script>
+const tableBody = document.querySelector('#log-table tbody');
+function loadLog() {
+    fetch('/api/actions')
+        .then(r => r.json())
+        .then(data => {
+            tableBody.innerHTML = '';
+            data.actions.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.timestamp}</td><td>${row.action}</td><td>${row.details || ''}</td>`;
+                tableBody.appendChild(tr);
+            });
+        });
+}
+loadLog();
+{% raw %}
+setInterval(loadLog, 5000);
+{% endraw %}
+</script>
+{% endblock %}

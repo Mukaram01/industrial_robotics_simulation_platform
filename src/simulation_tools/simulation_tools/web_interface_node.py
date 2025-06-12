@@ -11,6 +11,7 @@ import yaml
 import json
 import threading
 import time
+import shutil
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_socketio import SocketIO
 import cv2
@@ -267,12 +268,20 @@ class WebInterfaceNode(Node):
         def control():
             return render_template('control.html')
 
+        @self.app.route('/log')
+        def log_page():
+            return render_template('log.html')
+
         @self.app.route('/api/status')
         def get_status():
             return jsonify({
                 'status': self.system_status,
                 'current_scenario': self.current_scenario
             })
+
+        @self.app.route('/api/metrics')
+        def get_metrics():
+            return jsonify({'metrics': self.latest_metrics})
 
         @self.app.route('/api/place', methods=['POST'])
         def api_place():
@@ -443,6 +452,62 @@ class WebInterfaceNode(Node):
                     return jsonify({'error': f'Error deleting scenario: {e}'}), 500
 
             return jsonify({'error': 'Scenario not found'}), 404
+
+        @self.app.route('/api/command', methods=['POST'])
+        def api_command():
+            data = request.get_json(silent=True) or {}
+            command = data.get('command')
+            if not command:
+                return jsonify({'error': 'command required'}), 400
+
+            cmd_msg = String()
+            cmd_msg.data = command
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('command', {'command': command})
+            return jsonify({'success': True})
+
+        @self.app.route('/api/actions')
+        def api_actions():
+            limit = int(request.args.get('limit', 100))
+            rows = []
+            try:
+                with self.action_logger._lock:
+                    cur = self.action_logger._conn.execute(
+                        "SELECT timestamp, action, details FROM actions "
+                        "ORDER BY id DESC LIMIT ?",
+                        (limit,),
+                    )
+                    rows = [
+                        {
+                            'timestamp': r[0],
+                            'action': r[1],
+                            'details': r[2],
+                        }
+                        for r in cur.fetchall()
+                    ]
+            except Exception as e:
+                self.get_logger().error(f'Error reading actions: {e}')
+            return jsonify({'actions': rows})
+
+        @self.app.route('/api/exports')
+        def api_exports():
+            exports_dir = os.path.join(self.data_dir, 'exports') if self.data_dir else ''
+            result = []
+            if exports_dir and os.path.exists(exports_dir):
+                for name in sorted(os.listdir(exports_dir)):
+                    path = os.path.join(exports_dir, name)
+                    if os.path.isdir(path):
+                        result.append({'name': name})
+            return jsonify({'exports': result})
+
+        @self.app.route('/api/exports/<export_id>')
+        def download_export(export_id):
+            exports_dir = os.path.join(self.data_dir, 'exports') if self.data_dir else ''
+            path = os.path.join(exports_dir, export_id)
+            if not exports_dir or not os.path.isdir(path):
+                return jsonify({'error': 'Export not found'}), 404
+            archive = shutil.make_archive('/tmp/' + export_id, 'zip', path)
+            return send_from_directory('/tmp', os.path.basename(archive), as_attachment=True)
         
         @self.app.route('/static/<path:path>')
         def serve_static(path):
