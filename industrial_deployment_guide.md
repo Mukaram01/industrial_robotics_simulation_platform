@@ -156,10 +156,10 @@ source install/setup.bash
 
 The system can be configured through YAML files located in the `config` directory:
 
-- `default_camera_config.yaml`: Camera simulation parameters
-- `default_sorting_config.yaml`: Object sorting parameters
-- `safety_rules.yaml`: Safety monitoring rules
-- `*.yaml`: Scenario configuration files
+- `realsense_config.yaml`: Settings for RealSense camera integration and perception pipelines
+- `default_sorting_config.yaml`: Template that defines color categories and robot sorting behavior
+- `safety_rules.yaml`: Rules used by the safety monitoring node to enforce protective stops
+- `*.yaml`: Scenario configuration files describing robots and environment setup
 
 ### Camera Configuration
 
