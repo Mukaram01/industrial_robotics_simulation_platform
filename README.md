@@ -50,7 +50,9 @@ source install/setup.bash
 
 ## Visualizing the UR5
 
-Once the meshes are in place, you can visualize the UR5 model in RViz:
+Once the meshes are in place, you can visualize the UR5 model in RViz. Running
+the following command now starts RViz automatically with a default
+configuration:
 
 ```bash
 ros2 launch ur5_robot_description display.launch.py

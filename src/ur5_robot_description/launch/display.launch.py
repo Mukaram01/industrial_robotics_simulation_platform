@@ -40,6 +40,17 @@ def generate_launch_description():
             {'use_sim_time': use_sim_time}
         ]
     )
+
+    # RViz2 node
+    rviz_config = os.path.join(pkg_share, 'config', 'ur5.rviz')
+    rviz2 = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}],
+        arguments=['-d', rviz_config]
+    )
     
     # Return the launch description
     return LaunchDescription([
@@ -49,5 +60,6 @@ def generate_launch_description():
             description='Use simulation time'
         ),
         robot_state_publisher,
-        joint_state_publisher
+        joint_state_publisher,
+        rviz2
     ])
