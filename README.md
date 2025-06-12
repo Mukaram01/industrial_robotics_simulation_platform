@@ -181,6 +181,7 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Customization options
 - Troubleshooting
 - API reference
+- Step-by-step instructions for running the full system: [docs/full_system_run_guide.md](docs/full_system_run_guide.md)
 
 ## Commercial Applications
 
