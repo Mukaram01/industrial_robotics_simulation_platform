@@ -17,6 +17,7 @@ def _setup_stubs(monkeypatch):
         def __init__(self):
             self.info = MagicMock()
             self.warn = MagicMock()
+            self.warning = MagicMock()
             self.error = MagicMock()
 
     class DummyNode:
@@ -105,6 +106,6 @@ def test_frame_rate_zero_warns(monkeypatch):
 
     node = csn.CameraSimulatorNode()
     logger = node.get_logger()
-    logger.warn.assert_called_once()
-    assert 'Invalid frame_rate' in logger.warn.call_args[0][0]
+    logger.warning.assert_called_once()
+    assert 'Invalid frame_rate' in logger.warning.call_args[0][0]
     assert node.frame_rate == 30.0

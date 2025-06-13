@@ -35,7 +35,7 @@ class CameraSimulatorNode(Node):
         self.simulation_mode = self.get_parameter('simulation_mode').value
         self.frame_rate = self.get_parameter('frame_rate').value
         if self.frame_rate <= 0:
-            self.get_logger().warn(
+            self.get_logger().warning(
                 f'Invalid frame_rate {self.frame_rate}, using 30.0 instead'
             )
             self.frame_rate = 30.0
