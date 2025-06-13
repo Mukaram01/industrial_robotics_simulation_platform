@@ -610,6 +610,16 @@ class WebInterfaceNode(Node):
             allow_unsafe_werkzeug=self.allow_unsafe_werkzeug,
         )
 
+    def shutdown(self):
+        """Stop the Socket.IO server and wait for its thread to finish."""
+        try:
+            self.socketio.stop()
+        except Exception as e:  # pragma: no cover - best effort shutdown
+            self.get_logger().error(f'Error stopping SocketIO server: {e}')
+        # Ensure the server thread is joined to avoid dangling threads
+        if self.server_thread.is_alive():
+            self.server_thread.join()
+
 def main(args=None):
     rclpy.init(args=args)
     node = WebInterfaceNode()
@@ -620,6 +630,7 @@ def main(args=None):
         pass
     finally:
         node.action_logger.close()
+        node.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 
