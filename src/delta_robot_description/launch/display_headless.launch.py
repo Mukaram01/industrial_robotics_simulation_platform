@@ -17,7 +17,9 @@ def generate_launch_description():
     # Get the URDF file
     urdf_file = os.path.join(pkg_share, 'urdf', 'delta_robot.urdf.xacro')
     
-    # Parse the URDF
+    # Parse the URDF once so other nodes (for example RViz if launched
+    # separately) can receive the same robot description when a namespace is
+    # provided.
     robot_description_content = Command([
         'xacro ', urdf_file
     ])

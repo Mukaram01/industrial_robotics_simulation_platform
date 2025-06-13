@@ -81,6 +81,7 @@ ros2 launch ur5_robot_moveit_config move_group.launch.py use_sim_time:=false
 The mesh resources are required for accurate visualization in both cases.
 
 - If RViz opens without showing the robot, confirm you have a working graphical desktop and that the workspace has been built and sourced.
+- The launch file now passes the URDF to RViz directly so the model also loads correctly when a namespace is specified, e.g. `ros2 launch ur5_robot_description display.launch.py --ros-args -r __ns:=my_robot`.
 
 ## Getting Started
 

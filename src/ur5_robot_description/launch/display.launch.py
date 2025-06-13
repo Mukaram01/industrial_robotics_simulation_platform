@@ -18,6 +18,10 @@ def generate_launch_description():
     # Load URDF file
     urdf_file = os.path.join(pkg_share, 'urdf', 'ur5_robot.urdf.xacro')
     
+    # Generate robot description once so both RViz and the state publisher
+    # receive the same parameter even when a namespace is used.
+    robot_description_content = launch.substitutions.Command(['xacro ', urdf_file])
+
     # Robot state publisher node
     robot_state_publisher = Node(
         package='robot_state_publisher',
@@ -26,7 +30,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'use_sim_time': use_sim_time},
-            {'robot_description': launch.substitutions.Command(['xacro ', urdf_file])}
+            {'robot_description': robot_description_content}
         ]
     )
     
@@ -48,7 +52,10 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        parameters=[{'use_sim_time': use_sim_time}],
+        parameters=[
+            {'use_sim_time': use_sim_time},
+            {'robot_description': robot_description_content}
+        ],
         arguments=['-d', rviz_config]
     )
     
