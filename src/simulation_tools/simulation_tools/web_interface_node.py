@@ -12,6 +12,7 @@ import json
 import threading
 import time
 import shutil
+import webbrowser
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_socketio import SocketIO
 import cv2
@@ -44,6 +45,7 @@ class WebInterfaceNode(Node):
             'log_db_path': '',
             'jpeg_quality': 75,
             'detected_objects_topic': '/apm/detection/objects',
+            'auto_open_browser': False,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
@@ -57,6 +59,7 @@ class WebInterfaceNode(Node):
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
         self.detected_objects_topic = self.get_parameter('detected_objects_topic').value
+        self.auto_open_browser = self.get_parameter('auto_open_browser').value
 
         if not self.log_db_path:
             if self.data_dir:
@@ -149,6 +152,10 @@ class WebInterfaceNode(Node):
         self.server_thread = threading.Thread(target=self.run_server)
         self.server_thread.daemon = True
         self.server_thread.start()
+
+        if self.auto_open_browser:
+            url = f'http://{self.host}:{self.port}'
+            threading.Thread(target=webbrowser.open, args=(url,), daemon=True).start()
         
         self.get_logger().info(f'Web interface started at http://{self.host}:{self.port}')
     
