@@ -18,7 +18,8 @@ def generate_launch_description():
     # Get the URDF file
     urdf_file = os.path.join(pkg_share, 'urdf', 'delta_robot.urdf.xacro')
     
-    # Parse the URDF
+    # Parse the URDF once so both RViz and the state publisher share the same
+    # description even when a namespace is specified.
     robot_description_content = Command([
         'xacro ', urdf_file
     ])
@@ -64,7 +65,8 @@ def generate_launch_description():
         name='rviz2',
         output='screen',
         parameters=[{
-            'use_sim_time': use_sim_time
+            'use_sim_time': use_sim_time,
+            'robot_description': robot_description_content
         }],
         arguments=['-d', os.path.join(pkg_share, 'config', 'delta_robot.rviz')]
     )
