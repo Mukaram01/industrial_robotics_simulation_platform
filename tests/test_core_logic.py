@@ -181,6 +181,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
                 'log_db_path': '',
                 'jpeg_quality': 75,
                 'detected_objects_topic': '/apm/detection/objects',
+                'auto_open_browser': False,
             }
 
         def declare_parameters(self, ns, params):

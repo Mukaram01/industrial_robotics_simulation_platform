@@ -183,6 +183,9 @@ ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=
 Both `web_interface_node` and `visualization_server_node` support a `jpeg_quality`
 parameter to control JPEG compression (0-100). The default value is `75`.
 
+Set `auto_open_browser:=true` to automatically open your default web browser
+when the interface starts. This is disabled by default for headless systems.
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:
