@@ -91,6 +91,18 @@ def test_action_logger_handles_db_error(tmp_path):
     assert count == 0
 
 
+def test_action_logger_get_recent(tmp_path):
+    db_path = tmp_path / 'actions.db'
+    logger = ActionLogger(str(db_path))
+    for i in range(3):
+        logger.log(f'action{i}', {'id': i})
+
+    recent = logger.get_recent_actions(limit=2)
+    assert len(recent) == 2
+    assert recent[0]['action'] == 'action2'
+    assert recent[1]['action'] == 'action1'
+
+
 def test_scenario_file_cycle(tmp_path):
     dummy = make_dummy(tmp_path)
 
