@@ -57,3 +57,23 @@ class ActionLogger:
     def __exit__(self, exc_type, exc, tb):
         self.close()
         return False
+
+    def get_recent_actions(self, limit: int = 100):
+        """Return the most recent actions as a list of dictionaries."""
+        with self._lock:
+            if self._conn is None:
+                raise sqlite3.Error("Database connection is closed")
+            cursor = self._conn.execute(
+                "SELECT timestamp, action, details FROM actions ORDER BY id DESC LIMIT ?",
+                (limit,),
+            )
+            rows = cursor.fetchall()
+
+        actions = []
+        for timestamp, action, details in rows:
+            actions.append({
+                "timestamp": timestamp,
+                "action": action,
+                "details": json.loads(details) if details else None,
+            })
+        return actions
