@@ -1,5 +1,4 @@
 # Robot Integration Guide
-
 This guide describes how to connect a new robot implementation to the simulation platform. All robots are expected to communicate with the rest of the system using a set of common ROS2 topics and, where appropriate, services or action interfaces. Following these conventions allows different robot drivers to be swapped without modifying other packages.
 
 ## Common ROS2 interfaces
@@ -13,3 +12,4 @@ This guide describes how to connect a new robot implementation to the simulation
 | `/simulation/status` | `std_msgs/String` | Simulation status messages that mirror `/robot/status`. |
 
 Nodes provided in this repository publish and subscribe to the `/simulation/*` topics by default. When integrating a real robot, remap these to the corresponding `/robot/*` interfaces so all other components continue to operate without changes.
+

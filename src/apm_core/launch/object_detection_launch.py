@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch file to run the ONNX-based object detection pipeline."""
 
 import os
 from launch import LaunchDescription

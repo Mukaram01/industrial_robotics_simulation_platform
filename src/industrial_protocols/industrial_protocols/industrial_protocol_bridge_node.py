@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Bridge ROS2 topics to industrial protocols.
 

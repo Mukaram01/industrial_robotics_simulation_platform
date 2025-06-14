@@ -1,3 +1,4 @@
+"""SQLite helper used to log user actions from the web interface."""
 import sqlite3
 import time
 import json
@@ -8,6 +9,7 @@ class ActionLogger:
     """Simple SQLite-based logger for web UI actions."""
 
     def __init__(self, db_path: str, raise_errors: bool = False):
+        """Create a new logger backed by the SQLite database at ``db_path``."""
         self.db_path = db_path
         self.raise_errors = raise_errors
         self._lock = Lock()
@@ -28,6 +30,7 @@ class ActionLogger:
             )
 
     def log(self, action: str, details=None):
+        """Record a single action with optional ``details`` JSON serializable."""
         timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
         detail_str = json.dumps(details) if details is not None else None
         with self._lock:
@@ -52,9 +55,11 @@ class ActionLogger:
                 self._conn = None
 
     def __enter__(self):
+        """Enter context manager and return ``self``."""
         return self
 
     def __exit__(self, exc_type, exc, tb):
+        """Ensure the database connection is closed on exit."""
         self.close()
         return False
 

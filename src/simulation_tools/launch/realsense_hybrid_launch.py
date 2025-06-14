@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch file combining RealSense data with simulated components."""
 
 import os
 from launch import LaunchDescription

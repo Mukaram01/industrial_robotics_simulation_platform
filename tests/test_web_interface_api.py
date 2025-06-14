@@ -3,6 +3,8 @@ import types
 from pathlib import Path
 from unittest.mock import MagicMock
 import io
+import json
+import yaml
 
 
 # Ensure packages under src/ are importable
@@ -207,3 +209,58 @@ def test_objects_api_returns_latest(monkeypatch):
     res = client.get('/api/objects')
     assert res.status_code == 200
     assert res.json['objects'][0]['id'] == 1
+
+
+def test_load_scenario_endpoint(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    logger_mock = MagicMock()
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+
+    res = client.post('/api/scenarios/foo/load')
+    assert res.status_code == 200
+    assert node.config_pub.publish.called
+    msg = node.config_pub.publish.call_args[0][0]
+    assert json.loads(msg.data) == {'scenario': 'foo'}
+    logger_mock.log.assert_called_once_with('load_scenario', {'id': 'foo'})
+
+
+def test_save_scenario_endpoint(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    logger_mock = MagicMock()
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.config_dir = str(tmp_path)
+    client = node.app.test_client()
+
+    res = client.put('/api/scenarios/test', json={'config': {'a': 1}})
+    assert res.status_code == 200
+
+    path = tmp_path / 'test.yaml'
+    assert path.exists()
+    assert yaml.safe_load(path.read_text())['a'] == 1
+
+    assert node.config_pub.publish.called
+    msg = node.config_pub.publish.call_args[0][0]
+    data = json.loads(msg.data)
+    assert data['update_scenario']['name'] == 'test'
+    logger_mock.log.assert_called_with('save_scenario', {'id': 'test'})

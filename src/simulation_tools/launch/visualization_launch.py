@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch description for visualization tools such as RViz."""
 
 import os
 from launch import LaunchDescription
