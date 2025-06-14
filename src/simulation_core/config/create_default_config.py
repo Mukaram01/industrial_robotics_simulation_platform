@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Script that creates a default simulation configuration YAML file."""
 
 import os
 import yaml

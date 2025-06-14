@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node running automated system tests for the platform."""
 
 import os
 import rclpy

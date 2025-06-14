@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch file starting the sorting demo pipeline."""
 
 import os
 from launch import LaunchDescription

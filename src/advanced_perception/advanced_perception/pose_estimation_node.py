@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node performing 6-DoF pose estimation using RGB-D images and segmentation results."""
 
 import rclpy
 from rclpy.node import Node

@@ -3,6 +3,8 @@ import types
 from pathlib import Path
 from unittest.mock import MagicMock
 import io
+import json
+import yaml
 
 
 # Ensure packages under src/ are importable
@@ -233,6 +235,15 @@ def test_jog_api_publishes(monkeypatch):
 
 
 def test_waypoint_api_execute(monkeypatch):
+    res = client.post('/api/scenarios/foo/load')
+    assert res.status_code == 200
+    assert node.config_pub.publish.called
+    msg = node.config_pub.publish.call_args[0][0]
+    assert json.loads(msg.data) == {'scenario': 'foo'}
+    logger_mock.log.assert_called_once_with('load_scenario', {'id': 'foo'})
+
+
+def test_save_scenario_endpoint(monkeypatch, tmp_path):
     _setup_ros_stubs(monkeypatch)
 
     sys.modules.pop('web_interface_backend.web_interface_node', None)
@@ -253,3 +264,18 @@ def test_waypoint_api_execute(monkeypatch):
     msg = node.command_pub.publish.call_args[0][0]
     assert msg.data == 'execute_sequence'
     logger_mock.log.assert_called_once_with('waypoint', {'action': 'execute'})
+    node.config_dir = str(tmp_path)
+    client = node.app.test_client()
+
+    res = client.put('/api/scenarios/test', json={'config': {'a': 1}})
+    assert res.status_code == 200
+
+    path = tmp_path / 'test.yaml'
+    assert path.exists()
+    assert yaml.safe_load(path.read_text())['a'] == 1
+
+    assert node.config_pub.publish.called
+    msg = node.config_pub.publish.call_args[0][0]
+    data = json.loads(msg.data)
+    assert data['update_scenario']['name'] == 'test'
+    logger_mock.log.assert_called_with('save_scenario', {'id': 'test'})

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Standalone script for testing the image subscriber node."""
 
 import rclpy
 from rclpy.node import Node
