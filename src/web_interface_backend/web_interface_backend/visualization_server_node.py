@@ -31,6 +31,11 @@ class VisualizationServerNode(Node):
         self.export_enabled = self.get_parameter('export_enabled').value
         self.export_interval = self.get_parameter('export_interval').value
         self.visualization_rate = self.get_parameter('visualization_rate').value
+        if self.visualization_rate <= 0:
+            self.get_logger().warning(
+                f'Invalid visualization_rate {self.visualization_rate}, using 10.0 instead'
+            )
+            self.visualization_rate = 10.0
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
         
         # Create data directory if it doesn't exist
