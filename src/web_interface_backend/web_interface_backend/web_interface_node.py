@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node hosting the Flask web interface for controlling the system."""
 
 import os
 import re

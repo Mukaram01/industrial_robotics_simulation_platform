@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node that segments incoming images to identify individual objects."""
 
 import rclpy
 from rclpy.node import Node

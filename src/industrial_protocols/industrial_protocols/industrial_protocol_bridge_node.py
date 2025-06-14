@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node bridging OPC UA and MQTT for industrial communication."""
 
 import os
 import rclpy

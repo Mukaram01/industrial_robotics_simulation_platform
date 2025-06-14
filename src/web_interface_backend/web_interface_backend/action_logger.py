@@ -1,3 +1,4 @@
+"""SQLite helper used to log user actions from the web interface."""
 import sqlite3
 import time
 import json

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch description that starts image and point cloud subscriber nodes."""
 
 import os
 from launch import LaunchDescription

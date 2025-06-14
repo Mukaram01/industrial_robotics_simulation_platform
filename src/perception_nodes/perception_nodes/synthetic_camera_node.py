@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Synthetic camera simulator node producing RGB and depth frames."""
 
 import rclpy
 from rclpy.node import Node

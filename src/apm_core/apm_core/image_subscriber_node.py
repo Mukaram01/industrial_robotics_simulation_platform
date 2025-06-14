@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node subscribing to a camera topic and logging basic information."""
 
 import rclpy
 from rclpy.node import Node

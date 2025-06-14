@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node serving images for the web UI and saving exports."""
 
 import os
 import rclpy
