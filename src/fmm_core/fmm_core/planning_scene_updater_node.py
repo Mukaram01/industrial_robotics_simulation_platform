@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node that injects detected objects into the MoveIt planning scene."""
 
 import rclpy
 from rclpy.node import Node

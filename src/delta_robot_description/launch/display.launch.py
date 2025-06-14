@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch file to visualize the delta robot model in RViz."""
 
 import os
 from launch import LaunchDescription

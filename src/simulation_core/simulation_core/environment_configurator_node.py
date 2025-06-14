@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node loading environment configs and spawning scenarios."""
 
 import os
 import rclpy

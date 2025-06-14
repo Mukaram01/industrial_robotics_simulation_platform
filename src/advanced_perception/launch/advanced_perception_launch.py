@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch description for advanced perception nodes such as segmentation and pose estimation."""
 
 import os
 from ament_index_python.packages import get_package_share_directory

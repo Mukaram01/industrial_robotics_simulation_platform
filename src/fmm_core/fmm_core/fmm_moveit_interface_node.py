@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node exposing MoveIt2 interfaces for the delta robot."""
 
 import rclpy
 from rclpy.node import Node

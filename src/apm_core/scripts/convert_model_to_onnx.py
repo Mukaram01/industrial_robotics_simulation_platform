@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Utility that downloads a TensorFlow model and converts it to ONNX format."""
 
 import os
 import subprocess

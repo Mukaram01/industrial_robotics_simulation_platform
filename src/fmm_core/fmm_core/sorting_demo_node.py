@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node orchestrating a basic object sorting demonstration."""
 
 import rclpy
 from rclpy.node import Node

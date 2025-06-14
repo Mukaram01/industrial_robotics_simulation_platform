@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Headless launch file for displaying the delta robot without GUI."""
 
 import os
 from launch import LaunchDescription
