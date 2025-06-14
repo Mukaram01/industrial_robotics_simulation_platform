@@ -441,13 +441,26 @@ class WebInterfaceNode(Node):
             if not SCENARIO_ID_PATTERN.match(scenario_id):
                 return jsonify({'error': 'Invalid scenario ID'}), 400
 
+            if not file.filename.lower().endswith('.yaml'):
+                return jsonify({'error': 'Only .yaml files allowed'}), 400
+
             scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
 
             if os.path.exists(scenario_path):
                 return jsonify({'error': 'Scenario already exists'}), 409
 
             try:
-                file.save(scenario_path)
+                data = file.read()
+                try:
+                    yaml.safe_load(data or '')
+                except Exception as e:
+                    self.get_logger().error(
+                        f'Invalid YAML uploaded for scenario {scenario_id}: {e}'
+                    )
+                    return jsonify({'error': 'Invalid YAML file'}), 400
+
+                with open(scenario_path, 'wb') as f:
+                    f.write(data)
                 self.action_logger.log('upload_scenario', {'id': scenario_id})
                 return jsonify({'success': True, 'id': scenario_id})
             except Exception as e:
