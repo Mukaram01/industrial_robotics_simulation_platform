@@ -279,6 +279,10 @@ class WebInterfaceNode(Node):
         def log_page():
             return render_template('log.html')
 
+        @self.app.route('/editor')
+        def editor():
+            return render_template('editor.html')
+
         @self.app.route('/api/status')
         def get_status():
             return jsonify({
@@ -436,6 +440,42 @@ class WebInterfaceNode(Node):
                         return jsonify({'error': f'Error reading scenario: {e}'}), 500
             
             return jsonify({'error': 'Scenario not found'}), 404
+
+        @self.app.route('/api/scenarios/<scenario_id>/load', methods=['POST'])
+        def load_scenario_api(scenario_id):
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
+            msg = String()
+            msg.data = json.dumps({'scenario': scenario_id})
+            self.config_pub.publish(msg)
+            self.action_logger.log('load_scenario', {'id': scenario_id})
+            return jsonify({'success': True})
+
+        @self.app.route('/api/scenarios/<scenario_id>', methods=['PUT'])
+        def save_scenario_api(scenario_id):
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
+            data = request.get_json(silent=True) or {}
+            config = data.get('config')
+            if config is None:
+                return jsonify({'error': 'config required'}), 400
+
+            if self.config_dir:
+                scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
+                try:
+                    with open(scenario_path, 'w') as f:
+                        yaml.safe_dump(config, f, default_flow_style=False)
+                except Exception as e:
+                    self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
+                    return jsonify({'error': f'Error saving scenario: {e}'}), 500
+
+            msg = String()
+            msg.data = json.dumps({'update_scenario': {'name': scenario_id, 'config': config}})
+            self.config_pub.publish(msg)
+            self.action_logger.log('save_scenario', {'id': scenario_id})
+            return jsonify({'success': True})
 
         @self.app.route('/api/scenarios/<scenario_id>', methods=['DELETE'])
         def delete_scenario(scenario_id):
@@ -595,10 +635,41 @@ class WebInterfaceNode(Node):
             self.config_pub.publish(config_msg)
 
             self.action_logger.log('update_config', data)
-            
+
             self.socketio.emit('config_updated', {
                 'config': data
             })
+
+        @self.socketio.on('load_scenario')
+        def handle_load_scenario_socket(data):
+            scenario = data.get('scenario')
+            if not scenario:
+                return
+            msg = String()
+            msg.data = json.dumps({'scenario': scenario})
+            self.config_pub.publish(msg)
+            self.action_logger.log('load_scenario', {'id': scenario})
+            self.socketio.emit('scenario_loaded', {'id': scenario})
+
+        @self.socketio.on('save_scenario')
+        def handle_save_scenario_socket(data):
+            name = data.get('name')
+            config = data.get('config')
+            if not name or config is None:
+                return
+            if self.config_dir:
+                path = os.path.join(self.config_dir, f'{name}.yaml')
+                try:
+                    with open(path, 'w') as f:
+                        yaml.safe_dump(config, f, default_flow_style=False)
+                except Exception:
+                    self.socketio.emit('scenario_saved', {'success': False})
+                    return
+            msg = String()
+            msg.data = json.dumps({'update_scenario': {'name': name, 'config': config}})
+            self.config_pub.publish(msg)
+            self.action_logger.log('save_scenario', {'id': name})
+            self.socketio.emit('scenario_saved', {'success': True, 'id': name})
     
     def run_server(self):
         self.socketio.run(
