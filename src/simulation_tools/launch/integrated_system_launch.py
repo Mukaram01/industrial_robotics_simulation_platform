@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch description for the complete simulation with optional real sensors."""
 
 import os
 from launch import LaunchDescription

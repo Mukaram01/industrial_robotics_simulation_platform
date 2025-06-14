@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Headless MoveIt2 launch for the delta robot."""
 
 import os
 from launch import LaunchDescription

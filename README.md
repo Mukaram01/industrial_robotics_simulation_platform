@@ -212,6 +212,17 @@ compression (0-100). The default value is `75`.
 Set `auto_open_browser:=true` to automatically open your default web browser
 when the interface starts. This is disabled by default for headless systems.
 
+### Robot Jogging and Waypoint Control
+
+The control panel exposes sliders to jog each joint and buttons to record
+waypoints. Recorded poses can be cleared or executed as a sequence. A typical
+workflow is:
+
+1. Jog the robot to a desired pose using the **Jog Joints** sliders.
+2. Click **Record Waypoint** to store the position.
+3. Repeat to add more waypoints.
+4. Press **Execute Sequence** to move the robot through the recorded poses.
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:
@@ -223,6 +234,7 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Troubleshooting
 - API reference
 - Step-by-step instructions for running the full system: [docs/full_system_run_guide.md](docs/full_system_run_guide.md)
+- Guide for integrating new robots: [docs/robot_integration_guide.md](docs/robot_integration_guide.md)
 
 ## Commercial Applications
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node loading environment configs and spawning scenarios."""
 
 import os
 import rclpy
@@ -156,6 +157,17 @@ class EnvironmentConfiguratorNode(Node):
             if 'save_scenario' in config_data:
                 scenario_data = config_data['save_scenario']
                 self.save_scenario(scenario_data)
+
+            # Handle update scenario
+            if 'update_scenario' in config_data:
+                scenario_data = config_data['update_scenario']
+                self.current_scenario = scenario_data.get('name', self.current_scenario)
+                self.environment_config = scenario_data.get('config', {})
+                self.save_scenario({
+                    'name': self.current_scenario,
+                    'description': scenario_data.get('description', 'Edited scenario'),
+                    'config': self.environment_config,
+                })
             
             # Handle delete scenario
             if 'delete_scenario' in config_data:

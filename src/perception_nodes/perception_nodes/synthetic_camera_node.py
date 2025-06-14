@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Synthetic camera simulator node producing RGB and depth frames."""
 
 import rclpy
 from rclpy.node import Node
@@ -10,7 +11,10 @@ import cv2
 import numpy as np
 
 class CameraSimulatorNode(Node):
+    """Simulates an RGB-D camera and publishes synthetic images."""
+
     def __init__(self):
+        """Initialize publishers, parameters and internal state."""
         super().__init__('camera_simulator_node')
 
         # Declare parameters using a single dictionary
@@ -99,6 +103,7 @@ class CameraSimulatorNode(Node):
         self.get_logger().info('Camera simulator node initialized')
 
     def command_callback(self, msg):
+        """Handle start/stop/reset commands from the simulation controller."""
         command = msg.data
         if command == 'start':
             self.running = True
@@ -111,6 +116,7 @@ class CameraSimulatorNode(Node):
             self.get_logger().info('Resetting camera simulation')
 
     def timer_callback(self):
+        """Publish synthetic RGB and depth images at the configured rate."""
         if not self.running:
             return
 
@@ -163,6 +169,7 @@ class CameraSimulatorNode(Node):
                 self.depth_compressed_pub.publish(depth_comp_msg)
 
     def generate_images(self):
+        """Return synthetic RGB and depth images for the current scene."""
         # Create background
         rgb_image = self.create_background(self.width, self.height, self.background_type)
         depth_image = np.ones((self.height, self.width), dtype=np.float32) * 10.0  # Initialize with far distance
@@ -177,6 +184,7 @@ class CameraSimulatorNode(Node):
         return rgb_image, depth_image
 
     def create_background(self, width, height, background_type):
+        """Generate a simple scene background based on the type."""
         if background_type == 'conveyor_belt':
             # Create a gray conveyor belt with some texture
             image = np.ones((height, width, 3), dtype=np.uint8) * 100  # Gray background
@@ -203,6 +211,7 @@ class CameraSimulatorNode(Node):
             return np.ones((height, width, 3), dtype=np.uint8) * 240  # Light gray
 
     def generate_objects(self):
+        """Create random objects with positions and colors for rendering."""
         self.objects = []
         for i in range(self.object_count):
             obj_type = np.random.choice(self.object_types)
@@ -245,6 +254,7 @@ class CameraSimulatorNode(Node):
             self.objects.append(obj)
 
     def update_objects(self):
+        """Move objects according to their velocities within the image bounds."""
         for obj in self.objects:
             # Update position based on velocity
             obj['position'][0] += obj['velocity'][0]
@@ -257,6 +267,7 @@ class CameraSimulatorNode(Node):
                 obj['velocity'][1] *= -1
 
     def render_object(self, obj, rgb_image, depth_image):
+        """Draw the given object onto the RGB and depth images."""
         x, y, z = int(obj['position'][0]), int(obj['position'][1]), obj['position'][2]
         size = int(obj['size'])
         color = obj['color']
@@ -303,6 +314,7 @@ class CameraSimulatorNode(Node):
                             depth_image[i, j] = z - depth_offset
 
     def add_noise(self, image, noise_level):
+        """Return the image with Gaussian noise applied."""
         if len(image.shape) == 3:  # RGB image
             noise = np.random.normal(0, noise_level * 255, image.shape).astype(np.int16)
             noisy_image = np.clip(image.astype(np.int16) + noise, 0, 255).astype(np.uint8)
@@ -313,6 +325,7 @@ class CameraSimulatorNode(Node):
             return noisy_image
 
     def create_camera_info(self):
+        """Construct a basic ``CameraInfo`` message for the simulated sensor."""
         camera_info = CameraInfo()
         camera_info.header.frame_id = f'{self.camera_name}_color_optical_frame'
 
@@ -338,6 +351,7 @@ class CameraSimulatorNode(Node):
         return camera_info
 
 def main(args=None):
+    """Entry point for running the node standalone."""
     rclpy.init(args=args)
     node = CameraSimulatorNode()
     executor = MultiThreadedExecutor()

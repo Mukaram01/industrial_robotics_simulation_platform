@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch MoveIt2 using the delta robot configuration."""
 
 import os
 from launch import LaunchDescription

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node running ONNX object detection and publishing markers."""
 
 import rclpy
 from rclpy.node import Node

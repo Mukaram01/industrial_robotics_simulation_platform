@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node subscribing to a point cloud topic and printing statistics."""
 
 import rclpy
 from rclpy.node import Node

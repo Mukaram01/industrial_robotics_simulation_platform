@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch description bringing up pick and place nodes."""
 
 import os
 from launch import LaunchDescription
