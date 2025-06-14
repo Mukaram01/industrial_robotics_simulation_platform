@@ -27,6 +27,7 @@ class SystemTestNode(Node):
         self.test_running = False
         self.test_results = {}
         self.start_time = 0.0
+        self._last_log_time = 0.0
         
         # Create publishers
         self.command_pub = self.create_publisher(
@@ -67,6 +68,7 @@ class SystemTestNode(Node):
         
         self.test_running = True
         self.start_time = time.time()
+        self._last_log_time = 0.0
         self.test_results = {
             'scenario': self.test_scenario,
             'start_time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.start_time)),
@@ -189,9 +191,12 @@ class SystemTestNode(Node):
             self.stop_test()
             return
         
-        # Log progress
-        if int(elapsed) % 10 == 0:  # Log every 10 seconds
-            self.get_logger().info(f'Test running for {elapsed:.1f} seconds, {self.test_duration - elapsed:.1f} seconds remaining')
+        # Log progress at most once every 10 seconds
+        if elapsed - self._last_log_time >= 10:
+            self.get_logger().info(
+                f'Test running for {elapsed:.1f} seconds, {self.test_duration - elapsed:.1f} seconds remaining'
+            )
+            self._last_log_time = elapsed
 
 def main(args=None):
     rclpy.init(args=args)
