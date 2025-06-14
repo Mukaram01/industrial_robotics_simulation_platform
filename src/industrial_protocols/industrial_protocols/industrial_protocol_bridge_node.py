@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+Bridge ROS2 topics to industrial protocols.
+
+This node expects standard `/robot/command` and `/robot/status` interfaces as described in docs/robot_integration_guide.md.
+"""
 
 import os
 import rclpy

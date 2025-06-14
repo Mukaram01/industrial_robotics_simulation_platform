@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+Web-based interface node for controlling the simulation.
+
+This example follows the standard robot integration interfaces described in docs/robot_integration_guide.md. Commands are published on `/simulation/command` (which can be remapped to `/robot/command`) and status messages are read from `/simulation/status`.
+"""
 
 import os
 import re
