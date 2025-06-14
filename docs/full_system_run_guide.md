@@ -23,8 +23,19 @@ source install/setup.bash
 Open a terminal and launch the main system (camera simulator, protocol bridge, safety monitor and web server):
 
 ```bash
-ros2 launch simulation_tools integrated_system_launch.py \
+ros2 launch simulation_core full_system.launch.py \
     use_realsense:=false use_advanced_perception:=true
+```
+
+If you prefer to start components separately for debugging, launch them
+individually:
+
+```bash
+ros2 launch simulation_core physics_server.launch.py
+ros2 launch simulation_core environment_manager.launch.py
+ros2 launch simulation_core web_interface.launch.py
+ros2 launch simulation_core visualization_server.launch.py
+ros2 launch simulation_core industrial_bridge.launch.py
 ```
 
 To begin publishing camera data and metrics, send a start command:

@@ -101,21 +101,34 @@ The mesh resources are required for accurate visualization in both cases.
 
 2. **Launch the System**
    ```bash
-   ros2 launch simulation_tools integrated_system_launch.py
+   ros2 launch simulation_core full_system.launch.py
    ```
 
    To load a specific scenario or enable advanced perception:
    ```bash
-   ros2 launch simulation_tools integrated_system_launch.py \
+   ros2 launch simulation_core full_system.launch.py \
        scenario:=warehouse use_advanced_perception:=true
    ```
    The `scenario` argument defaults to `default`.
 
    To change the OPC UA server port, pass the `opcua_port` argument:
    ```bash
-  ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+  ros2 launch simulation_core full_system.launch.py opcua_port:=4841
   ```
-  This argument is also supported by `realsense_hybrid_launch.py`.
+   This argument is also supported by `realsense_hybrid_launch.py`.
+
+   ### Run Components Individually
+
+   The main launch file starts everything at once. You can also launch
+   individual components for testing:
+
+   ```bash
+   ros2 launch simulation_core physics_server.launch.py
+   ros2 launch simulation_core environment_manager.launch.py
+   ros2 launch simulation_core web_interface.launch.py
+   ros2 launch simulation_core visualization_server.launch.py
+   ros2 launch simulation_core industrial_bridge.launch.py
+   ```
 
    To secure MQTT communication, configure authentication and TLS in your
    Mosquitto broker. Set the `password_file` option and create a dedicated
@@ -144,21 +157,21 @@ The mesh resources are required for accurate visualization in both cases.
    listens on `127.0.0.1`. If you need to allow remote connections, override the
    `opcua_endpoint` parameter with a host accessible on your network, e.g.:
    ```bash
-   ros2 launch simulation_tools integrated_system_launch.py \
+   ros2 launch simulation_core full_system.launch.py \
        opcua_endpoint:=opc.tcp://0.0.0.0:4840/freeopcua/server/
    ```
 
 ### Configuration Directory and Data Storage
 
 By default, configuration files are loaded from
-`src/simulation_tools/config/`. Pass `config_dir:=<path>` when launching to
+`src/simulation_core/config/`. Pass `config_dir:=<path>` when launching to
 use a custom directory. The `data_dir` parameter controls where log files and
 optional saved images are written (default: `/tmp/simulation_data`).
 
 Example:
 
 ```bash
-ros2 launch simulation_tools integrated_system_launch.py \
+ros2 launch simulation_core full_system.launch.py \
     config_dir:=/my/configs data_dir:=/tmp/my_data
 ```
 
@@ -178,7 +191,7 @@ detected. You can disable this override by setting the `allow_unsafe_werkzeug`
 parameter to `false`:
 
 ```bash
-ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=false
+ros2 launch simulation_core full_system.launch.py allow_unsafe_werkzeug:=false
 ```
 
 Both `web_interface_node` and `visualization_server_node` support a `jpeg_quality`
