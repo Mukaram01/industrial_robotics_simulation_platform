@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>web_interface_backend</name>
+  <version>0.1.0</version>
+  <description>Backend nodes for web interface</description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+  <depend>rclpy</depend>
+  <depend>python3-opencv</depend>
+  <depend>python3-numpy</depend>
+  <depend>python3-yaml</depend>
+  <depend>flask</depend>
+  <depend>flask-socketio</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

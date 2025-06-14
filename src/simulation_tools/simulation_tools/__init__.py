@@ -1,3 +1,3 @@
-from .action_logger import ActionLogger
+"""Legacy package retaining launch files."""
 
-__all__ = ["ActionLogger"]
+__all__ = []

@@ -6,6 +6,8 @@ import pytest
 # Ensure packages under src/ are importable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
+sys.path.append(str(ROOT / 'src' / 'web_interface_backend'))
+sys.path.append(str(ROOT / 'src' / 'simulation_core'))
 
 rclpy = pytest.importorskip('rclpy')
 apm_msgs = pytest.importorskip("apm_msgs")
@@ -48,7 +50,7 @@ def test_pose_estimation_node_defaults():
 
 
 def test_environment_configurator_node_defaults():
-    from simulation_tools.environment_configurator_node import (
+    from simulation_core.environment_configurator_node import (
         EnvironmentConfiguratorNode,
     )
     node = _init_node(EnvironmentConfiguratorNode)
@@ -59,7 +61,7 @@ def test_environment_configurator_node_defaults():
 
 
 def test_safety_monitor_node_defaults():
-    from simulation_tools.safety_monitor_node import SafetyMonitorNode
+    from simulation_core.safety_monitor_node import SafetyMonitorNode
     node = _init_node(SafetyMonitorNode)
     assert node.get_parameter('safety_rules_file').value == 'safety_rules.yaml'
     assert node.get_parameter('emergency_stop_enabled').value is True
@@ -67,7 +69,7 @@ def test_safety_monitor_node_defaults():
 
 
 def test_web_interface_node_defaults():
-    from simulation_tools.web_interface_node import WebInterfaceNode
+    from web_interface_backend.web_interface_node import WebInterfaceNode
     node = _init_node(WebInterfaceNode)
     assert node.get_parameter('allow_unsafe_werkzeug').value is True
     assert node.get_parameter('save_images').value is False
@@ -80,7 +82,7 @@ def test_web_interface_node_defaults():
 
 
 def test_visualization_server_node_defaults():
-    from simulation_tools.visualization_server_node import VisualizationServerNode
+    from web_interface_backend.visualization_server_node import VisualizationServerNode
     node = _init_node(VisualizationServerNode)
     assert node.get_parameter('data_dir').value == ''
     assert node.get_parameter('export_enabled').value is True

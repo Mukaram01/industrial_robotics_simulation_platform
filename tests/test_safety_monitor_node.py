@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
+sys.path.append(str(ROOT / 'src' / 'simulation_core'))
 
 
 def _setup_ros_stubs(monkeypatch):
@@ -67,8 +68,8 @@ def _setup_ros_stubs(monkeypatch):
 
 def test_emergency_stop_trigger(monkeypatch):
     _setup_ros_stubs(monkeypatch)
-    sys.modules.pop('simulation_tools.simulation_tools.safety_monitor_node', None)
-    from simulation_tools.simulation_tools import safety_monitor_node as smn
+    sys.modules.pop('simulation_core.safety_monitor_node', None)
+    from simulation_core import safety_monitor_node as smn
 
     node = smn.SafetyMonitorNode()
     node.emergency_stop_pub.publish.reset_mock()
@@ -83,8 +84,8 @@ def test_emergency_stop_trigger(monkeypatch):
 
 def test_emergency_stop_reset(monkeypatch):
     _setup_ros_stubs(monkeypatch)
-    sys.modules.pop('simulation_tools.simulation_tools.safety_monitor_node', None)
-    from simulation_tools.simulation_tools import safety_monitor_node as smn
+    sys.modules.pop('simulation_core.safety_monitor_node', None)
+    from simulation_core import safety_monitor_node as smn
 
     node = smn.SafetyMonitorNode()
     node.emergency_stop_active = True

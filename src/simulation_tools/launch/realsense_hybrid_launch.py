@@ -12,7 +12,7 @@ def generate_launch_description():
     # Declare launch arguments
     # Launch parameters
     config_dir = LaunchConfiguration('config_dir', default=os.path.join(
-        get_package_share_directory('simulation_tools'), 'config'))
+        get_package_share_directory('simulation_core'), 'config'))
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
     save_images = LaunchConfiguration('save_images', default='false')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='true')
@@ -41,7 +41,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'config_dir',
-            default_value=os.path.join(get_package_share_directory('simulation_tools'), 'config'),
+            default_value=os.path.join(get_package_share_directory('simulation_core'), 'config'),
             description='Directory containing configuration files'),
         DeclareLaunchArgument(
             'data_dir',
@@ -89,7 +89,7 @@ def generate_launch_description():
     # Environment configurator node
     nodes.append(
         Node(
-            package='simulation_tools',
+            package='simulation_core',
             executable='environment_configurator_node',
             name='environment_configurator',
             parameters=[{
@@ -106,7 +106,7 @@ def generate_launch_description():
     # Web interface node
     nodes.append(
         Node(
-            package='simulation_tools',
+            package='web_interface_backend',
             executable='web_interface_node',
             name='web_interface',
             parameters=[{
@@ -124,7 +124,7 @@ def generate_launch_description():
     # Visualization server node
     nodes.append(
         Node(
-            package='simulation_tools',
+            package='web_interface_backend',
             executable='visualization_server_node',
             name='visualization_server',
             parameters=[{
@@ -140,7 +140,7 @@ def generate_launch_description():
     # Industrial protocol bridge node
     nodes.append(
         Node(
-            package='simulation_tools',
+            package='industrial_protocols',
             executable='industrial_protocol_bridge_node',
             name='industrial_protocol_bridge',
             parameters=[{
@@ -159,7 +159,7 @@ def generate_launch_description():
     # Safety monitor node
     nodes.append(
         Node(
-            package='simulation_tools',
+            package='simulation_core',
             executable='safety_monitor_node',
             name='safety_monitor',
             parameters=[{

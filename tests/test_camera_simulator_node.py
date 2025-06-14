@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
+sys.path.append(str(ROOT / 'src' / 'perception_nodes'))
 
 
 def _setup_stubs(monkeypatch):
@@ -101,8 +102,8 @@ def _setup_stubs(monkeypatch):
 
 def test_frame_rate_zero_warns(monkeypatch):
     _setup_stubs(monkeypatch)
-    sys.modules.pop('simulation_tools.simulation_tools.camera_simulator_node', None)
-    from simulation_tools.simulation_tools import camera_simulator_node as csn
+    sys.modules.pop('perception_nodes.synthetic_camera_node', None)
+    from perception_nodes import synthetic_camera_node as csn
 
     node = csn.CameraSimulatorNode()
     logger = node.get_logger()

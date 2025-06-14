@@ -53,6 +53,15 @@ The Industrial Robotics Simulation Platform consists of several integrated compo
 6. **Safety Monitor**: Enforces safety constraints and monitors for violations
 7. **System Test**: Validates system functionality and integration
 
+### ROS Package Layout
+The workspace is organized into the following packages:
+- `simulation_core` – base simulation environment and scenario manager
+- `robot_interfaces` – UR5 and delta robot interfaces
+- `perception_nodes` – synthetic and RealSense camera nodes
+- `industrial_protocols` – OPC UA and MQTT connectivity
+- `web_interface_backend` – REST/Socket backend
+- `web_interface_frontend` – static web assets
+
 ### Architecture Diagram
 
 ```
@@ -804,7 +813,7 @@ logs and exported images are written to the directory specified by the
 from a single node, run it directly with rclpy and enable debug logging:
 
 ```bash
-ros2 run rclpy simulation_tools.web_interface_node --ros-args --log-level debug
+ros2 run rclpy web_interface_backend.web_interface_node --ros-args --log-level debug
 ```
 
 ## API Reference
