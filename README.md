@@ -18,6 +18,16 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
 
 3. **Advanced Visualization**
    - Multi-view camera perspectives
+
+### Package Structure
+The ROS workspace is organized into modular packages:
+
+- `simulation_core` – base simulation logic and scenarios
+- `robot_interfaces` – robot-specific communication layers
+- `perception_nodes` – camera simulation and sensor nodes
+- `industrial_protocols` – OPC UA/MQTT integration
+- `web_interface_backend` – Flask server and APIs
+- `web_interface_frontend` – static HTML/JS resources
    - Performance metrics dashboard
    - 3D environment visualization
 
@@ -151,7 +161,7 @@ The mesh resources are required for accurate visualization in both cases.
 ### Configuration Directory and Data Storage
 
 By default, configuration files are loaded from
-`src/simulation_tools/config/`. Pass `config_dir:=<path>` when launching to
+`src/simulation_core/config/`. Pass `config_dir:=<path>` when launching to
 use a custom directory. The `data_dir` parameter controls where log files and
 optional saved images are written (default: `/tmp/simulation_data`).
 
@@ -181,8 +191,9 @@ parameter to `false`:
 ros2 launch simulation_tools integrated_system_launch.py allow_unsafe_werkzeug:=false
 ```
 
-Both `web_interface_node` and `visualization_server_node` support a `jpeg_quality`
-parameter to control JPEG compression (0-100). The default value is `75`.
+Both nodes in the `web_interface_backend` package, `web_interface_node` and
+`visualization_server_node`, support a `jpeg_quality` parameter to control JPEG
+compression (0-100). The default value is `75`.
 
 Set `auto_open_browser:=true` to automatically open your default web browser
 when the interface starts. This is disabled by default for headless systems.

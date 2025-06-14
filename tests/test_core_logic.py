@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
+sys.path.append(str(ROOT / 'src' / 'web_interface_backend'))
+sys.path.append(str(ROOT / 'src' / 'simulation_core'))
 
 # Provide stub ROS modules so we can import ROS-dependent modules without ROS
 import types
@@ -25,8 +27,8 @@ sys.modules['rclpy.node'] = rclpy_stub.node
 sys.modules['std_msgs'] = std_msgs_stub
 sys.modules['std_msgs.msg'] = std_msgs_stub.msg
 
-from simulation_tools.simulation_tools.action_logger import ActionLogger  # noqa: E402
-from simulation_tools.simulation_tools import environment_configurator_node as ec  # noqa: E402
+from web_interface_backend.action_logger import ActionLogger  # noqa: E402
+from simulation_core import environment_configurator_node as ec  # noqa: E402
 
 # Remove stub modules so other tests that expect missing ROS will skip
 for mod in ['rclpy', 'rclpy.node', 'std_msgs', 'std_msgs.msg']:
@@ -290,7 +292,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
     for name, mod in stub_modules.items():
         sys.modules[name] = mod
 
-    win = importlib.import_module('simulation_tools.simulation_tools.web_interface_node')
+    win = importlib.import_module('web_interface_backend.web_interface_node')
 
     class DummyThread:
         def __init__(self, target):
@@ -311,7 +313,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
     finally:
         for name in stub_modules.keys():
             sys.modules.pop(name, None)
-        sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
-        pkg = sys.modules.get('simulation_tools.simulation_tools')
+        sys.modules.pop('web_interface_backend.web_interface_node', None)
+        pkg = sys.modules.get('web_interface_backend')
         if pkg and hasattr(pkg, 'web_interface_node'):
             delattr(pkg, 'web_interface_node')

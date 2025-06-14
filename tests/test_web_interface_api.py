@@ -8,6 +8,7 @@ import io
 # Ensure packages under src/ are importable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
+sys.path.append(str(ROOT / 'src' / 'web_interface_backend'))
 
 
 def _setup_ros_stubs(monkeypatch):
@@ -98,7 +99,7 @@ def _setup_ros_stubs(monkeypatch):
     ament_stub.packages = types.ModuleType('ament_index_python.packages')
 
     def get_pkg_share(_):
-        return str(ROOT / 'src' / 'simulation_tools')
+        return str(ROOT / 'src' / 'web_interface_frontend')
     ament_stub.packages.get_package_share_directory = get_pkg_share
     monkeypatch.setitem(sys.modules, 'ament_index_python', ament_stub)
     monkeypatch.setitem(sys.modules, 'ament_index_python.packages', ament_stub.packages)
@@ -107,9 +108,9 @@ def _setup_ros_stubs(monkeypatch):
 def test_place_api_publishes_and_logs(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
-    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
 
-    from simulation_tools.simulation_tools import web_interface_node as win
+    from web_interface_backend import web_interface_node as win
     import flask
     win.Flask = flask.Flask
 
@@ -134,9 +135,9 @@ def test_place_api_publishes_and_logs(monkeypatch):
 def test_upload_scenario_duplicate_rejected(monkeypatch, tmp_path):
     _setup_ros_stubs(monkeypatch)
 
-    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
 
-    from simulation_tools.simulation_tools import web_interface_node as win
+    from web_interface_backend import web_interface_node as win
     import flask
     win.Flask = flask.Flask
 
@@ -163,9 +164,9 @@ def test_upload_scenario_duplicate_rejected(monkeypatch, tmp_path):
 def test_pick_api_publishes_and_logs(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
-    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
 
-    from simulation_tools.simulation_tools import web_interface_node as win
+    from web_interface_backend import web_interface_node as win
     import flask
     win.Flask = flask.Flask
 
@@ -190,9 +191,9 @@ def test_pick_api_publishes_and_logs(monkeypatch):
 def test_objects_api_returns_latest(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
-    sys.modules.pop('simulation_tools.simulation_tools.web_interface_node', None)
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
 
-    from simulation_tools.simulation_tools import web_interface_node as win
+    from web_interface_backend import web_interface_node as win
     import flask
     win.Flask = flask.Flask
 

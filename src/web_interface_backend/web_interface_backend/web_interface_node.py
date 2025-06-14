@@ -133,7 +133,7 @@ class WebInterfaceNode(Node):
             self.get_logger().warning(
                 'apm_msgs not available, object updates disabled')
         
-        package_share_directory = get_package_share_directory('simulation_tools')
+        package_share_directory = get_package_share_directory('web_interface_frontend')
         template_folder_path = os.path.join(package_share_directory, 'templates')
         static_folder_path = os.path.join(package_share_directory, 'static')
 
