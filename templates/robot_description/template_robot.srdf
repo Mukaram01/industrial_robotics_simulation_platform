@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<robot name="template_robot">
+    <!--
+        Add planning groups, end effectors and other SRDF entries here.
+        Replace 'template_robot' with your robot's name.
+    -->
+
+    <!-- Example group definition -->
+    <!--
+    <group name="arm">
+        <chain base_link="base_link" tip_link="tool0" />
+    </group>
+    -->
+</robot>

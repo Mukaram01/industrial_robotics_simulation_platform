@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+  Minimal robot description template.
+  Replace 'template_robot' with your robot's name and add link/joint
+  definitions where indicated.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="template_robot">
+
+  <!-- Insert link elements here -->
+  <!--
+  <link name="base_link">
+    <visual>...</visual>
+  </link>
+  -->
+
+  <!-- Insert joint elements here -->
+  <!--
+  <joint name="joint1" type="revolute">
+    <parent link="base_link" />
+    <child link="link1" />
+    <!-- origin and axis definitions -->
+  </joint>
+  -->
+
+</robot>
