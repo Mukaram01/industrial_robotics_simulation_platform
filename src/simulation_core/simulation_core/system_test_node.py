@@ -5,7 +5,6 @@ import os
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
-import yaml
 import json
 import threading
 import time
