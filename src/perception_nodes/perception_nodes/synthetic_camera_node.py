@@ -334,8 +334,8 @@ class CameraSimulatorNode(Node):
         camera_info.height = self.height
 
         # Set camera matrix (intrinsics)
-        fx = self.width * 0.8  # focal length x
-        fy = self.width * 0.8  # focal length y
+        fx = self.width * 0.8   # focal length x
+        fy = self.height * 0.8  # focal length y
         cx = self.width / 2    # optical center x
         cy = self.height / 2   # optical center y
 
