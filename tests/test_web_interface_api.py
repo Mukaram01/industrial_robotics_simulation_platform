@@ -170,6 +170,58 @@ def test_upload_scenario_duplicate_rejected(monkeypatch, tmp_path):
     assert res.status_code == 409
 
 
+def test_upload_scenario_invalid_extension(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.config_dir = str(tmp_path)
+
+    client = node.app.test_client()
+    data = {
+        'scenario_id': 'bar',
+        'file': (io.BytesIO(b'name: bar'), 'bar.txt'),
+    }
+    res = client.post('/api/scenarios', data=data, content_type='multipart/form-data')
+
+    assert res.status_code == 400
+    assert not (tmp_path / 'bar.yaml').exists()
+
+
+def test_upload_scenario_invalid_yaml(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.config_dir = str(tmp_path)
+
+    client = node.app.test_client()
+    data = {
+        'scenario_id': 'baz',
+        'file': (io.BytesIO(b': invalid'), 'baz.yaml'),
+    }
+    res = client.post('/api/scenarios', data=data, content_type='multipart/form-data')
+
+    assert res.status_code == 400
+    assert not (tmp_path / 'baz.yaml').exists()
+
+
 def test_pick_api_publishes_and_logs(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
