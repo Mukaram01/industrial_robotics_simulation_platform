@@ -254,6 +254,19 @@ pip install flake8
 flake8 src tests
 ```
 
+## ROS2 Best Practices
+
+The source tree contains demonstration components that adopt recommended
+ROS&nbsp;2 patterns:
+
+- **Lifecycle Node** – `safety_monitor_lifecycle_node.py` manages state
+  transitions and supports parameter updates at runtime.
+- **Action Server** – `pick_place_action_server.py` illustrates handling
+  long‑running tasks with feedback and results.
+
+Both examples reside under `src/simulation_tools/simulation_tools/` and are
+validated by unit tests in `tests/test_lifecycle_and_action.py`.
+
 ## License
 
 All packages in this repository are released under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file and each package's `package.xml` or `LICENSE` file for details.
