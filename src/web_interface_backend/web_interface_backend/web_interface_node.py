@@ -772,14 +772,26 @@ class WebInterfaceNode(Node):
 
     def run_server(self):
         """Launch the Flask-SocketIO server."""
-        self.socketio.run(
-            self.app,
-            host=self.host,
-            port=self.port,
-            debug=False,
-            use_reloader=False,
-            allow_unsafe_werkzeug=self.allow_unsafe_werkzeug,
-        )
+        try:
+            self.socketio.run(
+                self.app,
+                host=self.host,
+                port=self.port,
+                debug=False,
+                use_reloader=False,
+                allow_unsafe_werkzeug=self.allow_unsafe_werkzeug,
+            )
+        except TypeError:
+            self.get_logger().warning(
+                'SocketIO.run() does not accept allow_unsafe_werkzeug, retrying'
+            )
+            self.socketio.run(
+                self.app,
+                host=self.host,
+                port=self.port,
+                debug=False,
+                use_reloader=False,
+            )
 
     def shutdown(self):
         """Stop the Socket.IO server and wait for its thread to finish."""
