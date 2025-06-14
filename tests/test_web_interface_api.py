@@ -211,7 +211,7 @@ def test_objects_api_returns_latest(monkeypatch):
     assert res.json['objects'][0]['id'] == 1
 
 
-def test_load_scenario_endpoint(monkeypatch):
+def test_jog_api_publishes(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
     sys.modules.pop('web_interface_backend.web_interface_node', None)
@@ -227,6 +227,14 @@ def test_load_scenario_endpoint(monkeypatch):
     node = win.WebInterfaceNode()
     client = node.app.test_client()
 
+    res = client.post('/api/jog', json={'joint': 1, 'delta': 0.1})
+    assert res.status_code == 200
+    msg = node.command_pub.publish.call_args[0][0]
+    assert msg.data == 'jog 1 0.1'
+    logger_mock.log.assert_called_once_with('jog', {'joint': 1, 'delta': 0.1})
+
+
+def test_waypoint_api_execute(monkeypatch):
     res = client.post('/api/scenarios/foo/load')
     assert res.status_code == 200
     assert node.config_pub.publish.called
@@ -249,6 +257,13 @@ def test_save_scenario_endpoint(monkeypatch, tmp_path):
     monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
 
     node = win.WebInterfaceNode()
+    client = node.app.test_client()
+
+    res = client.post('/api/waypoint', json={'action': 'execute'})
+    assert res.status_code == 200
+    msg = node.command_pub.publish.call_args[0][0]
+    assert msg.data == 'execute_sequence'
+    logger_mock.log.assert_called_once_with('waypoint', {'action': 'execute'})
     node.config_dir = str(tmp_path)
     client = node.app.test_client()
 

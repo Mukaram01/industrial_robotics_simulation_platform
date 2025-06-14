@@ -82,6 +82,30 @@
         </div>
         <div class="card">
             <div class="card-header">
+                <h5 class="card-title">Jog Joints</h5>
+            </div>
+            <div class="card-body">
+                {% for i in range(6) %}
+                <div class="input-group mb-2">
+                    <span class="input-group-text">J{{i}}</span>
+                    <input type="range" min="-0.5" max="0.5" step="0.05" value="0" class="form-range jog-slider" data-joint="{{i}}">
+                    <button class="btn btn-outline-secondary jog-btn">Jog</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Waypoints</h5>
+            </div>
+            <div class="card-body d-grid gap-2">
+                <button id="record-waypoint" class="btn btn-outline-primary">Record Waypoint</button>
+                <button id="clear-waypoints" class="btn btn-outline-warning">Clear Waypoints</button>
+                <button id="execute-sequence" class="btn btn-outline-success">Execute Sequence</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
                 <h5 class="card-title">Recording & Playback</h5>
             </div>
             <div class="card-body d-grid gap-2">
@@ -163,6 +187,11 @@ const startPlayBtn = document.getElementById('start-play');
 const stopPlayBtn = document.getElementById('stop-play');
 const exportToggle = document.getElementById('export-toggle');
 const exportList = document.getElementById('export-list');
+const jogSliders = document.querySelectorAll('.jog-slider');
+const jogButtons = document.querySelectorAll('.jog-btn');
+const recordWaypointBtn = document.getElementById('record-waypoint');
+const clearWaypointsBtn = document.getElementById('clear-waypoints');
+const executeSequenceBtn = document.getElementById('execute-sequence');
 const ctx = workspaceCanvas.getContext('2d');
 let objects = [];
 let scene, camera, renderer;
@@ -385,6 +414,21 @@ placeCustomBtn.addEventListener('click', function() {
     .then(data => { if (data.success) { addToCommandLog(`Sent place command for location (${x}, ${y}, ${z})`); } else { addToCommandLog(`Error: ${data.error}`); } })
     .catch(error => { console.error('Error:', error); addToCommandLog('Error sending place command'); });
 });
+jogButtons.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+        const slider = jogSliders[idx];
+        const joint = parseInt(slider.dataset.joint);
+        const delta = parseFloat(slider.value);
+        fetch('/api/jog', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ joint: joint, delta: delta })
+        }).then(() => addToCommandLog(`Jog joint ${joint} by ${delta}`));
+    });
+});
+recordWaypointBtn.addEventListener('click', () => sendWaypoint('record'));
+clearWaypointsBtn.addEventListener('click', () => sendWaypoint('clear'));
+executeSequenceBtn.addEventListener('click', () => sendWaypoint('execute'));
 startRecBtn.addEventListener('click', () => sendCommand('start_recording'));
 stopRecBtn.addEventListener('click', () => sendCommand('stop_recording'));
 startPlayBtn.addEventListener('click', () => sendCommand('start_playback'));
@@ -404,6 +448,13 @@ function loadExports() {
                 exportList.appendChild(li);
             });
         });
+}
+function sendWaypoint(action) {
+    fetch('/api/waypoint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: action })
+    }).then(() => addToCommandLog('Waypoint: ' + action));
 }
 function sendCommand(cmd) {
     fetch('/api/command', {

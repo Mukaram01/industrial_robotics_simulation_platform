@@ -528,6 +528,38 @@ class WebInterfaceNode(Node):
             self.action_logger.log('command', {'command': command})
             return jsonify({'success': True})
 
+        @self.app.route('/api/jog', methods=['POST'])
+        def api_jog():
+            data = request.get_json(silent=True) or {}
+            joint = data.get('joint')
+            delta = data.get('delta')
+            if joint is None or delta is None:
+                return jsonify({'error': 'joint and delta required'}), 400
+
+            cmd_msg = String()
+            cmd_msg.data = f'jog {joint} {delta}'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('jog', {'joint': joint, 'delta': delta})
+            return jsonify({'success': True})
+
+        @self.app.route('/api/waypoint', methods=['POST'])
+        def api_waypoint():
+            data = request.get_json(silent=True) or {}
+            action = data.get('action')
+            mapping = {
+                'record': 'record_waypoint',
+                'clear': 'clear_waypoints',
+                'execute': 'execute_sequence',
+            }
+            if action not in mapping:
+                return jsonify({'error': 'invalid action'}), 400
+
+            cmd_msg = String()
+            cmd_msg.data = mapping[action]
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('waypoint', {'action': action})
+            return jsonify({'success': True})
+
         @self.app.route('/api/actions')
         def api_actions():
             limit = int(request.args.get('limit', 100))
@@ -656,6 +688,34 @@ class WebInterfaceNode(Node):
                 'config': data
             })
 
+        @self.socketio.on('jog_joint')
+        def handle_jog_joint(data):
+            joint = data.get('joint')
+            delta = data.get('delta')
+            if joint is None or delta is None:
+                return
+            cmd_msg = String()
+            cmd_msg.data = f'jog {joint} {delta}'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('jog', {'joint': joint, 'delta': delta})
+            self.socketio.emit('command_sent', {'command': cmd_msg.data})
+
+        @self.socketio.on('record_waypoint')
+        def handle_record_waypoint():
+            cmd_msg = String()
+            cmd_msg.data = 'record_waypoint'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('waypoint', {'action': 'record'})
+            self.socketio.emit('command_sent', {'command': 'record_waypoint'})
+
+        @self.socketio.on('execute_sequence')
+        def handle_execute_sequence():
+            cmd_msg = String()
+            cmd_msg.data = 'execute_sequence'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('waypoint', {'action': 'execute'})
+            self.socketio.emit('command_sent', {'command': 'execute_sequence'})
+
         @self.socketio.on('load_scenario')
         def handle_load_scenario_socket(data):
             scenario = data.get('scenario')
@@ -686,7 +746,7 @@ class WebInterfaceNode(Node):
             self.config_pub.publish(msg)
             self.action_logger.log('save_scenario', {'id': name})
             self.socketio.emit('scenario_saved', {'success': True, 'id': name})
-    
+
     def run_server(self):
         """Launch the Flask-SocketIO server."""
         self.socketio.run(
