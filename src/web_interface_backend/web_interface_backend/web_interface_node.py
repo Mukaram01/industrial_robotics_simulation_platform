@@ -5,7 +5,7 @@ import re
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, JointState
 from cv_bridge import CvBridge
 import yaml
 import json
@@ -45,6 +45,7 @@ class WebInterfaceNode(Node):
             'log_db_path': '',
             'jpeg_quality': 75,
             'detected_objects_topic': '/apm/detection/objects',
+            'joint_states_topic': '/joint_states',
             'auto_open_browser': False,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
@@ -59,6 +60,7 @@ class WebInterfaceNode(Node):
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
         self.detected_objects_topic = self.get_parameter('detected_objects_topic').value
+        self.joint_states_topic = self.get_parameter('joint_states_topic').value
         self.auto_open_browser = self.get_parameter('auto_open_browser').value
 
         if not self.log_db_path:
@@ -89,6 +91,7 @@ class WebInterfaceNode(Node):
             'objects_processed': 0
         }
         self.latest_objects = []
+        self.latest_joint_state = None
         
         # Create publishers
         self.command_pub = self.create_publisher(
@@ -120,6 +123,12 @@ class WebInterfaceNode(Node):
             String,
             '/simulation/metrics',
             self.metrics_callback,
+            10)
+
+        self.joint_state_sub = self.create_subscription(
+            JointState,
+            self.joint_states_topic,
+            self.joint_state_callback,
             10)
 
         # Subscribe to detected objects if message type is available
@@ -171,6 +180,8 @@ class WebInterfaceNode(Node):
                 'status': self.system_status,
                 'current_scenario': self.current_scenario
             })
+            if self.latest_joint_state is not None:
+                self.socketio.emit('joint_state_update', self.latest_joint_state)
         except Exception as e:
             self.get_logger().error(f'Error parsing status message: {e}')
     
@@ -261,6 +272,18 @@ class WebInterfaceNode(Node):
             self.socketio.emit('objects_update', {'objects': objects})
         except Exception as e:
             self.get_logger().error(f'Error processing detected objects: {e}')
+
+    def joint_state_callback(self, msg):
+        try:
+            js_data = {
+                'name': list(msg.name),
+                'position': list(msg.position),
+                'velocity': list(msg.velocity),
+            }
+            self.latest_joint_state = js_data
+            self.socketio.emit('joint_state_update', js_data)
+        except Exception as e:
+            self.get_logger().error(f'Error processing joint state: {e}')
     
     def setup_routes(self):
         @self.app.route('/')

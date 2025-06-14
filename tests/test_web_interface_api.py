@@ -77,6 +77,12 @@ def _setup_ros_stubs(monkeypatch):
     sensor_stub = types.ModuleType('sensor_msgs')
     sensor_stub.msg = types.ModuleType('sensor_msgs.msg')
     sensor_stub.msg.Image = Msg
+    class JS:
+        def __init__(self):
+            self.name = []
+            self.position = []
+            self.velocity = []
+    sensor_stub.msg.JointState = JS
     monkeypatch.setitem(sys.modules, 'sensor_msgs', sensor_stub)
     monkeypatch.setitem(sys.modules, 'sensor_msgs.msg', sensor_stub.msg)
 
@@ -207,3 +213,33 @@ def test_objects_api_returns_latest(monkeypatch):
     res = client.get('/api/objects')
     assert res.status_code == 200
     assert res.json['objects'][0]['id'] == 1
+
+
+def test_joint_state_emits_socket_event(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    emit_mock = MagicMock()
+    node.socketio.emit = emit_mock
+
+    js_msg = win.JointState()
+    js_msg.name = ['j1']
+    js_msg.position = [1.0]
+    js_msg.velocity = [0.5]
+
+    node.joint_state_callback(js_msg)
+
+    emit_mock.assert_called_with('joint_state_update', {
+        'name': ['j1'],
+        'position': [1.0],
+        'velocity': [0.5],
+    })
