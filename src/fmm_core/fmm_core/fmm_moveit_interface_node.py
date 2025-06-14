@@ -24,6 +24,7 @@ class FMMMoveitInterfaceNode(Node):
     Node for interfacing with MoveIt2 for Delta robot control
     """
     def __init__(self):
+        """Initialize MoveIt and set up ROS interfaces."""
         super().__init__('fmm_moveit_interface_node')
         
         # Declare parameters

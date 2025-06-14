@@ -13,7 +13,10 @@ import json
 import time
 
 class VisualizationServerNode(Node):
+    """Publishes combined camera views and metrics for monitoring."""
+
     def __init__(self):
+        """Initialize publishers, subscriptions and timers."""
         super().__init__('visualization_server_node')
         
         # Declare parameters
@@ -101,24 +104,28 @@ class VisualizationServerNode(Node):
         self.get_logger().info('Visualization server node initialized')
     
     def rgb_callback(self, msg):
+        """Store the latest RGB image from the camera."""
         try:
             self.rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {e}')
     
     def depth_callback(self, msg):
+        """Store the latest depth image from the camera."""
         try:
             self.depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {e}')
     
     def metrics_callback(self, msg):
+        """Update cached metrics used for visualization."""
         try:
             self.metrics = json.loads(msg.data)
         except Exception as e:
             self.get_logger().error(f'Error parsing metrics message: {e}')
     
     def status_callback(self, msg):
+        """Track the simulator status for overlay information."""
         try:
             status_data = json.loads(msg.data)
             self.system_status = status_data.get('status', 'unknown')
@@ -128,6 +135,7 @@ class VisualizationServerNode(Node):
             self.get_logger().error(f'Error parsing status message: {e}')
     
     def config_callback(self, msg):
+        """Update environment configuration displayed in the UI."""
         try:
             config_data = json.loads(msg.data)
             if 'environment' in config_data:
@@ -136,6 +144,7 @@ class VisualizationServerNode(Node):
             self.get_logger().error(f'Error parsing config message: {e}')
     
     def visualization_callback(self):
+        """Publish visualization images and optionally save them to disk."""
         if self.rgb_image is None or self.depth_image is None:
             return
         
@@ -184,6 +193,7 @@ class VisualizationServerNode(Node):
                         f.write(buffer.tobytes())
     
     def export_callback(self):
+        """Periodically export images and metrics to the data directory."""
         if not self.export_enabled or not self.data_dir:
             return
         
@@ -258,6 +268,7 @@ class VisualizationServerNode(Node):
         self.get_logger().info(f'Exported data to {export_path}')
     
     def create_combined_view(self):
+        """Combine RGB and depth images side by side with annotations."""
         if self.rgb_image is None or self.depth_image is None:
             return None
         
@@ -290,6 +301,7 @@ class VisualizationServerNode(Node):
         return combined
     
     def create_metrics_visualization(self):
+        """Create an image containing the latest performance metrics."""
         if not self.metrics:
             return None
         

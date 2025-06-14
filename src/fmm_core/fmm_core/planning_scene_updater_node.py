@@ -21,6 +21,7 @@ class PlanningSceneUpdaterNode(Node):
     Node for updating the MoveIt2 planning scene with detected objects
     """
     def __init__(self):
+        """Create publishers, subscribers and service clients."""
         super().__init__('planning_scene_updater_node')
         
         # Declare parameters
@@ -83,9 +84,7 @@ class PlanningSceneUpdaterNode(Node):
         self.get_logger().info('Planning Scene Updater Node initialized')
     
     def detected_objects_callback(self, msg):
-        """
-        Callback for processing detected objects
-        """
+        """Convert detections into MoveIt collision objects."""
         with self.object_lock:
             # Clear previous objects
             self.detected_object_ids = set()
@@ -136,9 +135,7 @@ class PlanningSceneUpdaterNode(Node):
                     self.get_logger().error(f"Error adding object to planning scene: {str(e)}")
     
     def update_planning_scene(self):
-        """
-        Periodic update of the planning scene
-        """
+        """Remove objects no longer detected from the planning scene."""
         try:
             # Request current planning scene with world objects
             req = GetPlanningScene.Request()
