@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node exposing MoveIt2 interfaces for the delta robot."""
 
 import rclpy
 from rclpy.node import Node
@@ -23,6 +24,7 @@ class FMMMoveitInterfaceNode(Node):
     Node for interfacing with MoveIt2 for Delta robot control
     """
     def __init__(self):
+        """Initialize MoveIt and set up ROS interfaces."""
         super().__init__('fmm_moveit_interface_node')
         
         # Declare parameters

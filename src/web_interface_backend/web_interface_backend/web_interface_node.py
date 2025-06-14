@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+"""
+Web-based interface node for controlling the simulation.
+
+This example follows the standard robot integration interfaces described in docs/robot_integration_guide.md. Commands are published on `/simulation/command` (which can be remapped to `/robot/command`) and status messages are read from `/simulation/status`.
+"""
+
 import os
 import re
 import rclpy
@@ -31,7 +37,10 @@ except Exception:  # pragma: no cover - optional dependency
 
 
 class WebInterfaceNode(Node):
+    """Exposes a simple Flask web UI for interacting with the simulator."""
+
     def __init__(self):
+        """Initialize the web server, ROS interfaces and parameters."""
         super().__init__('web_interface_node')
         
         # Declare parameters using a single dictionary
@@ -160,6 +169,7 @@ class WebInterfaceNode(Node):
         self.get_logger().info(f'Web interface started at http://{self.host}:{self.port}')
     
     def status_callback(self, msg):
+        """Update internal status when the simulator publishes a status message."""
         try:
             status_data = json.loads(msg.data)
             self.system_status = status_data.get('status', 'unknown')
@@ -175,6 +185,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error parsing status message: {e}')
     
     def rgb_callback(self, msg):
+        """Handle incoming RGB images and forward them to web clients."""
         try:
             self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             
@@ -198,6 +209,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error processing RGB image: {e}')
     
     def depth_callback(self, msg):
+        """Handle incoming depth images and forward them to web clients."""
         try:
             self.latest_depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
             
@@ -227,6 +239,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error processing depth image: {e}')
     
     def metrics_callback(self, msg):
+        """Receive system metrics and broadcast them to clients."""
         try:
             metrics_data = json.loads(msg.data)
             self.latest_metrics.update(metrics_data)
@@ -239,6 +252,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error parsing metrics message: {e}')
 
     def objects_callback(self, msg):
+        """Forward detected object information to web clients."""
         try:
             objects = []
             for obj in msg.objects:
@@ -263,6 +277,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error processing detected objects: {e}')
     
     def setup_routes(self):
+        """Register Flask HTTP routes for the user interface."""
         @self.app.route('/')
         def index():
             return render_template('index.html')
@@ -278,6 +293,10 @@ class WebInterfaceNode(Node):
         @self.app.route('/log')
         def log_page():
             return render_template('log.html')
+
+        @self.app.route('/editor')
+        def editor():
+            return render_template('editor.html')
 
         @self.app.route('/api/status')
         def get_status():
@@ -437,6 +456,42 @@ class WebInterfaceNode(Node):
             
             return jsonify({'error': 'Scenario not found'}), 404
 
+        @self.app.route('/api/scenarios/<scenario_id>/load', methods=['POST'])
+        def load_scenario_api(scenario_id):
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
+            msg = String()
+            msg.data = json.dumps({'scenario': scenario_id})
+            self.config_pub.publish(msg)
+            self.action_logger.log('load_scenario', {'id': scenario_id})
+            return jsonify({'success': True})
+
+        @self.app.route('/api/scenarios/<scenario_id>', methods=['PUT'])
+        def save_scenario_api(scenario_id):
+            if not SCENARIO_ID_PATTERN.match(scenario_id):
+                return jsonify({'error': 'Invalid scenario ID'}), 400
+
+            data = request.get_json(silent=True) or {}
+            config = data.get('config')
+            if config is None:
+                return jsonify({'error': 'config required'}), 400
+
+            if self.config_dir:
+                scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
+                try:
+                    with open(scenario_path, 'w') as f:
+                        yaml.safe_dump(config, f, default_flow_style=False)
+                except Exception as e:
+                    self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
+                    return jsonify({'error': f'Error saving scenario: {e}'}), 500
+
+            msg = String()
+            msg.data = json.dumps({'update_scenario': {'name': scenario_id, 'config': config}})
+            self.config_pub.publish(msg)
+            self.action_logger.log('save_scenario', {'id': scenario_id})
+            return jsonify({'success': True})
+
         @self.app.route('/api/scenarios/<scenario_id>', methods=['DELETE'])
         def delete_scenario(scenario_id):
             if not SCENARIO_ID_PATTERN.match(scenario_id):
@@ -471,6 +526,38 @@ class WebInterfaceNode(Node):
             cmd_msg.data = command
             self.command_pub.publish(cmd_msg)
             self.action_logger.log('command', {'command': command})
+            return jsonify({'success': True})
+
+        @self.app.route('/api/jog', methods=['POST'])
+        def api_jog():
+            data = request.get_json(silent=True) or {}
+            joint = data.get('joint')
+            delta = data.get('delta')
+            if joint is None or delta is None:
+                return jsonify({'error': 'joint and delta required'}), 400
+
+            cmd_msg = String()
+            cmd_msg.data = f'jog {joint} {delta}'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('jog', {'joint': joint, 'delta': delta})
+            return jsonify({'success': True})
+
+        @self.app.route('/api/waypoint', methods=['POST'])
+        def api_waypoint():
+            data = request.get_json(silent=True) or {}
+            action = data.get('action')
+            mapping = {
+                'record': 'record_waypoint',
+                'clear': 'clear_waypoints',
+                'execute': 'execute_sequence',
+            }
+            if action not in mapping:
+                return jsonify({'error': 'invalid action'}), 400
+
+            cmd_msg = String()
+            cmd_msg.data = mapping[action]
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('waypoint', {'action': action})
             return jsonify({'success': True})
 
         @self.app.route('/api/actions')
@@ -521,6 +608,7 @@ class WebInterfaceNode(Node):
             return send_from_directory(self.app.static_folder, path)
     
     def setup_socketio_events(self):
+        """Register Socket.IO event handlers for real-time control."""
         @self.socketio.on('connect')
         def handle_connect():
             self.get_logger().info('Client connected')
@@ -595,12 +683,72 @@ class WebInterfaceNode(Node):
             self.config_pub.publish(config_msg)
 
             self.action_logger.log('update_config', data)
-            
+
             self.socketio.emit('config_updated', {
                 'config': data
             })
-    
+
+        @self.socketio.on('jog_joint')
+        def handle_jog_joint(data):
+            joint = data.get('joint')
+            delta = data.get('delta')
+            if joint is None or delta is None:
+                return
+            cmd_msg = String()
+            cmd_msg.data = f'jog {joint} {delta}'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('jog', {'joint': joint, 'delta': delta})
+            self.socketio.emit('command_sent', {'command': cmd_msg.data})
+
+        @self.socketio.on('record_waypoint')
+        def handle_record_waypoint():
+            cmd_msg = String()
+            cmd_msg.data = 'record_waypoint'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('waypoint', {'action': 'record'})
+            self.socketio.emit('command_sent', {'command': 'record_waypoint'})
+
+        @self.socketio.on('execute_sequence')
+        def handle_execute_sequence():
+            cmd_msg = String()
+            cmd_msg.data = 'execute_sequence'
+            self.command_pub.publish(cmd_msg)
+            self.action_logger.log('waypoint', {'action': 'execute'})
+            self.socketio.emit('command_sent', {'command': 'execute_sequence'})
+
+        @self.socketio.on('load_scenario')
+        def handle_load_scenario_socket(data):
+            scenario = data.get('scenario')
+            if not scenario:
+                return
+            msg = String()
+            msg.data = json.dumps({'scenario': scenario})
+            self.config_pub.publish(msg)
+            self.action_logger.log('load_scenario', {'id': scenario})
+            self.socketio.emit('scenario_loaded', {'id': scenario})
+
+        @self.socketio.on('save_scenario')
+        def handle_save_scenario_socket(data):
+            name = data.get('name')
+            config = data.get('config')
+            if not name or config is None:
+                return
+            if self.config_dir:
+                path = os.path.join(self.config_dir, f'{name}.yaml')
+                try:
+                    with open(path, 'w') as f:
+                        yaml.safe_dump(config, f, default_flow_style=False)
+                except Exception:
+                    self.socketio.emit('scenario_saved', {'success': False})
+                    return
+            msg = String()
+            msg.data = json.dumps({'update_scenario': {'name': name, 'config': config}})
+            self.config_pub.publish(msg)
+            self.action_logger.log('save_scenario', {'id': name})
+            self.socketio.emit('scenario_saved', {'success': True, 'id': name})
+
     def run_server(self):
+        """Launch the Flask-SocketIO server."""
         self.socketio.run(
             self.app,
             host=self.host,

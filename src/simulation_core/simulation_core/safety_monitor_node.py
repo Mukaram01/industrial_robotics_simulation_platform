@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node enforcing safety rules and emergency stop conditions."""
 
 import os
 import rclpy

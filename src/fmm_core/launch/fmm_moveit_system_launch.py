@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Launch description for the full MoveIt-based system."""
 
 import os
 from launch import LaunchDescription

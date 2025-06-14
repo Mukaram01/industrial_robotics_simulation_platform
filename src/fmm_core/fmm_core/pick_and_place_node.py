@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""ROS2 node executing pick-and-place operations with MoveIt2."""
 
 import rclpy
 from rclpy.node import Node
