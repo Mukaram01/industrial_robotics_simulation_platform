@@ -588,20 +588,7 @@ class WebInterfaceNode(Node):
             limit = int(request.args.get('limit', 100))
             rows = []
             try:
-                with self.action_logger._lock:
-                    cur = self.action_logger._conn.execute(
-                        "SELECT timestamp, action, details FROM actions "
-                        "ORDER BY id DESC LIMIT ?",
-                        (limit,),
-                    )
-                    rows = [
-                        {
-                            'timestamp': r[0],
-                            'action': r[1],
-                            'details': r[2],
-                        }
-                        for r in cur.fetchall()
-                    ]
+                rows = self.action_logger.get_recent_actions(limit)
             except Exception as e:
                 self.get_logger().error(f'Error reading actions: {e}')
             return jsonify({'actions': rows})
