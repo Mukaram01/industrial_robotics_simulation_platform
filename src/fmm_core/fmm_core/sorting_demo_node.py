@@ -11,6 +11,7 @@ class SortingDemoNode(Node):
     Node for demonstrating the sorting application with the Delta robot
     """
     def __init__(self):
+        """Initialize publishers, subscribers and demo state."""
         super().__init__('sorting_demo_node')
         
         # Declare parameters
@@ -64,16 +65,12 @@ class SortingDemoNode(Node):
         self.get_logger().info('Sorting Demo Node initialized')
     
     def status_callback(self, msg):
-        """
-        Callback for robot status messages
-        """
+        """Store the latest robot status string."""
         self.current_status = msg.data
         self.get_logger().info(f'Received status: {self.current_status}')
     
     def demo_control_callback(self):
-        """
-        Timer callback for demo control
-        """
+        """Start the demo thread once the robot reports it is ready."""
         if not self.demo_running and self.current_status == "ready":
             self.get_logger().info('Starting sorting demo')
             self.demo_running = True
@@ -81,9 +78,7 @@ class SortingDemoNode(Node):
             self.demo_thread.start()
     
     def run_sorting_demo(self):
-        """
-        Run the sorting demo
-        """
+        """Execute a simple pick/place sequence for demonstration."""
         try:
             # List of objects to sort (simulated)
             objects_to_sort = [

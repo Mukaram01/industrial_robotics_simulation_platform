@@ -31,7 +31,10 @@ except Exception:  # pragma: no cover - optional dependency
 
 
 class WebInterfaceNode(Node):
+    """Exposes a simple Flask web UI for interacting with the simulator."""
+
     def __init__(self):
+        """Initialize the web server, ROS interfaces and parameters."""
         super().__init__('web_interface_node')
         
         # Declare parameters using a single dictionary
@@ -160,6 +163,7 @@ class WebInterfaceNode(Node):
         self.get_logger().info(f'Web interface started at http://{self.host}:{self.port}')
     
     def status_callback(self, msg):
+        """Update internal status when the simulator publishes a status message."""
         try:
             status_data = json.loads(msg.data)
             self.system_status = status_data.get('status', 'unknown')
@@ -175,6 +179,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error parsing status message: {e}')
     
     def rgb_callback(self, msg):
+        """Handle incoming RGB images and forward them to web clients."""
         try:
             self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             
@@ -198,6 +203,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error processing RGB image: {e}')
     
     def depth_callback(self, msg):
+        """Handle incoming depth images and forward them to web clients."""
         try:
             self.latest_depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
             
@@ -227,6 +233,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error processing depth image: {e}')
     
     def metrics_callback(self, msg):
+        """Receive system metrics and broadcast them to clients."""
         try:
             metrics_data = json.loads(msg.data)
             self.latest_metrics.update(metrics_data)
@@ -239,6 +246,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error parsing metrics message: {e}')
 
     def objects_callback(self, msg):
+        """Forward detected object information to web clients."""
         try:
             objects = []
             for obj in msg.objects:
@@ -263,6 +271,7 @@ class WebInterfaceNode(Node):
             self.get_logger().error(f'Error processing detected objects: {e}')
     
     def setup_routes(self):
+        """Register Flask HTTP routes for the user interface."""
         @self.app.route('/')
         def index():
             return render_template('index.html')
@@ -521,6 +530,7 @@ class WebInterfaceNode(Node):
             return send_from_directory(self.app.static_folder, path)
     
     def setup_socketio_events(self):
+        """Register Socket.IO event handlers for real-time control."""
         @self.socketio.on('connect')
         def handle_connect():
             self.get_logger().info('Client connected')
@@ -601,6 +611,7 @@ class WebInterfaceNode(Node):
             })
     
     def run_server(self):
+        """Launch the Flask-SocketIO server."""
         self.socketio.run(
             self.app,
             host=self.host,
