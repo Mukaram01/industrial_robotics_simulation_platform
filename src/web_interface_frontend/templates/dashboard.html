@@ -83,6 +83,15 @@
                 <canvas id="metrics-chart" height="180"></canvas>
             </div>
         </div>
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title">Joint States</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="joint-position-chart" height="160"></canvas>
+                <canvas id="joint-velocity-chart" height="160" class="mt-3"></canvas>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Detected Objects</h5>
@@ -118,6 +127,12 @@ const metricsData = {
     ]
 };
 const metricsChart = new Chart(metricsChartCtx, { type: 'line', data: metricsData, options: { animation: false, scales: { y: { beginAtZero: true } } }});
+const jointPosCtx = document.getElementById('joint-position-chart').getContext('2d');
+const jointVelCtx = document.getElementById('joint-velocity-chart').getContext('2d');
+const jointPosData = { labels: [], datasets: [] };
+const jointVelData = { labels: [], datasets: [] };
+const jointPosChart = new Chart(jointPosCtx, { type: 'line', data: jointPosData, options: { animation: false, scales: { y: { beginAtZero: true } } }});
+const jointVelChart = new Chart(jointVelCtx, { type: 'line', data: jointVelData, options: { animation: false, scales: { y: { beginAtZero: true } } }});
 function updateLastUpdateTime() {
     const now = new Date();
     lastUpdate.textContent = now.toLocaleTimeString();
@@ -233,6 +248,32 @@ socket.on('metrics_update', function(data) {
         metricsData.datasets.forEach(ds => ds.data.shift());
     }
     metricsChart.update();
+});
+socket.on('joint_state_update', function(data) {
+    const now = new Date().toLocaleTimeString();
+    if (jointPosData.labels.length >= 20) {
+        jointPosData.labels.shift();
+        jointVelData.labels.shift();
+        jointPosData.datasets.forEach(ds => ds.data.shift());
+        jointVelData.datasets.forEach(ds => ds.data.shift());
+    }
+    jointPosData.labels.push(now);
+    jointVelData.labels.push(now);
+    data.name.forEach((name, idx) => {
+        let posDS = jointPosData.datasets.find(d => d.label === name);
+        let velDS = jointVelData.datasets.find(d => d.label === name);
+        if (!posDS) {
+            const color = `hsl(${Math.random()*360},70%,50%)`;
+            posDS = { label: name, data: [], borderColor: color, fill: false };
+            velDS = { label: name, data: [], borderColor: color, borderDash: [5,5], fill: false };
+            jointPosData.datasets.push(posDS);
+            jointVelData.datasets.push(velDS);
+        }
+        posDS.data.push(data.position[idx] || 0);
+        velDS.data.push(data.velocity[idx] || 0);
+    });
+    jointPosChart.update();
+    jointVelChart.update();
 });
 refreshBtn.addEventListener('click', function() {
     fetch('/api/objects')

@@ -79,6 +79,12 @@ def _setup_ros_stubs(monkeypatch):
     sensor_stub = types.ModuleType('sensor_msgs')
     sensor_stub.msg = types.ModuleType('sensor_msgs.msg')
     sensor_stub.msg.Image = Msg
+    class JS:
+        def __init__(self):
+            self.name = []
+            self.position = []
+            self.velocity = []
+    sensor_stub.msg.JointState = JS
     monkeypatch.setitem(sys.modules, 'sensor_msgs', sensor_stub)
     monkeypatch.setitem(sys.modules, 'sensor_msgs.msg', sensor_stub.msg)
 
@@ -211,6 +217,35 @@ def test_objects_api_returns_latest(monkeypatch):
     assert res.json['objects'][0]['id'] == 1
 
 
+def test_joint_state_emits_socket_event(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    emit_mock = MagicMock()
+    node.socketio.emit = emit_mock
+
+    js_msg = win.JointState()
+    js_msg.name = ['j1']
+    js_msg.position = [1.0]
+    js_msg.velocity = [0.5]
+
+    node.joint_state_callback(js_msg)
+
+    emit_mock.assert_called_with('joint_state_update', {
+        'name': ['j1'],
+        'position': [1.0],
+        'velocity': [0.5],
+    })
+
 def test_jog_api_publishes(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
@@ -233,17 +268,7 @@ def test_jog_api_publishes(monkeypatch):
     assert msg.data == 'jog 1 0.1'
     logger_mock.log.assert_called_once_with('jog', {'joint': 1, 'delta': 0.1})
 
-
 def test_waypoint_api_execute(monkeypatch):
-    res = client.post('/api/scenarios/foo/load')
-    assert res.status_code == 200
-    assert node.config_pub.publish.called
-    msg = node.config_pub.publish.call_args[0][0]
-    assert json.loads(msg.data) == {'scenario': 'foo'}
-    logger_mock.log.assert_called_once_with('load_scenario', {'id': 'foo'})
-
-
-def test_save_scenario_endpoint(monkeypatch, tmp_path):
     _setup_ros_stubs(monkeypatch)
 
     sys.modules.pop('web_interface_backend.web_interface_node', None)
@@ -264,6 +289,44 @@ def test_save_scenario_endpoint(monkeypatch, tmp_path):
     msg = node.command_pub.publish.call_args[0][0]
     assert msg.data == 'execute_sequence'
     logger_mock.log.assert_called_once_with('waypoint', {'action': 'execute'})
+
+def test_load_scenario_endpoint(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    logger_mock = MagicMock()
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+
+    res = client.post('/api/scenarios/foo/load')
+    assert res.status_code == 200
+    assert node.config_pub.publish.called
+    msg = node.config_pub.publish.call_args[0][0]
+    assert json.loads(msg.data) == {'scenario': 'foo'}
+    logger_mock.log.assert_called_once_with('load_scenario', {'id': 'foo'})
+
+def test_save_scenario_endpoint(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    logger_mock = MagicMock()
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
     node.config_dir = str(tmp_path)
     client = node.app.test_client()
 
@@ -279,3 +342,4 @@ def test_save_scenario_endpoint(monkeypatch, tmp_path):
     data = json.loads(msg.data)
     assert data['update_scenario']['name'] == 'test'
     logger_mock.log.assert_called_with('save_scenario', {'id': 'test'})
+

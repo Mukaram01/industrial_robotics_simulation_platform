@@ -195,6 +195,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
                 'log_db_path': '',
                 'jpeg_quality': 75,
                 'detected_objects_topic': '/apm/detection/objects',
+                'joint_states_topic': '/joint_states',
                 'auto_open_browser': False,
             }
 
@@ -243,6 +244,9 @@ def test_web_interface_logger_initialization_order(tmp_path):
 
     stub_modules['sensor_msgs'].msg = stub_modules['sensor_msgs.msg']
     stub_modules['sensor_msgs.msg'].Image = object
+    class JS:
+        pass
+    stub_modules['sensor_msgs.msg'].JointState = JS
 
     class DummyCvBridge:
         pass
