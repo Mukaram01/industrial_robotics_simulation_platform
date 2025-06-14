@@ -45,11 +45,11 @@ The Industrial Robotics Simulation Platform serves as:
 
 The Industrial Robotics Simulation Platform consists of several integrated components:
 
-1. **Camera Simulation**: Provides synthetic RGB and depth image streams simulating industrial cameras
-2. **Environment Configuration**: Manages the simulation environment, objects, and physics
+1. **Physics Server**: Runs the underlying simulation engine and publishes sensor data
+2. **Environment Manager**: Handles environment configuration, objects and physics
 3. **Web Interface**: Provides a user-friendly interface for monitoring and control
 4. **Visualization Server**: Generates visual representations of the simulation state
-5. **Industrial Protocol Bridge**: Connects the simulation to industrial protocols
+5. **Industrial Bridge**: Connects the simulation to industrial protocols
 6. **Safety Monitor**: Enforces safety constraints and monitors for violations
 7. **System Test**: Validates system functionality and integration
 
@@ -65,17 +65,15 @@ The workspace is organized into the following packages:
 ### Architecture Diagram
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Web Interface  │◄────┤  Environment    │◄────┤  Camera         │
-│  (User Control) │     │  Configuration  │     │  Simulation     │
-└────────┬────────┘     └────────┬────────┘     └─────────────────┘
-         │                       │                       ▲
-         │                       │                       │
-         ▼                       ▼                       │
-┌─────────────────┐     ┌─────────────────┐     ┌───────┴─────────┐
-│  Visualization  │     │  Safety         │     │  Industrial     │
-│  Server         │     │  Monitor        │     │  Protocol Bridge│
-└─────────────────┘     └─────────────────┘     └─────────────────┘
+┌───────────────────┐     ┌────────────────────┐     ┌───────────────────┐
+│  Web Interface    │◄────┤ Environment Manager│◄────┤   Physics Server  │
+└────────┬──────────┘     └──────────┬─────────┘     └──────────▲────────┘
+         │                           │                          │
+         ▼                           ▼                          │
+┌───────────────────┐     ┌──────────────────┐     ┌────────────┴─────────┐
+│ Visualization     │     │  Safety Monitor  │     │  Industrial Bridge   │
+│ Server            │     └──────────────────┘     └──────────────────────┘
+└───────────────────┘
 ```
 
 ### Communication Flow
@@ -263,7 +261,7 @@ The OPC UA server port can also be overridden at launch using the `opcua_port`
 argument. For example:
 
 ```bash
-ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+ros2 launch simulation_core full_system.launch.py opcua_port:=4841
 ```
 
 The OPC UA server runs with minimal security configuration and listens only on
@@ -292,13 +290,13 @@ To start the complete system:
 ```bash
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch simulation_tools integrated_system_launch.py
+ros2 launch simulation_core full_system.launch.py
 ```
 
 To launch a specific scenario with advanced perception enabled:
 
 ```bash
-ros2 launch simulation_tools integrated_system_launch.py \
+ros2 launch simulation_core full_system.launch.py \
     scenario:=warehouse use_advanced_perception:=true
 ```
 
@@ -764,7 +762,7 @@ def load_model(self):
 - Verify the configured port is free: `sudo lsof -i:4840`
 - Specify an alternative port when launching, e.g.:
   ```bash
-  ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
+  ros2 launch simulation_core full_system.launch.py opcua_port:=4841
   ```
 
 #### MQTT Broker Connection Errors
