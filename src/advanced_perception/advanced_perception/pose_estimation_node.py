@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from concurrent.futures import ThreadPoolExecutor
+import threading
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
@@ -85,6 +86,7 @@ class PoseEstimationNode(Node):
         )
 
         # Initialize state
+        self._data_lock = threading.Lock()
         self.latest_rgb_image = None
         self.latest_depth_image = None
         self.latest_segmented_objects = None
@@ -140,7 +142,9 @@ class PoseEstimationNode(Node):
         Process incoming RGB image
         """
         try:
-            self.latest_rgb_image = self.cv_bridge.imgmsg_to_cv2(msg, 'bgr8')
+            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, 'bgr8')
+            with self._data_lock:
+                self.latest_rgb_image = cv_image
             self.processing_executor.submit(self.process_data)
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {str(e)}')
@@ -150,7 +154,9 @@ class PoseEstimationNode(Node):
         Process incoming depth image
         """
         try:
-            self.latest_depth_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+            depth_img = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+            with self._data_lock:
+                self.latest_depth_image = depth_img
             self.processing_executor.submit(self.process_data)
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {str(e)}')
@@ -159,27 +165,36 @@ class PoseEstimationNode(Node):
         """
         Process segmented objects message
         """
-        self.latest_segmented_objects = msg
+        with self._data_lock:
+            self.latest_segmented_objects = msg
         self.processing_executor.submit(self.process_data)
     
     def process_data(self):
         """
         Process all available data to estimate object poses
         """
+        with self._data_lock:
+            rgb_image = self.latest_rgb_image
+            depth_image = self.latest_depth_image
+            segmented_objects = self.latest_segmented_objects
+            camera_matrix = self.camera_matrix
+
         # Check if all required data is available
-        if (self.latest_rgb_image is None or 
-            self.latest_depth_image is None or 
-            self.latest_segmented_objects is None or
-            self.camera_matrix is None):
+        if (
+            rgb_image is None
+            or depth_image is None
+            or segmented_objects is None
+            or camera_matrix is None
+        ):
             return
-        
+
         try:
             # Create output message
             objects_msg = DetectedObjectArray()
-            objects_msg.header = self.latest_segmented_objects.header
+            objects_msg.header = segmented_objects.header
 
             # Process each segmented object
-            for idx, segmented_obj in enumerate(self.latest_segmented_objects.detections):
+            for idx, segmented_obj in enumerate(segmented_objects.detections):
                 # Get object region from RGB and depth images
                 x = int(segmented_obj.bbox.x_offset)
                 y = int(segmented_obj.bbox.y_offset)
@@ -189,15 +204,15 @@ class PoseEstimationNode(Node):
                 # Ensure bounds are within image
                 x = max(0, x)
                 y = max(0, y)
-                w = min(w, self.latest_rgb_image.shape[1] - x)
-                h = min(h, self.latest_rgb_image.shape[0] - y)
+                w = min(w, rgb_image.shape[1] - x)
+                h = min(h, rgb_image.shape[0] - y)
                 
                 # Skip if region is too small
                 if w <= 0 or h <= 0:
                     continue
                 
                 # Get depth in object region
-                depth_roi = self.latest_depth_image[y:y+h, x:x+w]
+                depth_roi = depth_image[y:y+h, x:x+w]
                 
                 # Filter invalid depths
                 valid_depths = depth_roi[(depth_roi > 0) & (depth_roi < 65535)]
@@ -218,12 +233,12 @@ class PoseEstimationNode(Node):
                 
                 # Convert from image coordinates to camera coordinates
                 fx = fy = 1.0
-                if self.camera_matrix is not None:
+                if camera_matrix is not None:
                     # Get focal length and principal point
-                    fx = self.camera_matrix[0, 0]
-                    fy = self.camera_matrix[1, 1]
-                    cx = self.camera_matrix[0, 2]
-                    cy = self.camera_matrix[1, 2]
+                    fx = camera_matrix[0, 0]
+                    fy = camera_matrix[1, 1]
+                    cx = camera_matrix[0, 2]
+                    cy = camera_matrix[1, 2]
 
                     # Calculate 3D position in camera frame
                     X = (center_x - cx) * median_depth / fx
@@ -237,7 +252,7 @@ class PoseEstimationNode(Node):
                 
                 # Create detected object with pose
                 obj = DetectedObject()
-                obj.header = self.latest_segmented_objects.header
+                obj.header = segmented_objects.header
                 obj.id = idx + 1
                 obj.class_id = segmented_obj.class_id
                 obj.class_name = segmented_obj.class_name
