@@ -1,0 +1,16 @@
+# Default camera simulation parameters
+simulation_mode: synthetic
+frame_rate: 30.0
+resolution:
+  width: 640
+  height: 480
+camera_name: camera
+object_count: 5
+object_types:
+  - red_cube
+  - green_cylinder
+  - blue_sphere
+background_type: conveyor_belt
+noise_level: 0.02
+simulate_lighting: true
+simulate_occlusion: false
