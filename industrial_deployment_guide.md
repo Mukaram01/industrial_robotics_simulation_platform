@@ -138,6 +138,28 @@ colcon build --symlink-install
 source install/setup.bash
 ```
 
+### Visualizing the UR5
+
+After building the workspace, you can visualize the UR5 model in RViz:
+
+```bash
+ros2 launch ur5_robot_description display.launch.py
+```
+
+To start MoveIt for the UR5, run:
+
+```bash
+ros2 launch ur5_robot_moveit_config move_group.launch.py use_sim_time:=false
+```
+
+The mesh resources are required for accurate visualization. If RViz does not
+show the robot, ensure the workspace has been built and sourced. The launch file
+also supports namespaces, for example:
+
+```bash
+ros2 launch ur5_robot_description display.launch.py --ros-args -r __ns:=my_robot
+```
+
 ### Building the Workspace
 
 1. Clone the repository:
