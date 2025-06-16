@@ -49,50 +49,7 @@ The ROS workspace is organized into modular packages:
 
 ## UR5 Mesh Assets
 
-The UR5 mesh files used by `ur5_robot_description` are not stored directly in
-this repository. Install the `ur_description` package for your ROS&nbsp;2
-distribution so that these meshes are available. On Ubuntu you can install the
-package with:
-
-```bash
-sudo apt-get install ros-<distro>-ur-description
-```
-
-The mesh files will then be located under
-`/opt/ros/<distro>/share/ur_description/meshes`. If you build
-`ur_description` from source or place the meshes elsewhere, make sure the path
-is reachable via `ROS_PACKAGE_PATH` or copy the meshes into
-`src/ur5_robot_description/meshes`.
-
-Once the package is installed and other dependencies are available, build the
-workspace:
-
-```bash
-source /opt/ros/humble/setup.bash
-colcon build --symlink-install
-source install/setup.bash
-```
-
-## Visualizing the UR5
-
-Once the meshes are in place, you can visualize the UR5 model in RViz. Running
-the following command now starts RViz automatically with a default
-configuration:
-
-```bash
-ros2 launch ur5_robot_description display.launch.py
-```
-
-To start MoveIt for the UR5, run:
-
-```bash
-ros2 launch ur5_robot_moveit_config move_group.launch.py use_sim_time:=false
-```
-
-The mesh resources are required for accurate visualization in both cases.
-
-- If RViz opens without showing the robot, confirm you have a working graphical desktop and that the workspace has been built and sourced.
-- The launch file now passes the URDF to RViz directly so the model also loads correctly when a namespace is specified, e.g. `ros2 launch ur5_robot_description display.launch.py --ros-args -r __ns:=my_robot`.
+The UR5 meshes are distributed with the `ur_description` package and are not stored in this repository. See the [deployment guide](industrial_deployment_guide.md#ur5-mesh-assets) for instructions on installing the package and visualizing the UR5 model.
 
 ## Getting Started
 
