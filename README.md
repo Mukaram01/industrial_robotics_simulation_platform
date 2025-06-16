@@ -53,14 +53,7 @@ The UR5 meshes are distributed with the `ur_description` package and are not sto
 
 ## Getting Started
 
-For complete installation and launch instructions see
-[docs/full_system_run_guide.md](docs/full_system_run_guide.md). After installing
-the required dependencies and building the workspace, start the full system
-with:
-
-```bash
-ros2 launch simulation_core full_system.launch.py
-```
+For installation and launch instructions, see [industrial_deployment_guide.md](industrial_deployment_guide.md) and [docs/full_system_run_guide.md](docs/full_system_run_guide.md).
 
 ## Documentation
 
