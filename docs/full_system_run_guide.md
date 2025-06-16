@@ -4,15 +4,18 @@ This guide walks through launching every component of the simulation platform: G
 
 ## Prerequisites
 
-- ROS 2 Humble installed and sourced (`source /opt/ros/humble/setup.bash`)
-- The workspace built as described in the main README
+- Ubuntu 22.04 or newer with ROS&nbsp;2 Humble installed (`source /opt/ros/humble/setup.bash`)
 - Gazebo packages installed (`sudo apt install ros-humble-gazebo-ros-pkgs`)
+- `python3-rosdep` installed and initialized
 
 ## 1. Build the Workspace
 
 ```bash
 cd industrial_robotics_simulation_platform
 pip install -r requirements.txt
+sudo apt install python3-rosdep
+sudo rosdep init
+rosdep update
 rosdep install --from-paths src -y --ignore-src
 colcon build --symlink-install
 source install/setup.bash

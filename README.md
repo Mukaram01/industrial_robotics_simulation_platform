@@ -96,132 +96,14 @@ The mesh resources are required for accurate visualization in both cases.
 
 ## Getting Started
 
-1. **Installation**
-   ```bash
-   source /opt/ros/humble/setup.bash
-   cd industrial_robotics_simulation_platform
-   pip install -r requirements.txt
-   sudo apt install python3-rosdep
-   sudo rosdep init
-   rosdep update
-   rosdep install --from-paths src -y --ignore-src
-   colcon build --symlink-install
-   source install/setup.bash
-   ```
-   The `rosdep` commands resolve additional ROS packages required for the workspace.
-
-2. **Launch the System**
-   ```bash
-   ros2 launch simulation_core full_system.launch.py
-   ```
-
-   To load a specific scenario or enable advanced perception:
-   ```bash
-   ros2 launch simulation_core full_system.launch.py \
-       scenario:=warehouse use_advanced_perception:=true
-   ```
-   The `scenario` argument defaults to `default`.
-
-   To change the OPC UA server port, pass the `opcua_port` argument:
-   ```bash
-  ros2 launch simulation_core full_system.launch.py opcua_port:=4841
-  ```
-   This argument is also supported by `realsense_hybrid_launch.py`.
-
-   ### Run Components Individually
-
-   The main launch file starts everything at once. You can also launch
-   individual components for testing:
-
-   ```bash
-   ros2 launch simulation_core physics_server.launch.py
-   ros2 launch simulation_core environment_manager.launch.py
-   ros2 launch simulation_core web_interface.launch.py
-   ros2 launch simulation_core visualization_server.launch.py
-   ros2 launch simulation_core industrial_bridge.launch.py
-   ```
-
-   To secure MQTT communication, configure authentication and TLS in your
-   Mosquitto broker. Set the `password_file` option and create a dedicated
-   listener for TLS traffic:
-   ```
-   listener 8883
-   password_file /etc/mosquitto/passwd
-   cafile /etc/mosquitto/ca.crt
-   certfile /etc/mosquitto/server.crt
-   keyfile /etc/mosquitto/server.key
-   allow_anonymous false
-   ```
-   Refer to the [Mosquitto security documentation](https://mosquitto.org/man/mosquitto-conf-5.html) for details.
-
-   The industrial protocol bridge expects a local MQTT broker. Install and start
-   Mosquitto with:
-
-   ```bash
-   sudo apt install mosquitto
-   sudo systemctl start mosquitto
-   ```
-
-   Launch with `mqtt_enabled:=false` if a broker is not available.
-
-   The OPC UA server is configured with minimal security and, by default, only
-   listens on `127.0.0.1`. If you need to allow remote connections, override the
-   `opcua_endpoint` parameter with a host accessible on your network, e.g.:
-   ```bash
-   ros2 launch simulation_core full_system.launch.py \
-       opcua_endpoint:=opc.tcp://0.0.0.0:4840/freeopcua/server/
-   ```
-
-### Configuration Directory and Data Storage
-
-By default, configuration files are loaded from
-`src/simulation_core/config/`. Pass `config_dir:=<path>` when launching to
-use a custom directory. The `data_dir` parameter controls where log files and
-optional saved images are written (default: `/tmp/simulation_data`).
-
-Example:
+For complete installation and launch instructions see
+[docs/full_system_run_guide.md](docs/full_system_run_guide.md). After installing
+the required dependencies and building the workspace, start the full system
+with:
 
 ```bash
-ros2 launch simulation_core full_system.launch.py \
-    config_dir:=/my/configs data_dir:=/tmp/my_data
+ros2 launch simulation_core full_system.launch.py
 ```
-
-Scenario YAML files such as `pick_and_place.yaml` can be duplicated and
-modified in your custom directory to define new scenarios.
-
-3. **Access the Web Interface**
-   ```
-   http://localhost:8080
-   ```
-
-### Web Interface Configuration
-
-The web server uses Flask's development server via `socketio.run`. By default,
-the system allows Werkzeug to run even if a production environment is
-detected. You can disable this override by setting the `allow_unsafe_werkzeug`
-parameter to `false`:
-
-```bash
-ros2 launch simulation_core full_system.launch.py allow_unsafe_werkzeug:=false
-```
-
-Both nodes in the `web_interface_backend` package, `web_interface_node` and
-`visualization_server_node`, support a `jpeg_quality` parameter to control JPEG
-compression (0-100). The default value is `75`.
-
-Set `auto_open_browser:=true` to automatically open your default web browser
-when the interface starts. This is disabled by default for headless systems.
-
-### Robot Jogging and Waypoint Control
-
-The control panel exposes sliders to jog each joint and buttons to record
-waypoints. Recorded poses can be cleared or executed as a sequence. A typical
-workflow is:
-
-1. Jog the robot to a desired pose using the **Jog Joints** sliders.
-2. Click **Record Waypoint** to store the position.
-3. Repeat to add more waypoints.
-4. Press **Execute Sequence** to move the robot through the recorded poses.
 
 ## Documentation
 

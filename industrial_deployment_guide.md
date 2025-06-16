@@ -94,68 +94,9 @@ The system uses ROS2 topics for inter-component communication:
 
 ## Installation
 
-### Prerequisites
-
-- Ubuntu 22.04 or newer
-- ROS2 Humble or newer
-- Python 3.8 or newer
-- Web browser (Chrome, Firefox, or Edge recommended)
-
-### Dependencies
-
-```bash
-# Install ROS2 dependencies
-sudo apt update
-sudo apt install -y python3-pip python3-opencv python3-yaml python3-matplotlib
-sudo apt install -y ros-humble-cv-bridge ros-humble-sensor-msgs
-
-# Install Python dependencies
-pip3 install flask flask-socketio rclpy numpy opencv-python pyyaml matplotlib
-pip3 install asyncua paho-mqtt  # For industrial protocol support
-```
-
-### UR5 Mesh Assets
-
-The UR5 meshes are provided by the `ur_description` package for your ROS 2
-distribution. Install this package using apt so that the URDF can locate the
-meshes:
-
-```bash
-sudo apt-get install ros-<distro>-ur-description
-```
-
-The meshes will then reside under
-`/opt/ros/<distro>/share/ur_description/meshes`. If you built the package from
-source or installed it to a custom location, ensure that directory is included
-in your `ROS_PACKAGE_PATH` or create a symlink to
-`src/ur5_robot_description/meshes`.
-
-After installing dependencies and the package, build the workspace:
-
-```bash
-source /opt/ros/humble/setup.bash
-colcon build --symlink-install
-source install/setup.bash
-```
-
-### Building the Workspace
-
-1. Clone the repository:
-```bash
-git clone https://github.com/your-organization/industrial_robotics_simulation_platform.git
-cd industrial_robotics_simulation_platform
-```
-
-2. Build the workspace:
-```bash
-source /opt/ros/humble/setup.bash
-colcon build --symlink-install
-```
-
-3. Source the workspace:
-```bash
-source install/setup.bash
-```
+Detailed installation steps, including dependency setup and workspace building,
+are provided in
+[docs/full_system_run_guide.md](docs/full_system_run_guide.md).
 
 ## Configuration
 
@@ -285,28 +226,10 @@ See the [Mosquitto documentation](https://mosquitto.org/man/mosquitto-conf-5.htm
 
 ### Starting the System
 
-To start the complete system:
-
-```bash
-source /opt/ros/humble/setup.bash
-source install/setup.bash
-ros2 launch simulation_core full_system.launch.py
-```
-
-To launch a specific scenario with advanced perception enabled:
-
-```bash
-ros2 launch simulation_core full_system.launch.py \
-    scenario:=warehouse use_advanced_perception:=true
-```
-
-### Accessing the Web Interface
-
-Once the system is running, access the web interface at:
-
-```
-http://localhost:8080
-```
+Follow the steps in
+[docs/full_system_run_guide.md](docs/full_system_run_guide.md) to build and
+launch the full system. Once running, open `http://localhost:8080` to access the
+web interface.
 
 ### Basic Commands
 
