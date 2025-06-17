@@ -3,7 +3,7 @@ import types
 from unittest.mock import MagicMock
 
 # reuse helper from API tests
-from test_web_interface_api import _setup_ros_stubs
+from test_utils import _setup_ros_stubs
 
 
 def test_run_server_fallback(monkeypatch):
