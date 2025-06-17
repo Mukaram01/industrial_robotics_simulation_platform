@@ -33,7 +33,7 @@ The Industrial Robotics Simulation Platform serves as:
 - **Highly configurable simulation environment** with support for various industrial scenarios
 - **Web-based GUI** for real-time monitoring and control
 - **Dynamic object manipulation** allowing addition, removal, and modification of environment elements
-- **Industrial protocol support** including OPC UA and MQTT
+ - **Industrial protocol support** including OPC UA, MQTT and Modbus
 - **Safety monitoring system** with collision detection and emergency stop capabilities
 - **Performance metrics tracking** for cycle time, throughput, and accuracy
 - **Scenario recording and playback** for consistent demonstrations
@@ -58,7 +58,7 @@ The workspace is organized into the following packages:
 - `simulation_core` – base simulation environment and scenario manager
 - `robot_interfaces` – UR5 and delta robot interfaces
 - `perception_nodes` – synthetic and RealSense camera nodes
-- `industrial_protocols` – OPC UA and MQTT connectivity
+- `industrial_protocols` – OPC UA, MQTT and Modbus connectivity
 - `web_interface_backend` – REST/Socket backend
 - `web_interface_frontend` – static web assets
 
@@ -209,6 +209,10 @@ mqtt:
   enabled: true
   broker: localhost
   port: 1883
+modbus:
+  enabled: false
+  host: localhost
+  port: 502
 hybrid_mode: false
 ```
 
@@ -425,9 +429,9 @@ hybrid_mode: true
 
 ### Hardware Requirements
 
-- Industrial robot with ROS2 driver or OPC UA/MQTT interface
+ - Industrial robot with ROS2 driver or OPC UA/MQTT/Modbus interface
 - Camera with ROS2 driver (e.g., Intel RealSense D435i)
-- Industrial PLC with OPC UA/MQTT support (optional)
+ - Industrial PLC with OPC UA/MQTT/Modbus support (optional)
 
 ### Connecting to a Real Robot
 
