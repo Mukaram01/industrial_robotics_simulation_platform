@@ -3,6 +3,7 @@ import sqlite3
 import time
 import json
 import logging
+import os
 from threading import Lock
 
 class ActionLogger:
@@ -13,6 +14,11 @@ class ActionLogger:
         self.db_path = db_path
         self.raise_errors = raise_errors
         self._lock = Lock()
+
+        dir_name = os.path.dirname(self.db_path)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
+
         self._conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self._initialize()
 
