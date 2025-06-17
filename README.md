@@ -96,6 +96,23 @@ git lfs track "*.onnx" "*.tar.gz" "*.ckpt"
 git add .gitattributes
 ```
 
+## Docker Usage
+
+Build the image from the repository root:
+
+```bash
+docker build -t industrial_sim .
+```
+
+Run the container with host networking so ROS 2 topics are visible:
+
+```bash
+docker run --rm -it --net=host industrial_sim
+```
+
+The container will automatically launch the integrated system using
+`simulation_tools/integrated_system_launch.py`.
+
 ## Running Tests
 
 `pytest` is used for running the unit tests. After building the workspace,
