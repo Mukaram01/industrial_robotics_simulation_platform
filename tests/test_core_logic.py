@@ -130,6 +130,17 @@ def test_scenario_file_cycle(tmp_path):
     assert not path.exists()
 
 
+def test_save_scenario_creates_dir(tmp_path):
+    config_dir = tmp_path / 'configs' / 'scenarios'
+    dummy = make_dummy(config_dir)
+
+    data = {'name': 'auto', 'config': {}}
+    ec.EnvironmentConfiguratorNode.save_scenario(dummy, data)
+
+    assert config_dir.exists()
+    assert (config_dir / 'auto.yaml').exists()
+
+
 def test_update_settings(tmp_path):
     dummy = make_dummy(tmp_path)
     ec.EnvironmentConfiguratorNode.update_settings(

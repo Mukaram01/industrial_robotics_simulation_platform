@@ -237,7 +237,9 @@ class EnvironmentConfiguratorNode(Node):
         if not self.config_dir:
             self.get_logger().error('Config directory not set, cannot save scenario')
             return
-        
+
+        os.makedirs(self.config_dir, exist_ok=True)
+
         scenario_id = scenario_data.get('name', 'custom')
         description = scenario_data.get('description', 'Custom scenario')
         config = scenario_data.get('config', {})
