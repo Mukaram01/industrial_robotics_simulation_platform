@@ -25,7 +25,7 @@ The ROS workspace is organized into modular packages:
 - `simulation_core` – base simulation logic and scenarios
 - `robot_interfaces` – robot-specific communication layers
 - `perception_nodes` – camera simulation and sensor nodes
-- `industrial_protocols` – OPC UA/MQTT integration
+- `industrial_protocols` – OPC UA/MQTT/Modbus integration
 - `web_interface_backend` – Flask server and APIs
 - `web_interface_frontend` – static HTML/JS resources
    - Performance metrics dashboard
@@ -33,7 +33,7 @@ The ROS workspace is organized into modular packages:
    - Live plots for joint angles and sensors
 
 4. **Industrial Integration**
-   - OPC UA and MQTT protocol support
+  - OPC UA, MQTT and Modbus protocol support
    - Hybrid mode for connecting to real equipment
    - Pre-trained model integration
 

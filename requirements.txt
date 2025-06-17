@@ -7,4 +7,5 @@ pyyaml
 matplotlib
 asyncua
 paho-mqtt
+pymodbus
 onnxruntime

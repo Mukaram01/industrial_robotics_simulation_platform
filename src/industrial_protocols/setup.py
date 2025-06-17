@@ -10,7 +10,7 @@ setup(
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'rclpy', 'asyncua', 'paho-mqtt', 'pyyaml'],
+    install_requires=['setuptools', 'rclpy', 'asyncua', 'paho-mqtt', 'pyyaml', 'pymodbus'],
     zip_safe=True,
     maintainer='user',
     maintainer_email='user@example.com',

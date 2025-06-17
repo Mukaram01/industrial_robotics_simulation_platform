@@ -89,3 +89,17 @@ def test_visualization_server_node_defaults():
     assert node.get_parameter('export_interval').value == 60.0
     assert node.get_parameter('visualization_rate').value == 10.0
     assert node.get_parameter('jpeg_quality').value == 75
+
+
+def test_industrial_protocol_bridge_defaults(monkeypatch):
+    from test_utils import _setup_ros_stubs
+
+    _setup_ros_stubs(monkeypatch)
+    sys.modules.pop('industrial_protocols.industrial_protocol_bridge_node', None)
+    from industrial_protocols import industrial_protocol_bridge_node as ipb
+
+    node = ipb.IndustrialProtocolBridgeNode()
+
+    assert node.get_parameter('modbus_host').value == 'localhost'
+    assert node.get_parameter('modbus_port').value == 502
+    assert node.get_parameter('modbus_enabled').value is False

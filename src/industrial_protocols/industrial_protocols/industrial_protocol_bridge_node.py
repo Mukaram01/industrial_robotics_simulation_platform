@@ -17,6 +17,10 @@ import time
 import asyncio
 import asyncua
 import paho.mqtt.client as mqtt
+try:
+    from pymodbus.client import ModbusTcpClient
+except Exception:  # pragma: no cover - optional dependency
+    ModbusTcpClient = None
 
 class IndustrialProtocolBridgeNode(Node):
     def __init__(self):
@@ -29,6 +33,9 @@ class IndustrialProtocolBridgeNode(Node):
         self.declare_parameter('mqtt_enabled', True)
         self.declare_parameter('mqtt_broker', 'localhost')
         self.declare_parameter('mqtt_port', 1883)
+        self.declare_parameter('modbus_enabled', False)
+        self.declare_parameter('modbus_host', 'localhost')
+        self.declare_parameter('modbus_port', 502)
         self.declare_parameter('hybrid_mode', False)
         
         # Get parameters
@@ -38,6 +45,9 @@ class IndustrialProtocolBridgeNode(Node):
         self.mqtt_enabled = self.get_parameter('mqtt_enabled').value
         self.mqtt_broker = self.get_parameter('mqtt_broker').value
         self.mqtt_port = self.get_parameter('mqtt_port').value
+        self.modbus_enabled = self.get_parameter('modbus_enabled').value
+        self.modbus_host = self.get_parameter('modbus_host').value
+        self.modbus_port = self.get_parameter('modbus_port').value
         self.hybrid_mode = self.get_parameter('hybrid_mode').value
         
         # Initialize state
@@ -46,8 +56,10 @@ class IndustrialProtocolBridgeNode(Node):
         self.metrics = {}
         self.opcua_server = None
         self.mqtt_client = None
+        self.modbus_client = None
         # Used to signal the OPC UA server thread to exit cleanly
         self._opcua_stop_event = threading.Event()
+        self._modbus_stop_event = threading.Event()
         
         # Create subscribers
         self.status_sub = self.create_subscription(
@@ -82,6 +94,10 @@ class IndustrialProtocolBridgeNode(Node):
         # Start MQTT client if enabled
         if self.mqtt_enabled:
             self.setup_mqtt_client()
+
+        # Start Modbus client if enabled
+        if self.modbus_enabled:
+            self.setup_modbus_client()
         
         self.get_logger().info('Industrial protocol bridge node initialized')
         
@@ -92,10 +108,15 @@ class IndustrialProtocolBridgeNode(Node):
         try:
             status_data = json.loads(msg.data)
             self.system_status = status_data.get('status', 'unknown')
-            
+
             # Publish to MQTT if enabled
             if self.mqtt_enabled and self.mqtt_client and self.mqtt_client.is_connected():
                 self.mqtt_client.publish('simulation/status', msg.data)
+
+            # Write status to Modbus if enabled
+            if self.modbus_enabled and self.modbus_client:
+                regs = self._string_to_regs(self.system_status)
+                self.modbus_client.write_registers(32, regs)
         except Exception as e:
             self.get_logger().error(f'Error processing status message: {e}')
     
@@ -106,6 +127,11 @@ class IndustrialProtocolBridgeNode(Node):
             # Publish to MQTT if enabled
             if self.mqtt_enabled and self.mqtt_client and self.mqtt_client.is_connected():
                 self.mqtt_client.publish('simulation/metrics', msg.data)
+
+            if self.modbus_enabled and self.modbus_client:
+                for i, key in enumerate(['cycle_time', 'throughput', 'accuracy', 'errors']):
+                    value = int(self.metrics.get(key, 0))
+                    self.modbus_client.write_register(100 + i, value)
         except Exception as e:
             self.get_logger().error(f'Error processing metrics message: {e}')
     
@@ -141,6 +167,27 @@ class IndustrialProtocolBridgeNode(Node):
             self.get_logger().info(f'MQTT client connected to {self.mqtt_broker}:{self.mqtt_port}')
         except Exception as e:
             self.get_logger().error(f'Error setting up MQTT client: {e}')
+
+    def setup_modbus_client(self):
+        if ModbusTcpClient is None:
+            self.get_logger().error('pymodbus not installed, Modbus disabled')
+            return
+        try:
+            self.modbus_client = ModbusTcpClient(self.modbus_host, port=self.modbus_port)
+            if self.modbus_client.connect():
+                self.get_logger().info(
+                    f'Modbus client connected to {self.modbus_host}:{self.modbus_port}'
+                )
+                self.modbus_thread = threading.Thread(target=self.modbus_poll_loop)
+                self.modbus_thread.daemon = True
+                self.modbus_thread.start()
+            else:
+                self.get_logger().error(
+                    f'Failed to connect to Modbus server at {self.modbus_host}:{self.modbus_port}'
+                )
+                self.modbus_client = None
+        except Exception as e:
+            self.get_logger().error(f'Error setting up Modbus client: {e}')
     
     def on_mqtt_connect(self, client, userdata, flags, rc):
         self.get_logger().info(f'MQTT connected with result code {rc}')
@@ -170,6 +217,30 @@ class IndustrialProtocolBridgeNode(Node):
                 client.reconnect()
             except Exception as e:
                 self.get_logger().error(f'Error reconnecting MQTT client: {e}')
+
+    def modbus_poll_loop(self):
+        last_cmd = None
+        while not self._modbus_stop_event.is_set():
+            try:
+                if not self.modbus_client:
+                    break
+                result = self.modbus_client.read_holding_registers(0, 16)
+                if not hasattr(result, 'registers'):
+                    time.sleep(0.5)
+                    continue
+                data = bytearray()
+                for reg in result.registers:
+                    data.extend(int(reg).to_bytes(2, 'big'))
+                command = data.decode('utf-8').strip('\x00')
+                if command and command != last_cmd:
+                    msg = String()
+                    msg.data = command
+                    self.command_pub.publish(msg)
+                    self.get_logger().info(f'Received Modbus command: {command}')
+                    last_cmd = command
+            except Exception as e:
+                self.get_logger().error(f'Error reading Modbus command: {e}')
+            time.sleep(0.5)
     
     def run_opcua_server(self):
         # This runs in a separate thread
@@ -187,6 +258,23 @@ class IndustrialProtocolBridgeNode(Node):
                 asyncio.run(self.opcua_server.stop())
             except Exception as e:
                 self.get_logger().error(f'Error stopping OPC UA server: {e}')
+
+    def stop_modbus_client(self):
+        self._modbus_stop_event.set()
+        if self.modbus_client:
+            try:
+                self.modbus_client.close()
+            except Exception as e:
+                self.get_logger().error(f'Error closing Modbus client: {e}')
+
+    @staticmethod
+    def _string_to_regs(text, length=16):
+        data = text.encode('utf-8')[: length * 2]
+        data += b'\x00' * (length * 2 - len(data))
+        regs = []
+        for i in range(0, len(data), 2):
+            regs.append(int.from_bytes(data[i : i + 2], 'big'))
+        return regs
     
     async def opcua_server_main(self):
         try:
@@ -277,6 +365,9 @@ def main(args=None):
 
         if node.opcua_enabled:
             node.stop_opcua_server()
+
+        if node.modbus_enabled:
+            node.stop_modbus_client()
 
         node.destroy_node()
         rclpy.shutdown()
