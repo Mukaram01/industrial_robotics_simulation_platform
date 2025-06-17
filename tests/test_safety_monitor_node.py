@@ -1,6 +1,5 @@
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock
 
 from test_utils import _setup_ros_stubs
 
