@@ -99,7 +99,13 @@ git add .gitattributes
 ## Running Tests
 
 `pytest` is used for running the unit tests. After building the workspace,
-install any Python dependencies and execute:
+install any Python dependencies with:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then execute:
 
 ```bash
 pytest
