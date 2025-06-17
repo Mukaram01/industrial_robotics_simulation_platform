@@ -2,13 +2,13 @@
 """Utility that downloads a TensorFlow model and converts it to ONNX format."""
 
 import os
-import subprocess
 import argparse
 import tensorflow as tf
 import tf2onnx
 import numpy as np
 from pathlib import Path
 import tarfile
+import urllib.request
 
 def download_tf_model(model_name, output_dir):
     """
@@ -36,13 +36,9 @@ def download_tf_model(model_name, output_dir):
     # Download the model file if it doesn't exist
     if not os.path.exists(model_file):
         try:
-            subprocess.run([
-                "wget",
-                "-O",
-                model_file,
-                model_url,
-            ], check=True)
-        except subprocess.CalledProcessError as exc:
+            print(f"Downloading {model_url} to {model_file}")
+            urllib.request.urlretrieve(model_url, model_file)
+        except Exception as exc:
             raise RuntimeError(
                 f"Failed to download model from {model_url}"
             ) from exc
