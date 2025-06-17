@@ -105,6 +105,15 @@ def test_action_logger_get_recent(tmp_path):
     assert recent[1]['action'] == 'action1'
 
 
+def test_action_logger_creates_dir(tmp_path):
+    db_path = tmp_path / 'logs' / 'actions' / 'actions.db'
+    logger = ActionLogger(str(db_path))
+    assert db_path.parent.exists()
+    logger.log('test')
+    logger.close()
+    assert db_path.exists()
+
+
 def test_scenario_file_cycle(tmp_path):
     dummy = make_dummy(tmp_path)
 
