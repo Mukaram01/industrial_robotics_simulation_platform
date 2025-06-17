@@ -98,6 +98,20 @@ Detailed installation steps, including dependency setup and workspace building,
 are provided in
 [docs/full_system_run_guide.md](docs/full_system_run_guide.md).
 
+## UR5 Mesh Assets
+
+The UR5 meshes are provided through the `ur_description` package rather than
+this repository. Install the package using your ROS distribution's package
+manager:
+
+```bash
+sudo apt-get install ros-${ROS_DISTRO}-ur-description
+```
+
+After installation the mesh and URDF files will be available under
+`$(ros2 pkg prefix ur_description)/share/ur_description/`. The launch files in
+this project automatically use these resources when present.
+
 ## Configuration
 
 ### System Configuration
