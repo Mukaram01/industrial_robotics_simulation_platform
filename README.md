@@ -140,6 +140,13 @@ git lfs checkout path/to/file
 
 You can also discard local modifications with `git restore path/to/file`.
 
+## Ignored Paths
+
+Temporary data and logs are not stored in version control. The `data/` folder is
+used for runtime outputs, while scripts may create configuration files under
+`configs/`. These locations are listed in `.gitignore` so your local runs don't
+pollute commits.
+
 ## Docker Usage
 
 Build the image from the repository root:
