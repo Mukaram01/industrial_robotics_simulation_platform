@@ -1,10 +1,15 @@
-"""Utility functions for basic AABB collision detection."""
+"""Utility functions for simple AABB collision detection."""
 
-from typing import Dict, Iterable, List, Optional
+from __future__ import annotations
+
+from typing import Any, Dict, List
 
 
-def build_aabb(obj: Dict) -> Optional[Dict]:
-    """Return an axis-aligned bounding box for an environment object."""
+_AABB = Dict[str, Any]
+
+
+def _to_aabb(obj: Dict[str, Any]) -> _AABB | None:
+
     pos = obj.get("position")
     dims = obj.get("dimensions")
     if pos is None:
@@ -15,7 +20,7 @@ def build_aabb(obj: Dict) -> Optional[Dict]:
             dims = [2 * radius, 2 * radius, 2 * radius]
     if dims is None:
         return None
-
+      
     half = [d / 2.0 for d in dims]
     return {
         "id": obj.get("id", obj.get("type", "object")),
@@ -24,15 +29,31 @@ def build_aabb(obj: Dict) -> Optional[Dict]:
     }
 
 
-def detect_collisions(objects: Iterable[Dict], min_distance: float = 0.0) -> List[Dict]:
-    """Return a list of collision or near-miss violations."""
-    objs = list(objects)
-    violations: List[Dict] = []
+def detect_collisions(environment_config: Dict[str, Any], min_distance: float = 0.0) -> List[Dict[str, Any]]:
+    """Return a list of collisions or near misses between objects.
 
-    for i in range(len(objs)):
-        a = objs[i]
-        for j in range(i + 1, len(objs)):
-            b = objs[j]
+    Parameters
+    ----------
+    environment_config:
+        Dictionary containing lists of objects under the keys
+        ``objects``, ``containers``, ``conveyors`` and ``robots``.
+    min_distance:
+        Minimum allowed distance between objects. If the distance is
+        below this value a near miss violation is reported.
+    """
+    objects: List[_AABB] = []
+    for key in ["objects", "containers", "conveyors", "robots"]:
+        for obj in environment_config.get(key, []):
+            aabb = _to_aabb(obj)
+            if aabb:
+                objects.append(aabb)
+
+    violations: List[Dict[str, Any]] = []
+    for i in range(len(objects)):
+        a = objects[i]
+        for j in range(i + 1, len(objects)):
+            b = objects[j]
+
             overlap = all(
                 a["min"][k] <= b["max"][k] and a["max"][k] >= b["min"][k]
                 for k in range(3)
@@ -46,8 +67,5 @@ def detect_collisions(objects: Iterable[Dict], min_distance: float = 0.0) -> Lis
             dz = max(a["min"][2] - b["max"][2], b["min"][2] - a["max"][2], 0.0)
             dist = (dx ** 2 + dy ** 2 + dz ** 2) ** 0.5
             if dist < min_distance:
-                violations.append(
-                    {"type": "collision", "objects": [a["id"], b["id"],], "distance": dist}
-                )
-
+                violations.append({"type": "collision", "objects": [a["id"], b["id"]], "distance": dist})
     return violations
