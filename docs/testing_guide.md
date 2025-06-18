@@ -8,7 +8,7 @@ Install the Python packages listed in `requirements.txt` along with the developm
 
 ```bash
 pip install -r requirements.txt
-pip install flake8 pytest
+pip install flake8 pytest pytest-cov
 ```
 
 The tests use stub modules so ROS&nbsp;2 is not required. Ensure all dependencies are available in your environment before running the suite.
@@ -23,16 +23,17 @@ flake8 src tests
 
 ## 3. Execute the Tests
 
-Run all unit tests from the repository root:
+Run all unit tests with coverage enabled from the repository root:
 
 ```bash
-pytest
+pytest --cov=src --cov-report=xml
 ```
 
-Individual tests can be executed by passing a file path, for example:
+Individual tests can be executed by passing a file path. Coverage is still
+enabled automatically:
 
 ```bash
-pytest tests/test_core_logic.py
+pytest --cov=src --cov-report=xml tests/test_core_logic.py
 ```
 
 ## 4. Test Structure

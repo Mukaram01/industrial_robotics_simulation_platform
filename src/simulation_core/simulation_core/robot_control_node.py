@@ -3,6 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+from . import registry
 
 
 class RobotControlNode(Node):
@@ -14,10 +15,19 @@ class RobotControlNode(Node):
         self.declare_parameter('jog_topic', '/robot/jog')
         self.declare_parameter('waypoint_topic', '/robot/waypoint')
         self.declare_parameter('sequence_topic', '/robot/execute_sequence')
+        self.declare_parameter('controller_type', 'basic')
 
         self.jog_topic = self.get_parameter('jog_topic').value
         self.waypoint_topic = self.get_parameter('waypoint_topic').value
         self.sequence_topic = self.get_parameter('sequence_topic').value
+        controller_name = self.get_parameter('controller_type').value
+        controller_cls = registry.get_controller(controller_name)
+        if controller_cls is None:
+            self.get_logger().warning(
+                f'Controller {controller_name} not found, using basic controller'
+            )
+            controller_cls = registry.get_controller('basic')
+        self.controller = controller_cls()
 
         self.jog_pub = self.create_publisher(String, self.jog_topic, 10)
         self.waypoint_pub = self.create_publisher(String, self.waypoint_topic, 10)

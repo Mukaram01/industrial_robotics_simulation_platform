@@ -371,7 +371,7 @@ def test_pick_and_place_node_parameters(monkeypatch):
     sys.modules.pop('fmm_core.fmm_core.pick_and_place_node', None)
     from fmm_core.fmm_core import pick_and_place_node as ppn
 
-    node = ppn.PickAndPlaceNode()
+    ppn.PickAndPlaceNode()
 
     mg = sys.modules['moveit_commander'].MoveGroupCommander.last_instance
     assert mg.planning_time == 5.0
