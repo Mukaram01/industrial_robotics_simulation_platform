@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+  Minimal SDF robot description template.
+  Replace 'template_robot' with your robot's name and add link/joint
+  definitions where indicated.
+-->
+<sdf version="1.6">
+  <model name="template_robot">
+    <!-- Insert link elements here -->
+    <!--
+    <link name="base_link">
+      <!-- Define base link geometry -->
+    </link>
+    -->
+
+    <!-- Insert joint elements here -->
+    <!--
+    <joint name="joint1" type="revolute">
+      <parent>base_link</parent>
+      <child>link1</child>
+    </joint>
+    -->
+  </model>
+</sdf>

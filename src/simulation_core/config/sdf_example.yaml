@@ -1,0 +1,8 @@
+description: Example configuration using an SDF model
+environment:
+  type: demo_world
+  size: [5.0, 5.0, 3.0]
+robots:
+  - id: template_sdf_robot
+    type: template
+    model_file: ../../templates/robot_description/template_robot.sdf
