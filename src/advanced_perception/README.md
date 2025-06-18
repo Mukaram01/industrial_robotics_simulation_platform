@@ -1,27 +1,33 @@
 # advanced_perception
 
+## Purpose
 Advanced perception package providing object segmentation and 6D pose estimation.
 
-## Nodes
-- `segmentation_node` – segments incoming images and publishes detected regions.
-- `pose_estimation_node` – estimates 3D poses for segmented objects.
+## Setup
+Build the workspace and source the environment:
 
-## Launch files
-- `advanced_perception_launch.py` – starts both perception nodes with default configuration.
+```bash
+colcon build --packages-select advanced_perception
+source install/setup.bash
+```
 
 ## Usage
-Run the full stack:
+Launch both perception nodes with the default configuration:
+
 ```bash
 ros2 launch advanced_perception advanced_perception_launch.py
 ```
-Each node can also be started individually:
+
+You can also run the nodes individually:
+
 ```bash
 ros2 run advanced_perception segmentation_node
 ros2 run advanced_perception pose_estimation_node
 ```
 
-## Configuration
-Configuration YAML files live under `config/`:
+## Extension
+YAML files under `config/` provide parameters for each node:
 - `segmentation_config.yaml`
 - `pose_estimation_config.yaml`
-Pass the file path via the `segmentation_config` or `pose_estimation_config` parameters when launching if you need custom settings.
+
+Pass these paths through the `segmentation_config` or `pose_estimation_config` parameters when launching to override the defaults.
