@@ -20,5 +20,9 @@ setup(
     maintainer_email='user@example.com',
     description='Industrial Robotics Simulation Tools',
     license='Apache-2.0',
-    entry_points={'console_scripts': []},
+    entry_points={
+        'console_scripts': [
+            'object_3d_viewer = simulation_tools.object_3d_viewer_node:main',
+        ]
+    },
 )

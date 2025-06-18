@@ -30,6 +30,7 @@ The ROS workspace is organized into modular packages:
 - `web_interface_frontend` – static HTML/JS resources
    - Performance metrics dashboard
    - 3D environment visualization
+   - Matplotlib-based 3D object viewer
    - Live plots for joint angles and sensors
 
 4. **Industrial Integration**
