@@ -76,6 +76,7 @@ For complete details, please refer to the included `industrial_deployment_guide.
   make html
   ```
 - Example SDF-based configuration: `src/simulation_core/config/sdf_example.yaml`
+- Guide for running scripted experiments: [docs/experiment_runner.md](docs/experiment_runner.md)
 
 ## Commercial Applications
 
