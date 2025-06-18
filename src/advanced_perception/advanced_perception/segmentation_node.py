@@ -1,23 +1,28 @@
 #!/usr/bin/env python3
 """ROS2 node that segments incoming images to identify individual objects."""
 
-import rclpy
-from rclpy.node import Node
-from rclpy.executors import MultiThreadedExecutor
+from __future__ import annotations
+
+import os
 from concurrent.futures import ThreadPoolExecutor
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
+from typing import List, Tuple
+from numpy.typing import NDArray
+
 import cv2
 import numpy as np
-import yaml
-import os
+import rclpy
+from cv_bridge import CvBridge
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+
 from apm_msgs.msg import Detection2D, Detection2DArray
 
 class SegmentationNode(Node):
     """
     Node for image segmentation to identify object boundaries
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__('segmentation_node')
         
         # Declare parameters
@@ -60,15 +65,15 @@ class SegmentationNode(Node):
 
         self.get_logger().info('Segmentation node initialized')
     
-    def load_config(self):
+    def load_config(self) -> None:
         """
         Load segmentation configuration from YAML file
         """
         if not self.segmentation_config_path:
             self.get_logger().warning('No segmentation config file provided, using default values')
-            self.threshold_min = np.array([0, 0, 0])
-            self.threshold_max = np.array([255, 255, 255])
-            self.min_contour_area = 1000
+            self.threshold_min: NDArray[np.int_] = np.array([0, 0, 0])
+            self.threshold_max: NDArray[np.int_] = np.array([255, 255, 255])
+            self.min_contour_area: int = 1000
             return
 
         if not os.path.isfile(self.segmentation_config_path):
@@ -93,11 +98,11 @@ class SegmentationNode(Node):
             self.threshold_max = np.array([255, 255, 255])
             self.min_contour_area = 1000
     
-    def image_callback(self, msg):
+    def image_callback(self, msg: Image) -> None:
         """Schedule image processing on a background thread."""
         self.processing_executor.submit(self.process_image, msg)
 
-    def process_image(self, msg):
+    def process_image(self, msg: Image) -> None:
         """Process incoming image and perform segmentation."""
         try:
             cv_image = self.cv_bridge.imgmsg_to_cv2(msg, 'bgr8')
@@ -116,7 +121,7 @@ class SegmentationNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing image: {str(e)}')
     
-    def segment_image(self, image):
+    def segment_image(self, image: np.ndarray) -> Tuple[np.ndarray, List[Detection2D]]:
         """
         Segment image to identify objects
         
@@ -188,7 +193,7 @@ class SegmentationNode(Node):
         
         return segmented_image, objects
 
-def main(args=None):
+def main(args: List[str] | None = None) -> None:
     rclpy.init(args=args)
 
     segmentation_node = SegmentationNode()
