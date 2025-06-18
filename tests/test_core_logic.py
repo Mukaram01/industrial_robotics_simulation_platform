@@ -119,15 +119,23 @@ def test_scenario_file_cycle(tmp_path):
 
     data = {'name': 'test', 'description': 'desc', 'config': {'foo': 'bar'}}
     ec.EnvironmentConfiguratorNode.save_scenario(dummy, data)
-    path = tmp_path / 'test.yaml'
-    assert path.exists()
+    yaml_path = tmp_path / 'test.yaml'
+    assert yaml_path.exists()
 
     dummy.environment_config = {}
     ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'test')
     assert dummy.environment_config['foo'] == 'bar'
 
     ec.EnvironmentConfiguratorNode.delete_scenario(dummy, 'test')
-    assert not path.exists()
+    assert not yaml_path.exists()
+
+    # JSON scenario
+    json_path = tmp_path / 'test.json'
+    json_path.write_text(json.dumps({'foo': 'baz'}))
+
+    dummy.environment_config = {}
+    ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'test')
+    assert dummy.environment_config['foo'] == 'baz'
 
 
 def test_save_scenario_creates_dir(tmp_path):
@@ -163,9 +171,16 @@ def test_load_missing_uses_default(tmp_path):
     assert dummy.environment_config['description'] == default['description']
 
 
-def test_empty_yaml_results_in_empty_config(tmp_path):
+def test_empty_config_results_in_empty_config(tmp_path):
     dummy = make_dummy(tmp_path)
+
+    # Empty YAML
     (tmp_path / 'empty.yaml').write_text('')
+    ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'empty')
+    assert dummy.environment_config == {}
+
+    # Empty JSON
+    (tmp_path / 'empty.json').write_text('')
     ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'empty')
     assert dummy.environment_config == {}
 

@@ -15,7 +15,7 @@
   <depend>cv_bridge</depend>
   <depend>apm_msgs</depend>
   <depend>numpy</depend>
-  <depend>opencv-python</depend>
+  <depend>python3-opencv</depend>
   <depend>pyyaml</depend>
 
   <export>
