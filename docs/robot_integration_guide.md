@@ -33,3 +33,28 @@ This guide describes how to connect a new robot implementation to the simulation
 | `/simulation/status` | `std_msgs/String` | Simulation status messages that mirror `/robot/status`. |
 
 Nodes provided in this repository publish and subscribe to the `/simulation/*` topics by default. When integrating a real robot, remap these to the corresponding `/robot/*` interfaces so all other components continue to operate without changes.
+
+## Importing URDF/SDF Models
+
+Follow these steps to place your robot model in a custom package and reference it with the `model_file` setting:
+
+1. **Create a package for your model files.** Inside the `src/` directory add a new package (e.g. `my_robot_description`) and create a folder to hold the models:
+
+   ```bash
+   src/my_robot_description/
+       urdf/   # for URDF or Xacro files
+       models/ # optional directory for SDF files
+   ```
+
+2. **Copy your URDF or SDF into the package.** Place the main model file along with any meshes or textures inside the appropriate folder.
+
+3. **Reference the file from a scenario configuration.** In your YAML scenario, set `model_file` to the relative path of the model. For example:
+
+   ```yaml
+   robots:
+     - id: my_robot
+       type: custom
+       model_file: ../my_robot_description/urdf/my_robot.urdf.xacro
+   ```
+
+   The environment configurator will load this file when starting the simulation.
