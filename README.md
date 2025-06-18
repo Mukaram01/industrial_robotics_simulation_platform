@@ -1,5 +1,8 @@
 # Industrial Robotics Simulation Platform - Executive Summary
 
+[![Build](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![Tests](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+
 ## Overview
 
 The Industrial Robotics Simulation Platform is a comprehensive, highly configurable system designed for demonstrating, developing, and testing industrial robotics applications. This platform serves as both a powerful demonstration tool for showcasing capabilities to potential clients and a foundation for a commercial robotics company.
@@ -55,6 +58,13 @@ The UR5 meshes are distributed with the `ur_description` package and are not sto
 ## Getting Started
 
 For installation and launch instructions, see [industrial_deployment_guide.md](industrial_deployment_guide.md) and [docs/full_system_run_guide.md](docs/full_system_run_guide.md).
+
+### Building the Workspace
+From the repository root, build all packages via the meta-package:
+
+```bash
+colcon build --packages-select industrial_robotics_simulation_platform_meta
+```
 
 ## Documentation
 

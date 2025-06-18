@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 """Synthetic camera simulator node producing RGB and depth frames."""
 
-import rclpy
-from rclpy.node import Node
-from rclpy.executors import MultiThreadedExecutor
-from sensor_msgs.msg import Image, CameraInfo, CompressedImage
-from std_msgs.msg import String
-from cv_bridge import CvBridge
+from __future__ import annotations
+
+from typing import Any, Dict, List, Optional, Tuple
+
 import cv2
 import numpy as np
+import rclpy
+from cv_bridge import CvBridge
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.node import Node
+from sensor_msgs.msg import CameraInfo, CompressedImage, Image
+from std_msgs.msg import String
 
 class CameraSimulatorNode(Node):
     """Simulates an RGB-D camera and publishes synthetic images."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize publishers, parameters and internal state."""
         super().__init__('camera_simulator_node')
 
@@ -93,7 +97,7 @@ class CameraSimulatorNode(Node):
 
         # Initialize simulation state
         self.running = False
-        self.objects = []
+        self.objects: List[Dict[str, Any]] = []
         self.generate_objects()
 
         # Start publishing timer
@@ -102,7 +106,7 @@ class CameraSimulatorNode(Node):
 
         self.get_logger().info('Camera simulator node initialized')
 
-    def command_callback(self, msg):
+    def command_callback(self, msg: String) -> None:
         """Handle start/stop/reset commands from the simulation controller."""
         command = msg.data
         if command == 'start':
@@ -115,7 +119,7 @@ class CameraSimulatorNode(Node):
             self.generate_objects()
             self.get_logger().info('Resetting camera simulation')
 
-    def timer_callback(self):
+    def timer_callback(self) -> None:
         """Publish synthetic RGB and depth images at the configured rate."""
         if not self.running:
             return
@@ -168,7 +172,7 @@ class CameraSimulatorNode(Node):
                 depth_comp_msg.data = buffer.tobytes()
                 self.depth_compressed_pub.publish(depth_comp_msg)
 
-    def generate_images(self):
+    def generate_images(self) -> Tuple[np.ndarray, np.ndarray]:
         """Return synthetic RGB and depth images for the current scene."""
         # Create background
         rgb_image = self.create_background(self.width, self.height, self.background_type)
@@ -183,7 +187,9 @@ class CameraSimulatorNode(Node):
 
         return rgb_image, depth_image
 
-    def create_background(self, width, height, background_type):
+    def create_background(
+        self, width: int, height: int, background_type: str
+    ) -> np.ndarray:
         """Generate a simple scene background based on the type."""
         if background_type == 'conveyor_belt':
             # Create a gray conveyor belt with some texture
@@ -210,7 +216,7 @@ class CameraSimulatorNode(Node):
             # Default plain background
             return np.ones((height, width, 3), dtype=np.uint8) * 240  # Light gray
 
-    def generate_objects(self):
+    def generate_objects(self) -> None:
         """Create random objects with positions and colors for rendering."""
         self.objects = []
         for i in range(self.object_count):
@@ -253,7 +259,7 @@ class CameraSimulatorNode(Node):
             }
             self.objects.append(obj)
 
-    def update_objects(self):
+    def update_objects(self) -> None:
         """Move objects according to their velocities within the image bounds."""
         for obj in self.objects:
             # Update position based on velocity
@@ -266,7 +272,9 @@ class CameraSimulatorNode(Node):
             if obj['position'][1] < 50 or obj['position'][1] > self.height - 50:
                 obj['velocity'][1] *= -1
 
-    def render_object(self, obj, rgb_image, depth_image):
+    def render_object(
+        self, obj: Dict[str, Any], rgb_image: np.ndarray, depth_image: np.ndarray
+    ) -> None:
         """Draw the given object onto the RGB and depth images."""
         x, y, z = int(obj['position'][0]), int(obj['position'][1]), obj['position'][2]
         size = int(obj['size'])
@@ -313,7 +321,7 @@ class CameraSimulatorNode(Node):
                             depth_offset = np.sqrt((size // 2) ** 2 - dist_sq) / (size // 2) * 0.1
                             depth_image[i, j] = z - depth_offset
 
-    def add_noise(self, image, noise_level):
+    def add_noise(self, image: np.ndarray, noise_level: float) -> np.ndarray:
         """Return the image with Gaussian noise applied."""
         if len(image.shape) == 3:  # RGB image
             noise = np.random.normal(0, noise_level * 255, image.shape).astype(np.int16)
@@ -324,7 +332,7 @@ class CameraSimulatorNode(Node):
             noisy_image = np.clip(image + noise, 0, 10.0).astype(np.float32)
             return noisy_image
 
-    def create_camera_info(self):
+    def create_camera_info(self) -> CameraInfo:
         """Construct a basic ``CameraInfo`` message for the simulated sensor."""
         camera_info = CameraInfo()
         camera_info.header.frame_id = f'{self.camera_name}_color_optical_frame'
@@ -350,7 +358,7 @@ class CameraSimulatorNode(Node):
 
         return camera_info
 
-def main(args=None):
+def main(args: Optional[List[str]] = None) -> None:
     """Entry point for running the node standalone."""
     rclpy.init(args=args)
     node = CameraSimulatorNode()
