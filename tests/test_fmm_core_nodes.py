@@ -18,6 +18,11 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
         Optional parameter defaults used by :class:`DummyNode`.
     """
     param_overrides = param_overrides or {}
+
+    # Reset the MoveGroupCommander stub between tests if it already exists
+    existing_mc = sys.modules.get('moveit_commander')
+    if existing_mc and hasattr(existing_mc, 'MoveGroupCommander'):
+        existing_mc.MoveGroupCommander.last_instance = None
     rclpy_stub = types.ModuleType('rclpy')
     node_mod = types.ModuleType('rclpy.node')
 
