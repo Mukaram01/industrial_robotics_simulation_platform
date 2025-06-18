@@ -18,6 +18,7 @@ checkpoints/
 
 # Temporary data generated at runtime
 *.npy
+docs/api/build/
 *.npz
 *.tmp
 *.log
