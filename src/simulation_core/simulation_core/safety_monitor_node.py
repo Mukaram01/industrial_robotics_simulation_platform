@@ -166,14 +166,102 @@ class SafetyMonitorNode(Node):
                     break
     
     def check_collisions(self):
-        # In a real implementation, this would check for collisions between objects
-        # For this minimal example, we'll just return an empty list
-        return []
-    
+        """Check for AABB collisions or near misses."""
+        objects = []
+
+        def _to_aabb(obj):
+            pos = obj.get('position')
+            dims = obj.get('dimensions')
+            if pos is None:
+                return None
+            if dims is None:
+                radius = obj.get('parameters', {}).get('workspace_radius')
+                if radius is not None:
+                    dims = [2 * radius, 2 * radius, 2 * radius]
+            if dims is None:
+                return None
+            half = [d / 2.0 for d in dims]
+            return {
+                'id': obj.get('id', obj.get('type', 'object')),
+                'type': obj.get('type'),
+                'min': [pos[i] - half[i] for i in range(3)],
+                'max': [pos[i] + half[i] for i in range(3)],
+            }
+
+        for key in ['objects', 'containers', 'conveyors', 'robots']:
+            for obj in self.environment_config.get(key, []):
+                aabb = _to_aabb(obj)
+                if aabb:
+                    objects.append(aabb)
+
+        violations = []
+        min_dist = self.safety_rules.get('collision_detection', {}).get('min_distance', 0.0)
+
+        for i in range(len(objects)):
+            a = objects[i]
+            for j in range(i + 1, len(objects)):
+                b = objects[j]
+                overlap = all(
+                    a['min'][k] <= b['max'][k] and a['max'][k] >= b['min'][k]
+                    for k in range(3)
+                )
+                if overlap:
+                    violations.append({'type': 'collision', 'objects': [a['id'], b['id']]})
+                    continue
+
+                dx = max(a['min'][0] - b['max'][0], b['min'][0] - a['max'][0], 0.0)
+                dy = max(a['min'][1] - b['max'][1], b['min'][1] - a['max'][1], 0.0)
+                dz = max(a['min'][2] - b['max'][2], b['min'][2] - a['max'][2], 0.0)
+                dist = (dx ** 2 + dy ** 2 + dz ** 2) ** 0.5
+                if dist < min_dist:
+                    violations.append(
+                        {
+                            'type': 'collision',
+                            'objects': [a['id'], b['id']],
+                            'distance': dist,
+                        }
+                    )
+
+        return violations
+
     def check_safety_zones(self):
-        # In a real implementation, this would check if objects are in restricted zones
-        # For this minimal example, we'll just return an empty list
-        return []
+        """Check objects against configured safety zones."""
+        violations = []
+
+        objects = []
+        for key in ['objects', 'containers', 'conveyors', 'robots']:
+            objects.extend(self.environment_config.get(key, []))
+
+        for zone in self.safety_rules.get('safety_zones', []):
+            restricted = zone.get('restricted_objects', [])
+            if zone.get('type') != 'cylinder':
+                continue
+            cx, cy, cz = zone.get('center', [0.0, 0.0, 0.0])
+            radius = zone.get('radius', 0.0)
+            height = zone.get('height', 0.0)
+
+            for obj in objects:
+                if obj.get('type') not in restricted:
+                    continue
+                pos = obj.get('position', [0.0, 0.0, 0.0])
+                dx = pos[0] - cx
+                dy = pos[1] - cy
+                within_radius = (dx ** 2 + dy ** 2) ** 0.5 <= radius
+                within_height = cz <= pos[2] <= cz + height
+
+                if within_radius and within_height:
+                    self.get_logger().warning(
+                        f"Object {obj.get('id')} entered restricted zone {zone.get('name')}"
+                    )
+                    violations.append(
+                        {
+                            'type': 'zone_violation',
+                            'object': obj.get('id'),
+                            'zone': zone.get('name'),
+                        }
+                    )
+
+        return violations
     
     def trigger_emergency_stop(self, reason):
         if self.emergency_stop_active:
