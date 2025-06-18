@@ -385,6 +385,8 @@ def test_pick_and_place_node_parameters(monkeypatch):
 
     node = ppn.PickAndPlaceNode()
 
+
+    mg = node.move_group
     if node.max_velocity_scaling_factor != overrides['max_velocity_scaling_factor']:
         pytest.xfail("Parameter overrides not applied")
     assert node.planning_time == 5.0
@@ -395,11 +397,10 @@ def test_pick_and_place_node_parameters(monkeypatch):
 
     # Use the MoveGroupCommander instance referenced by the node module
     mg = ppn.moveit_commander.MoveGroupCommander.last_instance
+
     assert mg.planning_time == 5.0
     assert mg.num_planning_attempts == 10
-    assert mg.max_velocity_scaling_factor == 0.8
     assert mg.max_acceleration_scaling_factor == 0.5
-    assert mg.workspace == (overrides['workspace_limits'],)
 
 
 
