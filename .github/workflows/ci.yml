@@ -23,3 +23,5 @@ jobs:
         run: mypy --config-file mypy.ini src
       - name: Test
         run: pytest --cov=src --cov-report=xml -q
+      - name: Docker build
+        run: docker build -t industrial_sim .

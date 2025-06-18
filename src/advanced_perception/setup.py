@@ -32,5 +32,9 @@ setup(
             'segmentation_node = advanced_perception.segmentation_node:main',
             'pose_estimation_node = advanced_perception.pose_estimation_node:main',
         ],
+        'simulation_core.perception_nodes': [
+            'segmentation = advanced_perception.segmentation_node:SegmentationNode',
+            'pose_estimation = advanced_perception.pose_estimation_node:PoseEstimationNode',
+        ],
     },
 )
