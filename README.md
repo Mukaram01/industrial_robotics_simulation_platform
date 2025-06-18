@@ -11,7 +11,7 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
 
 1. **Highly Dynamic Simulation Environment**
    - Configurable industrial scenarios (pick-and-place, sorting, quality inspection)
-   - Physics-based simulation with collision detection
+   - Physics-based simulation with collision detection using a modular AABB checker
    - Support for multiple robot types (delta, articulated arms)
 
 2. **Interactive Web-Based GUI**
@@ -79,7 +79,9 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Step-by-step instructions for running the full system: [docs/full_system_run_guide.md](docs/full_system_run_guide.md)
 - Guide for integrating new robots: [docs/robot_integration_guide.md](docs/robot_integration_guide.md)
 - Guide for running the test suite: [docs/testing_guide.md](docs/testing_guide.md)
+- Collision checker usage: [docs/collision_checker_usage.md](docs/collision_checker_usage.md)
 - See [CHANGELOG.md](CHANGELOG.md) for release history
+- Benchmark planning and perception: [docs/benchmarking_guide.md](docs/benchmarking_guide.md)
 - API documentation can be generated using Sphinx:
   ```bash
   cd docs/api
@@ -138,6 +140,13 @@ git lfs checkout path/to/file
 ```
 
 You can also discard local modifications with `git restore path/to/file`.
+
+## Ignored Paths
+
+Temporary data and logs are not stored in version control. The `data/` folder is
+used for runtime outputs, while scripts may create configuration files under
+`configs/`. These locations are listed in `.gitignore` so your local runs don't
+pollute commits.
 
 ## Docker Usage
 

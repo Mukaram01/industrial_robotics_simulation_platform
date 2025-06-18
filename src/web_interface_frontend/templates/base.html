@@ -21,6 +21,11 @@
             <li class="nav-item"><a class="nav-link{% if request.path.startswith('/dashboard') %} active{% endif %}" href="/dashboard">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link{% if request.path.startswith('/control') %} active{% endif %}" href="/control">Control</a></li>
             <li class="nav-item"><a class="nav-link{% if request.path.startswith('/log') %} active{% endif %}" href="/log">Log</a></li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+            {% endif %}
          </ul>
       </div>
    </div>
