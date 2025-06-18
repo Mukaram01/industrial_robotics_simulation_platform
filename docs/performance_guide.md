@@ -37,3 +37,22 @@ python tools/profiling/profile_perception.py --images 200
 Specify `--profiler pyinstrument` to use `pyinstrument` if installed. Results are saved to `perception_profile.prof`.
 
 Both scripts are minimal templates. Replace the dummy functions with calls into your actual simulation or perception nodes to analyse their performance.
+
+## 4. Profile Planning Nodes and System-Wide Performance
+
+Use the `benchmark_planning.py` script to measure latency in the planning stack while gathering CPU and memory statistics for the entire system. The script executes a planning scenario multiple times and records aggregated metrics.
+
+```bash
+python scripts/benchmark_planning.py \
+  --scenario configs/pick_and_place.yaml
+```
+
+Increase the number of iterations to stress test the planner and capture system-wide behaviour:
+
+```bash
+python scripts/benchmark_planning.py \
+  --scenario configs/pick_and_place.yaml \
+  --runs 50 --system-stats
+```
+
+Results are written to `planning_profile.json` for further analysis alongside the simulation and perception profiles.

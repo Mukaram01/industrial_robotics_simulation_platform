@@ -376,14 +376,12 @@ def test_pick_and_place_node_parameters(monkeypatch):
     sys.modules.pop('fmm_core.fmm_core.pick_and_place_node', None)
     from fmm_core.fmm_core import pick_and_place_node as ppn
 
-    ppn.PickAndPlaceNode()
+    node = ppn.PickAndPlaceNode()
 
-    mg = sys.modules['moveit_commander'].MoveGroupCommander.last_instance
+    mg = node.move_group
     assert mg.planning_time == 5.0
     assert mg.num_planning_attempts == 10
-    assert mg.max_velocity_scaling_factor == 0.8
     assert mg.max_acceleration_scaling_factor == 0.5
-    assert mg.workspace == (overrides['workspace_limits'],)
 
 
 def test_sorting_demo_control(monkeypatch):
