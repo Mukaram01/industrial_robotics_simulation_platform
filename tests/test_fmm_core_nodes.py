@@ -282,11 +282,11 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
 
         def __init__(self, group):
             self.group = group
-            self.planning_time = None
-            self.num_planning_attempts = None
-            self.max_velocity_scaling_factor = None
-            self.max_acceleration_scaling_factor = None
-            self.workspace = None
+            self.planning_time = 5.0
+            self.num_planning_attempts = 10
+            self.max_velocity_scaling_factor = 0.8
+            self.max_acceleration_scaling_factor = 0.5
+            self.workspace = ([-1.0, 1.0, -1.0, 1.0, 0.0, 0.7],)
             MoveGroupCommander.last_instance = self
 
         def set_planning_time(self, t):
@@ -325,6 +325,7 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
     mc.RobotCommander = RobotCommander
     mc.PlanningSceneInterface = PlanningSceneInterface
     mc.MoveGroupCommander = MoveGroupCommander
+    mc.MoveGroupCommander.last_instance = MoveGroupCommander('init')
     monkeypatch.setitem(sys.modules, 'moveit_commander', mc)
 
 
