@@ -81,6 +81,7 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Guide for running the test suite: [docs/testing_guide.md](docs/testing_guide.md)
 - Collision checker usage: [docs/collision_checker_usage.md](docs/collision_checker_usage.md)
 - See [CHANGELOG.md](CHANGELOG.md) for release history
+- Benchmark planning and perception: [docs/benchmarking_guide.md](docs/benchmarking_guide.md)
 - API documentation can be generated using Sphinx:
   ```bash
   cd docs/api

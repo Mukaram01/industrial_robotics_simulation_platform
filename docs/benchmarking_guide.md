@@ -49,3 +49,32 @@ python scripts/benchmark_perception.py \
   --annotations /data/annotations.json \
   --model path/to/model.onnx
 ```
+
+## Planning Benchmark
+
+The `benchmark_planning.py` script measures MoveIt planning performance.
+It executes a series of named poses and records planning time, success
+rate and average trajectory duration.
+
+Run the planner benchmark with:
+
+```bash
+python scripts/benchmark_planning.py \
+  --group manipulator \
+  --poses home ready pick \
+  --trials 5 \
+  --output planning_results.json
+```
+
+The output JSON contains metrics for each pose:
+
+```json
+[
+  {
+    "pose": "home",
+    "avg_planning_time": 1.2,
+    "success_rate": 0.8,
+    "avg_trajectory_duration": 3.4
+  }
+]
+```
