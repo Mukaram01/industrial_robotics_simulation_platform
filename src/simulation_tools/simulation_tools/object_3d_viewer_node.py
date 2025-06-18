@@ -27,7 +27,7 @@ class Object3DViewerNode(Node):
             10,
         )
 
-        self.objects = []
+        self.objects: list[tuple[float, float, float]] = []
         self.lock = threading.Lock()
 
         plt.ion()
