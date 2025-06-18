@@ -13,7 +13,8 @@ from rclpy.node import Node
 from std_msgs.msg import String, Bool
 from sensor_msgs.msg import Image, JointState
 from cv_bridge import CvBridge
-import yaml
+from typing import Optional, Any
+import yaml  # type: ignore
 import json
 import threading
 import time
@@ -39,7 +40,7 @@ except Exception:  # pragma: no cover - optional dependency
 class WebInterfaceNode(Node):
     """Exposes a simple Flask web UI for interacting with the simulator."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the web server, ROS interfaces and parameters."""
         super().__init__('web_interface_node')
         
@@ -99,8 +100,8 @@ class WebInterfaceNode(Node):
             'errors': 0,
             'objects_processed': 0
         }
-        self.latest_objects = []
-        self.latest_joint_state = None
+        self.latest_objects: list[dict[str, Any]] = []
+        self.latest_joint_state: dict[str, list[Any]] | None = None
         
         # Create publishers
         self.command_pub = self.create_publisher(
@@ -177,7 +178,7 @@ class WebInterfaceNode(Node):
         
         self.get_logger().info(f'Web interface started at http://{self.host}:{self.port}')
     
-    def status_callback(self, msg):
+    def status_callback(self, msg: String) -> None:
         """Update internal status when the simulator publishes a status message."""
         try:
             status_data = json.loads(msg.data)
@@ -195,7 +196,7 @@ class WebInterfaceNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error parsing status message: {e}')
     
-    def rgb_callback(self, msg):
+    def rgb_callback(self, msg: Image) -> None:
         """Handle incoming RGB images and forward them to web clients."""
         try:
             self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
@@ -219,7 +220,7 @@ class WebInterfaceNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {e}')
     
-    def depth_callback(self, msg):
+    def depth_callback(self, msg: Image) -> None:
         """Handle incoming depth images and forward them to web clients."""
         try:
             self.latest_depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
@@ -249,7 +250,7 @@ class WebInterfaceNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {e}')
     
-    def metrics_callback(self, msg):
+    def metrics_callback(self, msg: String) -> None:
         """Receive system metrics and broadcast them to clients."""
         try:
             metrics_data = json.loads(msg.data)
@@ -262,7 +263,7 @@ class WebInterfaceNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error parsing metrics message: {e}')
 
-    def objects_callback(self, msg):
+    def objects_callback(self, msg: Any) -> None:
         """Forward detected object information to web clients."""
         try:
             objects = []
@@ -287,7 +288,7 @@ class WebInterfaceNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing detected objects: {e}')
 
-    def joint_state_callback(self, msg):
+    def joint_state_callback(self, msg: JointState) -> None:
         try:
             js_data = {
                 'name': list(msg.name),
@@ -299,7 +300,7 @@ class WebInterfaceNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing joint state: {e}')
     
-    def setup_routes(self):
+    def setup_routes(self) -> None:
         """Register Flask HTTP routes for the user interface."""
         @self.app.route('/')
         def index():
@@ -630,7 +631,7 @@ class WebInterfaceNode(Node):
         def serve_static(path):
             return send_from_directory(self.app.static_folder, path)
     
-    def setup_socketio_events(self):
+    def setup_socketio_events(self) -> None:
         """Register Socket.IO event handlers for real-time control."""
         @self.socketio.on('connect')
         def handle_connect():
@@ -770,7 +771,7 @@ class WebInterfaceNode(Node):
             self.action_logger.log('save_scenario', {'id': name})
             self.socketio.emit('scenario_saved', {'success': True, 'id': name})
 
-    def run_server(self):
+    def run_server(self) -> None:
         """Launch the Flask-SocketIO server."""
         try:
             self.socketio.run(
@@ -793,7 +794,7 @@ class WebInterfaceNode(Node):
                 use_reloader=False,
             )
 
-    def shutdown(self):
+    def shutdown(self) -> None:
         """Stop the Socket.IO server and wait for its thread to finish."""
         try:
             self.socketio.stop()
@@ -803,7 +804,7 @@ class WebInterfaceNode(Node):
         if self.server_thread.is_alive():
             self.server_thread.join()
 
-def main(args=None):
+def main(args: list[str] | None = None) -> None:
     rclpy.init(args=args)
     node = WebInterfaceNode()
     

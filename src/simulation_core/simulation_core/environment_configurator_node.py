@@ -7,14 +7,15 @@ import shutil
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
-import yaml
+import yaml  # type: ignore
+from typing import Any
 import json
 import threading
 import time
 import random
 
 class EnvironmentConfiguratorNode(Node):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__('environment_configurator_node')
         
         # Declare parameters using a single dictionary
@@ -41,7 +42,7 @@ class EnvironmentConfiguratorNode(Node):
         # Initialize state
         self.current_scenario = self.scenario if self.scenario else self.default_scenario
         self.running = False
-        self.environment_config = {}
+        self.environment_config: dict[str, Any] = {}
         self.load_scenario(self.current_scenario)
         
         # Create publishers
@@ -83,7 +84,7 @@ class EnvironmentConfiguratorNode(Node):
         
         self.get_logger().info('Environment configurator node initialized')
     
-    def command_callback(self, msg):
+    def command_callback(self, msg: String) -> None:
         command = msg.data
         
         if command == 'start':
@@ -140,7 +141,7 @@ class EnvironmentConfiguratorNode(Node):
             self.get_logger().info('Stopping playback')
             # In a real implementation, this would stop playback
     
-    def config_callback(self, msg):
+    def config_callback(self, msg: String) -> None:
         try:
             config_data = json.loads(msg.data)
             
@@ -213,7 +214,7 @@ class EnvironmentConfiguratorNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing config message: {e}')
     
-    def load_scenario(self, scenario):
+    def load_scenario(self, scenario: str) -> None:
         self.current_scenario = scenario
         
         # Try to load scenario from file
@@ -240,7 +241,7 @@ class EnvironmentConfiguratorNode(Node):
         self.get_logger().info('Using default configuration')
         self._load_robot_models()
     
-    def save_scenario(self, scenario_data):
+    def save_scenario(self, scenario_data: dict) -> None:
         if not self.config_dir:
             self.get_logger().error('Config directory not set, cannot save scenario')
             return
@@ -265,7 +266,7 @@ class EnvironmentConfiguratorNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error saving scenario file {scenario_id}: {e}')
     
-    def delete_scenario(self, scenario_id):
+    def delete_scenario(self, scenario_id: str) -> None:
         if not self.config_dir:
             self.get_logger().error('Config directory not set, cannot delete scenario')
             return
@@ -284,14 +285,14 @@ class EnvironmentConfiguratorNode(Node):
             except Exception as e:
                 self.get_logger().error(f'Error deleting scenario file {scenario_id}: {e}')
 
-    def _launch_process(self, cmd):
+    def _launch_process(self, cmd: list[str]) -> None:
         """Launch a ROS2 process if available."""
         if shutil.which(cmd[0]) is None:
             self.get_logger().warning(f'{cmd[0]} not found, skipping process')
             return
         threading.Thread(target=subprocess.run, args=(cmd,), kwargs={'check': False}).start()
 
-    def _load_robot_models(self):
+    def _load_robot_models(self) -> None:
         """Parse robot model files and start appropriate nodes."""
         robots = self.environment_config.get('robots', [])
         for robot in robots:
@@ -348,7 +349,7 @@ class EnvironmentConfiguratorNode(Node):
                     f"Unsupported model file extension: {model_file}"
                 )
     
-    def update_settings(self, settings):
+    def update_settings(self, settings: dict) -> None:
         if 'simulation' in settings:
             sim_settings = settings['simulation']
             self.physics_enabled = sim_settings.get('physics_enabled', self.physics_enabled)
@@ -359,7 +360,7 @@ class EnvironmentConfiguratorNode(Node):
         
         self.get_logger().info('Updated settings')
     
-    def simulate_error(self, error_type):
+    def simulate_error(self, error_type: str) -> None:
         if not self.running:
             return
         
@@ -377,7 +378,7 @@ class EnvironmentConfiguratorNode(Node):
             elif error_type == 'sensor_noise':
                 self.metrics['accuracy'] = max(0.0, self.metrics['accuracy'] - 2.0)
     
-    def publish_status(self):
+    def publish_status(self) -> None:
         status_msg = String()
         status_data = {
             'status': 'running' if self.running else 'idle',
@@ -388,7 +389,7 @@ class EnvironmentConfiguratorNode(Node):
         status_msg.data = json.dumps(status_data)
         self.status_pub.publish(status_msg)
     
-    def publish_metrics(self):
+    def publish_metrics(self) -> None:
         if not self.running or not self.record_metrics:
             return
         
@@ -416,7 +417,7 @@ class EnvironmentConfiguratorNode(Node):
         metrics_msg.data = json.dumps(self.metrics)
         self.metrics_pub.publish(metrics_msg)
     
-    def get_default_config(self):
+    def get_default_config(self) -> dict:
         return {
             'description': 'Default simulation scenario',
             'environment': {
@@ -476,7 +477,7 @@ class EnvironmentConfiguratorNode(Node):
             ]
         }
 
-def main(args=None):
+def main(args: list[str] | None = None) -> None:
     rclpy.init(args=args)
     node = EnvironmentConfiguratorNode()
     
