@@ -1,5 +1,8 @@
 # Industrial Robotics Simulation Platform - Executive Summary
 
+[![Build](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![Tests](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+
 ## Overview
 
 The Industrial Robotics Simulation Platform is a comprehensive, highly configurable system designed for demonstrating, developing, and testing industrial robotics applications. This platform serves as both a powerful demonstration tool for showcasing capabilities to potential clients and a foundation for a commercial robotics company.
@@ -8,7 +11,7 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
 
 1. **Highly Dynamic Simulation Environment**
    - Configurable industrial scenarios (pick-and-place, sorting, quality inspection)
-   - Physics-based simulation with collision detection
+   - Physics-based simulation with collision detection using a modular AABB checker
    - Support for multiple robot types (delta, articulated arms)
 
 2. **Interactive Web-Based GUI**
@@ -56,6 +59,13 @@ The UR5 meshes are distributed with the `ur_description` package and are not sto
 
 For installation and launch instructions, see [industrial_deployment_guide.md](industrial_deployment_guide.md) and [docs/full_system_run_guide.md](docs/full_system_run_guide.md).
 
+### Building the Workspace
+From the repository root, build all packages via the meta-package:
+
+```bash
+colcon build --packages-select industrial_robotics_simulation_platform_meta
+```
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:
@@ -69,13 +79,16 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Step-by-step instructions for running the full system: [docs/full_system_run_guide.md](docs/full_system_run_guide.md)
 - Guide for integrating new robots: [docs/robot_integration_guide.md](docs/robot_integration_guide.md)
 - Guide for running the test suite: [docs/testing_guide.md](docs/testing_guide.md)
+- Collision checker usage: [docs/collision_checker_usage.md](docs/collision_checker_usage.md)
 - See [CHANGELOG.md](CHANGELOG.md) for release history
+- Benchmark planning and perception: [docs/benchmarking_guide.md](docs/benchmarking_guide.md)
 - API documentation can be generated using Sphinx:
   ```bash
   cd docs/api
   make html
   ```
 - Example SDF-based configuration: `src/simulation_core/config/sdf_example.yaml`
+- Guide for running scripted experiments: [docs/experiment_runner.md](docs/experiment_runner.md)
 
 ## Commercial Applications
 
@@ -91,6 +104,19 @@ This platform is designed to serve as the foundation for a robotics company, wit
 2. Explore the included industrial scenarios
 3. Customize the environment for your specific demonstration needs
 4. Consider hardware integration options for hybrid operation
+
+## Running Experiments
+
+Use `scripts/run_experiment.py` to launch the integrated system with
+parameters defined in a YAML or JSON configuration file:
+
+```bash
+python scripts/run_experiment.py --config configs/my_experiment.yaml
+```
+
+The script reads options such as `scenario`, `use_realsense` and
+`use_advanced_perception` from the configuration file and forwards them
+to the underlying ROS launch command.
 
 ## Handling Large Files
 
@@ -114,6 +140,13 @@ git lfs checkout path/to/file
 ```
 
 You can also discard local modifications with `git restore path/to/file`.
+
+## Ignored Paths
+
+Temporary data and logs are not stored in version control. The `data/` folder is
+used for runtime outputs, while scripts may create configuration files under
+`configs/`. These locations are listed in `.gitignore` so your local runs don't
+pollute commits.
 
 ## Docker Usage
 

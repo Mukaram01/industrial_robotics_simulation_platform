@@ -49,3 +49,46 @@ python scripts/benchmark_perception.py \
   --annotations /data/annotations.json \
   --model path/to/model.onnx
 ```
+
+## Notebook Usage
+
+An interactive notebook is provided in `notebooks/benchmark_perception_demo.ipynb`.
+Launch it from the repository root:
+
+```bash
+jupyter notebook notebooks/benchmark_perception_demo.ipynb
+```
+
+Edit the paths in the first code cell to point to your dataset. Running the
+cells executes the benchmark and displays a bar chart of per-class AP values with
+the overall mAP in the title.
+
+## Planning Benchmark
+
+The `benchmark_planning.py` script measures MoveIt planning performance.
+It executes a series of named poses and records planning time, success
+rate and average trajectory duration.
+
+Run the planner benchmark with:
+
+```bash
+python scripts/benchmark_planning.py \
+  --group manipulator \
+  --poses home ready pick \
+  --trials 5 \
+  --output planning_results.json
+```
+
+The output JSON contains metrics for each pose:
+
+```json
+[
+  {
+    "pose": "home",
+    "avg_planning_time": 1.2,
+    "success_rate": 0.8,
+    "avg_trajectory_duration": 3.4
+  }
+]
+```
+

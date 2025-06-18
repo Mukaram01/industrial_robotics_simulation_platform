@@ -13,6 +13,29 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
 sys.path.append(str(ROOT / 'src' / 'web_interface_backend'))
 
+
+def _login(client):
+    return client.post('/login', data={'username': 'admin', 'password': 'admin'})
+
+
+def test_login_required_redirect(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+
+    res = client.post('/api/place', json={'location': 'a'})
+    assert res.status_code in (302, 401)
+
 def test_place_api_publishes_and_logs(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
@@ -28,6 +51,7 @@ def test_place_api_publishes_and_logs(monkeypatch):
 
     node = win.WebInterfaceNode()
     client = node.app.test_client()
+    _login(client)
 
     res = client.post('/api/place', json={'location': 'bin_red'})
     assert res.status_code == 200
@@ -60,6 +84,7 @@ def test_upload_scenario_duplicate_rejected(monkeypatch, tmp_path):
     existing.write_text('name: foo')
 
     client = node.app.test_client()
+    _login(client)
     data = {
         'scenario_id': 'foo',
         'file': (io.BytesIO(b'name: foo2'), 'foo.yaml'),
@@ -85,6 +110,7 @@ def test_upload_scenario_invalid_extension(monkeypatch, tmp_path):
     node.config_dir = str(tmp_path)
 
     client = node.app.test_client()
+    _login(client)
     data = {
         'scenario_id': 'bar',
         'file': (io.BytesIO(b'name: bar'), 'bar.txt'),
@@ -111,6 +137,7 @@ def test_upload_scenario_invalid_yaml(monkeypatch, tmp_path):
     node.config_dir = str(tmp_path)
 
     client = node.app.test_client()
+    _login(client)
     data = {
         'scenario_id': 'baz',
         'file': (io.BytesIO(b': invalid'), 'baz.yaml'),
@@ -136,6 +163,7 @@ def test_pick_api_publishes_and_logs(monkeypatch):
 
     node = win.WebInterfaceNode()
     client = node.app.test_client()
+    _login(client)
 
     res = client.post('/api/pick', json={'object_id': '42'})
     assert res.status_code == 200
@@ -163,6 +191,7 @@ def test_objects_api_returns_latest(monkeypatch):
     node = win.WebInterfaceNode()
     node.latest_objects = [{'id': 1, 'class': 'red'}]
     client = node.app.test_client()
+    _login(client)
 
     res = client.get('/api/objects')
     assert res.status_code == 200
@@ -214,6 +243,7 @@ def test_jog_api_publishes(monkeypatch):
 
     node = win.WebInterfaceNode()
     client = node.app.test_client()
+    _login(client)
 
     res = client.post('/api/jog', json={'joint': 1, 'delta': 0.1})
     assert res.status_code == 200
@@ -237,6 +267,7 @@ def test_waypoint_api_execute(monkeypatch):
 
     node = win.WebInterfaceNode()
     client = node.app.test_client()
+    _login(client)
 
     res = client.post('/api/waypoint', json={'action': 'execute'})
     assert res.status_code == 200
@@ -260,6 +291,7 @@ def test_load_scenario_endpoint(monkeypatch):
 
     node = win.WebInterfaceNode()
     client = node.app.test_client()
+    _login(client)
 
     res = client.post('/api/scenarios/foo/load')
     assert res.status_code == 200
@@ -285,6 +317,7 @@ def test_save_scenario_endpoint(monkeypatch, tmp_path):
     node = win.WebInterfaceNode()
     node.config_dir = str(tmp_path)
     client = node.app.test_client()
+    _login(client)
 
     res = client.put('/api/scenarios/test', json={'config': {'a': 1}})
     assert res.status_code == 200

@@ -20,8 +20,15 @@ import threading
 import time
 import shutil
 import webbrowser
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect
 from flask_socketio import SocketIO
+from flask_login import (
+    LoginManager,
+    UserMixin,
+    login_user,
+    logout_user,
+    login_required,
+)
 import cv2
 import numpy as np
 import base64
@@ -35,6 +42,13 @@ try:
     from apm_msgs.msg import DetectedObjectArray
 except Exception:  # pragma: no cover - optional dependency
     DetectedObjectArray = None
+
+
+class SimpleUser(UserMixin):
+    """Minimal user object for Flask-Login."""
+
+    def __init__(self, user_id: str) -> None:
+        self.id = user_id
 
 
 class WebInterfaceNode(Node):
@@ -84,6 +98,9 @@ class WebInterfaceNode(Node):
             os.makedirs(self.data_dir)
 
         self.action_logger = ActionLogger(self.log_db_path)
+
+        # Load user credentials
+        self.users = self._load_users()
             
         # Initialize CV bridge
         self.bridge = CvBridge()
@@ -159,6 +176,18 @@ class WebInterfaceNode(Node):
         self.app = Flask(__name__,
                          template_folder=template_folder_path,
                          static_folder=static_folder_path)
+        self.app.secret_key = 'secret'
+
+        self.login_manager = LoginManager()
+        self.login_manager.login_view = 'login'
+        self.login_manager.init_app(self.app)
+
+        @self.login_manager.user_loader
+        def load_user(user_id: str) -> SimpleUser | None:  # pragma: no cover - simple loader
+            if user_id in self.users:
+                return SimpleUser(user_id)
+            return None
+
         self.socketio = SocketIO(self.app, cors_allowed_origins="*")
         
         # Set up routes
@@ -299,30 +328,66 @@ class WebInterfaceNode(Node):
             self.socketio.emit('joint_state_update', js_data)
         except Exception as e:
             self.get_logger().error(f'Error processing joint state: {e}')
-    
+
+    def _load_users(self) -> dict[str, str]:
+        """Load users from a YAML file if available."""
+        if self.config_dir:
+            path = os.path.join(self.config_dir, 'users.yaml')
+            if os.path.exists(path):
+                try:
+                    data = yaml.safe_load(open(path, 'r'))
+                    if isinstance(data, dict):
+                        return {str(k): str(v) for k, v in data.items()}
+                except Exception as e:  # pragma: no cover - log and fall back
+                    self.get_logger().error(f'Error loading users: {e}')
+        return {'admin': 'admin'}
+
     def setup_routes(self) -> None:
         """Register Flask HTTP routes for the user interface."""
+        @self.app.route('/login', methods=['GET', 'POST'])
+        def login():
+            if request.method == 'POST':
+                username = request.form.get('username', '')
+                password = request.form.get('password', '')
+                if self.users.get(username) == password:
+                    login_user(SimpleUser(username))
+                    return redirect(request.args.get('next') or '/')
+                return render_template('login.html', error='Invalid credentials')
+            return render_template('login.html')
+
+        @self.app.route('/logout')
+        @login_required
+        def logout():
+            logout_user()
+            return redirect('/login')
+
         @self.app.route('/')
+        @login_required
         def index():
             return render_template('index.html')
-        
+
         @self.app.route('/dashboard')
+        @login_required
         def dashboard():
             return render_template('dashboard.html')
-    
+
         @self.app.route('/control')
+        @login_required
         def control():
             return render_template('control.html')
 
         @self.app.route('/log')
+        @login_required
         def log_page():
             return render_template('log.html')
 
         @self.app.route('/editor')
+        @login_required
         def editor():
             return render_template('editor.html')
 
         @self.app.route('/api/status')
+        @login_required
         def get_status():
             return jsonify({
                 'status': self.system_status,
@@ -330,10 +395,12 @@ class WebInterfaceNode(Node):
             })
 
         @self.app.route('/api/metrics')
+        @login_required
         def get_metrics():
             return jsonify({'metrics': self.latest_metrics})
 
         @self.app.route('/api/place', methods=['POST'])
+        @login_required
         def api_place():
             """Handle place command requests."""
             data = request.get_json(silent=True) or {}
@@ -353,6 +420,7 @@ class WebInterfaceNode(Node):
             return jsonify({"success": True, "message": "Place command sent"}), 200
 
         @self.app.route('/api/pick', methods=['POST'])
+        @login_required
         def api_pick():
             """Handle pick command requests."""
             data = request.get_json(silent=True) or {}
@@ -370,6 +438,7 @@ class WebInterfaceNode(Node):
             return jsonify({'success': True, 'message': 'Pick command sent'}), 200
         
         @self.app.route('/api/image/latest')
+        @login_required
         def get_latest_image():
             image_type = request.args.get('type', 'rgb')
             if image_type not in ('rgb', 'depth'):
@@ -398,10 +467,12 @@ class WebInterfaceNode(Node):
             return jsonify({'error': 'Image not available'}), 404
 
         @self.app.route('/api/objects')
+        @login_required
         def get_objects():
             return jsonify({'objects': self.latest_objects})
         
         @self.app.route('/api/scenarios')
+        @login_required
         def get_scenarios():
             scenarios = []
             
@@ -429,6 +500,7 @@ class WebInterfaceNode(Node):
             return jsonify(scenarios)
 
         @self.app.route('/api/scenarios', methods=['POST'])
+        @login_required
         def upload_scenario():
             if not self.config_dir:
                 return jsonify({'error': 'Config directory not set'}), 500
@@ -471,6 +543,7 @@ class WebInterfaceNode(Node):
                 return jsonify({'error': f'Error saving scenario: {e}'}), 500
         
         @self.app.route('/api/scenarios/<scenario_id>')
+        @login_required
         def get_scenario(scenario_id):
             if not SCENARIO_ID_PATTERN.match(scenario_id):
                 return jsonify({'error': 'Invalid scenario ID'}), 400
@@ -494,6 +567,7 @@ class WebInterfaceNode(Node):
             return jsonify({'error': 'Scenario not found'}), 404
 
         @self.app.route('/api/scenarios/<scenario_id>/load', methods=['POST'])
+        @login_required
         def load_scenario_api(scenario_id):
             if not SCENARIO_ID_PATTERN.match(scenario_id):
                 return jsonify({'error': 'Invalid scenario ID'}), 400
@@ -505,6 +579,7 @@ class WebInterfaceNode(Node):
             return jsonify({'success': True})
 
         @self.app.route('/api/scenarios/<scenario_id>', methods=['PUT'])
+        @login_required
         def save_scenario_api(scenario_id):
             if not SCENARIO_ID_PATTERN.match(scenario_id):
                 return jsonify({'error': 'Invalid scenario ID'}), 400
@@ -530,6 +605,7 @@ class WebInterfaceNode(Node):
             return jsonify({'success': True})
 
         @self.app.route('/api/scenarios/<scenario_id>', methods=['DELETE'])
+        @login_required
         def delete_scenario(scenario_id):
             if not SCENARIO_ID_PATTERN.match(scenario_id):
                 return jsonify({'error': 'Invalid scenario ID'}), 400
@@ -553,6 +629,7 @@ class WebInterfaceNode(Node):
             return jsonify({'error': 'Scenario not found'}), 404
 
         @self.app.route('/api/command', methods=['POST'])
+        @login_required
         def api_command():
             data = request.get_json(silent=True) or {}
             command = data.get('command')
@@ -566,6 +643,7 @@ class WebInterfaceNode(Node):
             return jsonify({'success': True})
 
         @self.app.route('/api/jog', methods=['POST'])
+        @login_required
         def api_jog():
             data = request.get_json(silent=True) or {}
             joint = data.get('joint')
@@ -580,6 +658,7 @@ class WebInterfaceNode(Node):
             return jsonify({'success': True})
 
         @self.app.route('/api/waypoint', methods=['POST'])
+        @login_required
         def api_waypoint():
             data = request.get_json(silent=True) or {}
             action = data.get('action')
@@ -598,6 +677,7 @@ class WebInterfaceNode(Node):
             return jsonify({'success': True})
 
         @self.app.route('/api/actions')
+        @login_required
         def api_actions():
             limit = int(request.args.get('limit', 100))
             rows = []
@@ -608,6 +688,7 @@ class WebInterfaceNode(Node):
             return jsonify({'actions': rows})
 
         @self.app.route('/api/exports')
+        @login_required
         def api_exports():
             exports_dir = os.path.join(self.data_dir, 'exports') if self.data_dir else ''
             result = []
@@ -619,6 +700,7 @@ class WebInterfaceNode(Node):
             return jsonify({'exports': result})
 
         @self.app.route('/api/exports/<export_id>')
+        @login_required
         def download_export(export_id):
             exports_dir = os.path.join(self.data_dir, 'exports') if self.data_dir else ''
             path = os.path.join(exports_dir, export_id)

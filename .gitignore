@@ -1,6 +1,9 @@
 build/
 install/
 log/
+logs/
+run_logs/
+runtime_logs/
 *.pyc
 __pycache__/
 # Large binary formats
@@ -15,6 +18,14 @@ __pycache__/
 # Model checkpoint directories
 checkpoint/
 checkpoints/
+
+# Runtime data directory
+data/**
+!data/README.md
+
+# Generated configuration directories
+configs/
+generated_configs/
 
 # Temporary data generated at runtime
 *.npy
