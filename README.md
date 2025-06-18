@@ -70,6 +70,7 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Guide for integrating new robots: [docs/robot_integration_guide.md](docs/robot_integration_guide.md)
 - Guide for running the test suite: [docs/testing_guide.md](docs/testing_guide.md)
 - See [CHANGELOG.md](CHANGELOG.md) for release history
+- Benchmark planning and perception: [docs/benchmarking_guide.md](docs/benchmarking_guide.md)
 - API documentation can be generated using Sphinx:
   ```bash
   cd docs/api
