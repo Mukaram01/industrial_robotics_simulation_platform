@@ -385,7 +385,6 @@ def test_pick_and_place_node_parameters(monkeypatch):
 
     node = ppn.PickAndPlaceNode()
 
-
     mg = node.move_group
     if node.max_velocity_scaling_factor != overrides['max_velocity_scaling_factor']:
         pytest.xfail("Parameter overrides not applied")
@@ -401,8 +400,6 @@ def test_pick_and_place_node_parameters(monkeypatch):
     assert mg.planning_time == 5.0
     assert mg.num_planning_attempts == 10
     assert mg.max_acceleration_scaling_factor == 0.5
-
-
 
 def test_sorting_demo_control(monkeypatch):
     _setup_ros_stubs(monkeypatch)

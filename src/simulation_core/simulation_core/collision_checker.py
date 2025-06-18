@@ -8,6 +8,11 @@ from typing import Any, Dict, List
 _AABB = Dict[str, Any]
 
 
+def build_aabb(obj: Dict[str, Any]) -> _AABB | None:
+    """Return an axis-aligned bounding box for an environment object."""
+    return _to_aabb(obj)
+
+
 def _to_aabb(obj: Dict[str, Any]) -> _AABB | None:
 
     pos = obj.get("position")
@@ -20,7 +25,7 @@ def _to_aabb(obj: Dict[str, Any]) -> _AABB | None:
             dims = [2 * radius, 2 * radius, 2 * radius]
     if dims is None:
         return None
-      
+
     half = [d / 2.0 for d in dims]
     return {
         "id": obj.get("id", obj.get("type", "object")),
@@ -29,24 +34,28 @@ def _to_aabb(obj: Dict[str, Any]) -> _AABB | None:
     }
 
 
-def detect_collisions(environment_config: Dict[str, Any], min_distance: float = 0.0) -> List[Dict[str, Any]]:
+def detect_collisions(environment_config: Dict[str, Any] | List[_AABB], min_distance: float = 0.0) -> List[Dict[str, Any]]:
     """Return a list of collisions or near misses between objects.
 
     Parameters
     ----------
     environment_config:
-        Dictionary containing lists of objects under the keys
-        ``objects``, ``containers``, ``conveyors`` and ``robots``.
+        Either a list of AABB dictionaries or a dictionary containing lists of
+        environment objects under the keys ``objects``, ``containers``,
+        ``conveyors`` and ``robots``.
     min_distance:
         Minimum allowed distance between objects. If the distance is
         below this value a near miss violation is reported.
     """
-    objects: List[_AABB] = []
-    for key in ["objects", "containers", "conveyors", "robots"]:
-        for obj in environment_config.get(key, []):
-            aabb = _to_aabb(obj)
-            if aabb:
-                objects.append(aabb)
+    if isinstance(environment_config, dict):
+        objects: List[_AABB] = []
+        for key in ["objects", "containers", "conveyors", "robots"]:
+            for obj in environment_config.get(key, []):
+                aabb = _to_aabb(obj)
+                if aabb:
+                    objects.append(aabb)
+    else:
+        objects = list(environment_config)
 
     violations: List[Dict[str, Any]] = []
     for i in range(len(objects)):
