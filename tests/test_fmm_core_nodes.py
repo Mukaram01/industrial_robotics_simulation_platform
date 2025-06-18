@@ -389,6 +389,7 @@ def test_pick_and_place_node_parameters(monkeypatch):
     assert mg.workspace == (overrides['workspace_limits'],)
 
 
+
 def test_sorting_demo_control(monkeypatch):
     _setup_ros_stubs(monkeypatch)
     sys.modules.pop('fmm_core.fmm_core.sorting_demo_node', None)
