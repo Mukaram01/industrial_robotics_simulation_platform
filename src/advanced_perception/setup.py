@@ -18,7 +18,7 @@ setup(
         'setuptools',
         'rclpy',
         'numpy',
-        'opencv-python',
+        'python3-opencv',
         'pyyaml',
     ],
     zip_safe=True,
