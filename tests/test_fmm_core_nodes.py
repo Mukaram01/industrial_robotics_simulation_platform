@@ -23,6 +23,8 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
     existing_mc = sys.modules.get('moveit_commander')
     if existing_mc and hasattr(existing_mc, 'MoveGroupCommander'):
         existing_mc.MoveGroupCommander.last_instance = None
+    # Remove previous module to avoid stale references
+    sys.modules.pop('moveit_commander', None)
     rclpy_stub = types.ModuleType('rclpy')
     node_mod = types.ModuleType('rclpy.node')
 
@@ -325,6 +327,8 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
     mc.RobotCommander = RobotCommander
     mc.PlanningSceneInterface = PlanningSceneInterface
     mc.MoveGroupCommander = MoveGroupCommander
+    # Ensure last_instance starts cleared for each test
+    mc.MoveGroupCommander.last_instance = None
     monkeypatch.setitem(sys.modules, 'moveit_commander', mc)
 
 
@@ -378,7 +382,8 @@ def test_pick_and_place_node_parameters(monkeypatch):
 
     ppn.PickAndPlaceNode()
 
-    mg = sys.modules['moveit_commander'].MoveGroupCommander.last_instance
+    # Use the MoveGroupCommander instance referenced by the node module
+    mg = ppn.moveit_commander.MoveGroupCommander.last_instance
     assert mg.planning_time == 5.0
     assert mg.num_planning_attempts == 10
     assert mg.max_velocity_scaling_factor == 0.8
