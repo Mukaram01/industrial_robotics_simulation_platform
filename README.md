@@ -11,7 +11,7 @@ The Industrial Robotics Simulation Platform is a comprehensive, highly configura
 
 1. **Highly Dynamic Simulation Environment**
    - Configurable industrial scenarios (pick-and-place, sorting, quality inspection)
-   - Physics-based simulation with collision detection
+   - Physics-based simulation with collision detection using a modular AABB checker
    - Support for multiple robot types (delta, articulated arms)
 
 2. **Interactive Web-Based GUI**

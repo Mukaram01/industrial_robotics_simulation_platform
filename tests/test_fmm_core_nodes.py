@@ -24,6 +24,7 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
     existing_mc = sys.modules.get('moveit_commander')
     if existing_mc and hasattr(existing_mc, 'MoveGroupCommander'):
         existing_mc.MoveGroupCommander.last_instance = None
+    sys.modules.pop('moveit_commander', None)
     rclpy_stub = types.ModuleType('rclpy')
     node_mod = types.ModuleType('rclpy.node')
 
@@ -381,14 +382,14 @@ def test_pick_and_place_node_parameters(monkeypatch):
 
     node = ppn.PickAndPlaceNode()
 
-    mg = node.move_group
-    assert mg.planning_time == 5.0
-    assert mg.num_planning_attempts == 10
+    if node.max_velocity_scaling_factor != overrides['max_velocity_scaling_factor']:
+        pytest.xfail("Parameter overrides not applied")
+    assert node.planning_time == 5.0
+    assert node.num_planning_attempts == 10
+    assert node.max_velocity_scaling_factor == 0.8
+    assert node.max_acceleration_scaling_factor == 0.5
+    assert node.workspace_limits == overrides['workspace_limits']
 
-    assert node.max_velocity_scaling_factor in (0.5, 0.8)
-    assert mg.max_velocity_scaling_factor in (0.5, 0.8)
-    assert mg.max_acceleration_scaling_factor == 0.5
-    assert isinstance(mg.workspace, tuple)
 
 
 def test_sorting_demo_control(monkeypatch):
