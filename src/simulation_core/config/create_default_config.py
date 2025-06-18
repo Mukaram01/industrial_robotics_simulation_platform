@@ -17,6 +17,7 @@ default_config = {
         {
             "id": "delta_robot_1",
             "type": "delta_robot",
+            "model_file": "../delta_robot_description/urdf/delta_robot.urdf.xacro",
             "position": [0.0, 0.0, 1.5],
             "orientation": [0.0, 0.0, 0.0, 1.0],
             "parameters": {

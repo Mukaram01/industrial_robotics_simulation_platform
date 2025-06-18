@@ -2,6 +2,8 @@
 """ROS2 node loading environment configs and spawning scenarios."""
 
 import os
+import subprocess
+import shutil
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
@@ -217,7 +219,7 @@ class EnvironmentConfiguratorNode(Node):
         # Try to load scenario from file
         if self.config_dir:
             scenario_path = os.path.join(self.config_dir, f'{scenario}.yaml')
-            
+
             if os.path.exists(scenario_path):
                 try:
                     with open(scenario_path, 'r') as f:
@@ -225,13 +227,18 @@ class EnvironmentConfiguratorNode(Node):
                         self.get_logger().info(
                             f'Loaded scenario from {scenario_path}'
                         )
-                        return
                 except Exception as e:
-                    self.get_logger().error(f'Error loading scenario file {scenario}: {e}')
+                    self.get_logger().error(
+                        f'Error loading scenario file {scenario}: {e}'
+                    )
+                else:
+                    self._load_robot_models()
+                    return
         
         # If file not found or error, use default configuration
         self.environment_config = self.get_default_config()
         self.get_logger().info('Using default configuration')
+        self._load_robot_models()
     
     def save_scenario(self, scenario_data):
         if not self.config_dir:
@@ -276,6 +283,70 @@ class EnvironmentConfiguratorNode(Node):
                 self.get_logger().info(f'Deleted scenario {scenario_id}')
             except Exception as e:
                 self.get_logger().error(f'Error deleting scenario file {scenario_id}: {e}')
+
+    def _launch_process(self, cmd):
+        """Launch a ROS2 process if available."""
+        if shutil.which(cmd[0]) is None:
+            self.get_logger().warning(f'{cmd[0]} not found, skipping process')
+            return
+        threading.Thread(target=subprocess.run, args=(cmd,), kwargs={'check': False}).start()
+
+    def _load_robot_models(self):
+        """Parse robot model files and start appropriate nodes."""
+        robots = self.environment_config.get('robots', [])
+        for robot in robots:
+            model_file = robot.get('model_file')
+            if not model_file:
+                self.get_logger().warning(
+                    f"Robot {robot.get('id', '?')} missing model_file"
+                )
+                continue
+
+            if model_file.endswith(('.urdf', '.urdf.xacro')):
+                try:
+                    from urdf_parser_py.urdf import URDF
+                    URDF.from_xml_file(model_file)
+                    self.get_logger().info(
+                        f"Launching robot_state_publisher for {model_file}"
+                    )
+                    self._launch_process(
+                        [
+                            'ros2',
+                            'run',
+                            'robot_state_publisher',
+                            'robot_state_publisher',
+                            model_file,
+                        ]
+                    )
+                except Exception as e:
+                    self.get_logger().error(f'Failed to parse URDF {model_file}: {e}')
+            elif model_file.endswith('.sdf'):
+                try:
+                    import sdformat  # noqa: F401
+                except Exception:
+                    self.get_logger().warning(
+                        'sdformat package not available, cannot spawn SDF models'
+                    )
+                    continue
+                self.get_logger().info(
+                    f"Spawning Gazebo entity from {model_file}"
+                )
+                self._launch_process(
+                    [
+                        'ros2',
+                        'run',
+                        'gazebo_ros',
+                        'spawn_entity.py',
+                        '-file',
+                        model_file,
+                        '-entity',
+                        robot.get('id', 'robot'),
+                    ]
+                )
+            else:
+                self.get_logger().warning(
+                    f"Unsupported model file extension: {model_file}"
+                )
     
     def update_settings(self, settings):
         if 'simulation' in settings:
@@ -358,6 +429,7 @@ class EnvironmentConfiguratorNode(Node):
                 {
                     'id': 'delta_robot_1',
                     'type': 'delta_robot',
+                    'model_file': 'src/delta_robot_description/urdf/delta_robot.urdf.xacro',
                     'position': [0.0, 0.0, 1.5],
                     'orientation': [0.0, 0.0, 0.0, 1.0],
                     'parameters': {

@@ -7,6 +7,7 @@ environment:
 robots:
   - id: robot_arm
     type: ur5
+    model_file: ../ur5_robot_description/urdf/ur5_robot.urdf.xacro
     position: [0.0, 0.0, 0.0]
     orientation: [0.0, 0.0, 0.0, 1.0]
     parameters:
