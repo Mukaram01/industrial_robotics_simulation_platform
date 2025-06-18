@@ -823,6 +823,15 @@ The simulation includes several safety features:
 4. **Emergency Stop**: Provides immediate system halt capability
 5. **Safety Monitoring**: Continuously checks for safety violations
 
+### Safety Monitoring
+
+The Safety Monitor Node derives axis-aligned bounding boxes from the poses and
+dimensions of robots and objects. These bounding boxes are compared to detect
+intersections or minimum-distance violations based on the `min_distance`
+setting in `safety_rules.yaml`. The node also validates objects against the
+configured safety zones and logs a warning whenever a restricted object enters a
+zone.
+
 ### Real-World Safety Integration
 
 When connecting to real equipment:
