@@ -58,3 +58,25 @@ Follow these steps to place your robot model in a custom package and reference i
    ```
 
    The environment configurator will load this file when starting the simulation.
+
+## Registering Robot and Controller Plugins
+
+Robot implementations and motion controllers can be discovered automatically using
+Python entry points. Add the appropriate groups to your package's `setup.py`:
+
+```python
+setup(
+    ...,
+    entry_points={
+        'simulation_core.robots': [
+            'my_robot = my_robot_pkg.driver:MyRobot',
+        ],
+        'simulation_core.controllers': [
+            'my_controller = my_robot_pkg.controller:MyController',
+        ],
+    },
+)
+```
+
+The `controller_type` parameter of `RobotControlNode` selects which controller
+plugin to load at runtime.
