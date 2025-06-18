@@ -80,3 +80,24 @@ setup(
 
 The `controller_type` parameter of `RobotControlNode` selects which controller
 plugin to load at runtime.
+
+## Registering Perception Node Plugins
+
+Perception nodes can also be added via entry points. Define the
+`simulation_core.perception_nodes` group in your package and provide a mapping
+from a short name to the node class:
+
+```python
+setup(
+    ...,
+    entry_points={
+        'simulation_core.perception_nodes': [
+            'my_segmenter = my_pkg.segmentation:SegmentationNode',
+            'my_pose = my_pkg.pose:PoseEstimationNode',
+        ],
+    },
+)
+```
+
+Use the plugin name when launching your perception pipeline to select the
+desired implementation.
