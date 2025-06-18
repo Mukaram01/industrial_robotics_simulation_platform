@@ -9,6 +9,7 @@ _AABB = Dict[str, Any]
 
 
 def _to_aabb(obj: Dict[str, Any]) -> _AABB | None:
+
     pos = obj.get("position")
     dims = obj.get("dimensions")
     if pos is None:
@@ -19,6 +20,7 @@ def _to_aabb(obj: Dict[str, Any]) -> _AABB | None:
             dims = [2 * radius, 2 * radius, 2 * radius]
     if dims is None:
         return None
+      
     half = [d / 2.0 for d in dims]
     return {
         "id": obj.get("id", obj.get("type", "object")),
@@ -51,6 +53,7 @@ def detect_collisions(environment_config: Dict[str, Any], min_distance: float = 
         a = objects[i]
         for j in range(i + 1, len(objects)):
             b = objects[j]
+
             overlap = all(
                 a["min"][k] <= b["max"][k] and a["max"][k] >= b["min"][k]
                 for k in range(3)
@@ -65,5 +68,4 @@ def detect_collisions(environment_config: Dict[str, Any], min_distance: float = 
             dist = (dx ** 2 + dy ** 2 + dz ** 2) ** 0.5
             if dist < min_distance:
                 violations.append({"type": "collision", "objects": [a["id"], b["id"]], "distance": dist})
-
     return violations
