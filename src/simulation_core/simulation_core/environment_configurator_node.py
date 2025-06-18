@@ -219,22 +219,27 @@ class EnvironmentConfiguratorNode(Node):
         
         # Try to load scenario from file
         if self.config_dir:
-            scenario_path = os.path.join(self.config_dir, f'{scenario}.yaml')
+            yaml_path = os.path.join(self.config_dir, f'{scenario}.yaml')
+            json_path = os.path.join(self.config_dir, f'{scenario}.json')
 
-            if os.path.exists(scenario_path):
-                try:
-                    with open(scenario_path, 'r') as f:
-                        self.environment_config = yaml.safe_load(f) or {}
+            for scenario_path in (yaml_path, json_path):
+                if os.path.exists(scenario_path):
+                    try:
+                        with open(scenario_path, "r") as f:
+                            if scenario_path.endswith(".json"):
+                                self.environment_config = json.load(f) or {}
+                            else:
+                                self.environment_config = yaml.safe_load(f) or {}
                         self.get_logger().info(
-                            f'Loaded scenario from {scenario_path}'
+                            f"Loaded scenario from {scenario_path}"
                         )
-                except Exception as e:
-                    self.get_logger().error(
-                        f'Error loading scenario file {scenario}: {e}'
-                    )
-                else:
-                    self._load_robot_models()
-                    return
+                    except Exception as e:
+                        self.get_logger().error(
+                            f"Error loading scenario file {scenario}: {e}"
+                        )
+                    else:
+                        self._load_robot_models()
+                        return
         
         # If file not found or error, use default configuration
         self.environment_config = self.get_default_config()
