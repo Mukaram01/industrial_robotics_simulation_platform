@@ -104,6 +104,16 @@ git lfs track "*.onnx" "*.tar.gz" "*.ckpt"
 git add .gitattributes
 ```
 
+To revert any LFS-tracked file to its committed state, fetch the original file
+and check it out:
+
+```bash
+git lfs fetch origin
+git lfs checkout path/to/file
+```
+
+You can also discard local modifications with `git restore path/to/file`.
+
 ## Docker Usage
 
 Build the image from the repository root:
