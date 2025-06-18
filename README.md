@@ -59,6 +59,13 @@ The UR5 meshes are distributed with the `ur_description` package and are not sto
 
 For installation and launch instructions, see [industrial_deployment_guide.md](industrial_deployment_guide.md) and [docs/full_system_run_guide.md](docs/full_system_run_guide.md).
 
+### Building the Workspace
+From the repository root, build all packages via the meta-package:
+
+```bash
+colcon build --packages-select industrial_robotics_simulation_platform_meta
+```
+
 ## Documentation
 
 For complete details, please refer to the included `industrial_deployment_guide.md` which provides comprehensive instructions for:

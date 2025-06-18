@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>industrial_robotics_simulation_platform_meta</name>
+  <version>0.2.0</version>
+  <description>Meta-package for building the industrial robotics simulation platform.</description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>advanced_perception</exec_depend>
+  <exec_depend>apm_core</exec_depend>
+  <exec_depend>apm_msgs</exec_depend>
+  <exec_depend>delta_robot_description</exec_depend>
+  <exec_depend>delta_robot_moveit_config</exec_depend>
+  <exec_depend>fmm_core</exec_depend>
+  <exec_depend>industrial_protocols</exec_depend>
+  <exec_depend>perception_nodes</exec_depend>
+  <exec_depend>robot_interfaces</exec_depend>
+  <exec_depend>simulation_core</exec_depend>
+  <exec_depend>simulation_tools</exec_depend>
+  <exec_depend>ur5_robot_description</exec_depend>
+  <exec_depend>ur5_robot_moveit_config</exec_depend>
+  <exec_depend>web_interface_backend</exec_depend>
+  <exec_depend>web_interface_frontend</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
