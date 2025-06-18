@@ -69,6 +69,7 @@ For complete details, please refer to the included `industrial_deployment_guide.
 - Step-by-step instructions for running the full system: [docs/full_system_run_guide.md](docs/full_system_run_guide.md)
 - Guide for integrating new robots: [docs/robot_integration_guide.md](docs/robot_integration_guide.md)
 - Guide for running the test suite: [docs/testing_guide.md](docs/testing_guide.md)
+- Collision checker usage: [docs/collision_checker_usage.md](docs/collision_checker_usage.md)
 - See [CHANGELOG.md](CHANGELOG.md) for release history
 - API documentation can be generated using Sphinx:
   ```bash
