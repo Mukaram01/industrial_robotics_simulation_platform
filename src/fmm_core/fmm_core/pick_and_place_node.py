@@ -68,6 +68,8 @@ class PickAndPlaceNode(Node):
         self.robot = moveit_commander.RobotCommander()
         self.scene = moveit_commander.PlanningSceneInterface()
         self.move_group = moveit_commander.MoveGroupCommander(self.planning_group)
+        if hasattr(moveit_commander.MoveGroupCommander, "last_instance"):
+            moveit_commander.MoveGroupCommander.last_instance = self.move_group
         
         # Set planning parameters
         self.move_group.set_planning_time(self.planning_time)
