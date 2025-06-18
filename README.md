@@ -92,6 +92,19 @@ This platform is designed to serve as the foundation for a robotics company, wit
 3. Customize the environment for your specific demonstration needs
 4. Consider hardware integration options for hybrid operation
 
+## Running Experiments
+
+Use `scripts/run_experiment.py` to launch the integrated system with
+parameters defined in a YAML or JSON configuration file:
+
+```bash
+python scripts/run_experiment.py --config configs/my_experiment.yaml
+```
+
+The script reads options such as `scenario`, `use_realsense` and
+`use_advanced_perception` from the configuration file and forwards them
+to the underlying ROS launch command.
+
 ## Handling Large Files
 
 This repository excludes large binary artifacts such as ONNX models and
