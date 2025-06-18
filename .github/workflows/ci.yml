@@ -24,3 +24,5 @@ jobs:
         run: mypy --config-file mypy.ini src/simulation_core/simulation_core/environment_configurator_node.py src/web_interface_backend/web_interface_backend/web_interface_node.py
       - name: Test
         run: pytest --cov=src --cov-report=xml -q
+      - name: Docker build
+        run: docker build -t industrial_sim .
