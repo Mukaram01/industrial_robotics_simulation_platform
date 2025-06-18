@@ -1,3 +1,5 @@
-"""Legacy package retaining launch files."""
+"""Utility nodes for simulation tools."""
 
-__all__ = []
+__all__ = ['Object3DViewerNode']
+
+from .object_3d_viewer_node import Object3DViewerNode
