@@ -261,7 +261,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
         'sensor_msgs': types.ModuleType('sensor_msgs'),
         'sensor_msgs.msg': types.ModuleType('sensor_msgs.msg'),
         'cv_bridge': types.ModuleType('cv_bridge'),
-        'flask': types.ModuleType('flask'),
+        'flask': __import__('flask'),
         'flask_socketio': types.ModuleType('flask_socketio'),
         'ament_index_python': types.ModuleType('ament_index_python'),
         'ament_index_python.packages': types.ModuleType('ament_index_python.packages'),
@@ -287,23 +287,13 @@ def test_web_interface_logger_initialization_order(tmp_path):
         pass
     stub_modules['cv_bridge'].CvBridge = DummyCvBridge
 
-    class DummyFlask:
+    import flask as real_flask
+
+    class DummyFlask(real_flask.Flask):
         def __init__(self, *a, **k):
-            pass
-
-        def route(self, *a, **k):
-            def decorator(f):
-                return f
-
-            return decorator
+            super().__init__(__name__)
 
     stub_modules['flask'].Flask = DummyFlask
-    stub_modules['flask'].render_template = lambda *a, **k: ''
-    stub_modules['flask'].request = types.SimpleNamespace(
-        get_json=lambda silent=True: {}, args={}, files={}, form={}
-    )
-    stub_modules['flask'].jsonify = lambda *a, **k: {}
-    stub_modules['flask'].send_from_directory = lambda *a, **k: ''
 
     class DummySocketIO:
         def __init__(self, app, cors_allowed_origins=None):
