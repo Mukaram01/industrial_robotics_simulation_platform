@@ -7,7 +7,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
 
 
-def _setup_ros_stubs(monkeypatch):
+def _setup_ros_stubs(monkeypatch, param_overrides=None):
+    """Create ROS stub modules for testing.
+
+    Parameters
+    ----------
+    monkeypatch : pytest.MonkeyPatch
+        Fixture used to inject the stubs.
+    param_overrides : dict, optional
+        Optional parameter defaults used by :class:`DummyNode`.
+    """
+    param_overrides = param_overrides or {}
     rclpy_stub = types.ModuleType('rclpy')
     node_mod = types.ModuleType('rclpy.node')
 
@@ -35,6 +45,7 @@ def _setup_ros_stubs(monkeypatch):
             self._logger = DummyLogger()
 
         def declare_parameter(self, name, value):
+            value = param_overrides.get(name, value)
             self.params[name] = value
             return types.SimpleNamespace(value=value)
 
@@ -260,23 +271,33 @@ def _setup_ros_stubs(monkeypatch):
         pass
 
     class MoveGroupCommander:
+        """Minimal MoveGroup stub recording configuration calls."""
+
+        last_instance = None
+
         def __init__(self, group):
-            pass
+            self.group = group
+            self.planning_time = None
+            self.num_planning_attempts = None
+            self.max_velocity_scaling_factor = None
+            self.max_acceleration_scaling_factor = None
+            self.workspace = None
+            MoveGroupCommander.last_instance = self
 
         def set_planning_time(self, t):
-            pass
+            self.planning_time = t
 
         def set_num_planning_attempts(self, n):
-            pass
+            self.num_planning_attempts = n
 
         def set_max_velocity_scaling_factor(self, f):
-            pass
+            self.max_velocity_scaling_factor = f
 
         def set_max_acceleration_scaling_factor(self, f):
-            pass
+            self.max_acceleration_scaling_factor = f
 
         def set_workspace(self, *a):
-            pass
+            self.workspace = a
 
         def set_pose_target(self, pose):
             pass
@@ -338,6 +359,26 @@ def test_pick_and_place_node_locations(monkeypatch):
     node = ppn.PickAndPlaceNode()
     pose = node.get_predefined_place_location('home')
     assert pose.position.z >= 0.0
+
+
+def test_pick_and_place_node_parameters(monkeypatch):
+    overrides = {
+        'max_velocity_scaling_factor': 0.8,
+        'workspace_limits': [-1.0, 1.0, -1.0, 1.0, 0.0, 0.7],
+    }
+
+    _setup_ros_stubs(monkeypatch, param_overrides=overrides)
+    sys.modules.pop('fmm_core.fmm_core.pick_and_place_node', None)
+    from fmm_core.fmm_core import pick_and_place_node as ppn
+
+    node = ppn.PickAndPlaceNode()
+
+    mg = sys.modules['moveit_commander'].MoveGroupCommander.last_instance
+    assert mg.planning_time == 5.0
+    assert mg.num_planning_attempts == 10
+    assert mg.max_velocity_scaling_factor == 0.8
+    assert mg.max_acceleration_scaling_factor == 0.5
+    assert mg.workspace == (overrides['workspace_limits'],)
 
 
 def test_sorting_demo_control(monkeypatch):
