@@ -373,7 +373,6 @@ def test_pick_and_place_node_locations(monkeypatch):
 
 
 @pytest.mark.xfail(reason="MoveGroupCommander stub not retained between tests")
-
 def test_pick_and_place_node_parameters(monkeypatch):
     overrides = {
         'max_velocity_scaling_factor': 0.8,

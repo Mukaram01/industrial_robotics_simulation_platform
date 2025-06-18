@@ -11,6 +11,7 @@ from numpy.typing import NDArray
 import cv2
 import numpy as np
 import rclpy
+import yaml  # type: ignore
 from cv_bridge import CvBridge
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
