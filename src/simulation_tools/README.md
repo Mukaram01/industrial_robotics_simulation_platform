@@ -1,15 +1,24 @@
 # simulation_tools
 
+## Purpose
 Utility launch files that combine the various components of the platform.
 
-## Launch files
-- `integrated_system_launch.py` – brings up the camera, environment configurator, web interface and protocol bridge.
-- `realsense_hybrid_launch.py` – variant using an Intel RealSense camera.
-- `visualization_launch.py` – standalone visualization server.
+## Setup
+Install the package so the launch files are discoverable:
+
+```bash
+colcon build --packages-select simulation_tools
+source install/setup.bash
+```
 
 ## Usage
 Start the full system:
+
 ```bash
 ros2 launch simulation_tools integrated_system_launch.py
 ```
-See available launch arguments by passing `-h`.
+
+Other launches include `realsense_hybrid_launch.py` for RealSense cameras and `visualization_launch.py` for a standalone visualization server.
+
+## Extension
+Pass `-h` to any launch file to see configurable arguments and adapt them to your needs.

@@ -1,12 +1,22 @@
 # ur5_robot_description
 
+## Purpose
 UR5 robot model files used for visualization and MoveIt.
 
-## Launch files
-- `display.launch.py` – start `robot_state_publisher` and RViz for the UR5 model.
+## Setup
+Build the package so that the description can be located:
+
+```bash
+colcon build --packages-select ur5_robot_description
+source install/setup.bash
+```
 
 ## Usage
+Launch the UR5 model in RViz:
+
 ```bash
 ros2 launch ur5_robot_description display.launch.py
 ```
-Mesh resources must be available from the `ur_description` package or placed in the `meshes/` directory.
+
+## Extension
+Mesh resources should either come from the `ur_description` package or be placed in the local `meshes/` directory. Modify the URDF under `urdf/` to adapt the robot model.

@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 """ROS2 node performing 6-DoF pose estimation using RGB-D images and segmentation results."""
 
-import rclpy
-from rclpy.node import Node
-from rclpy.executors import MultiThreadedExecutor
-from concurrent.futures import ThreadPoolExecutor
+from __future__ import annotations
+
+import os
 import threading
-from sensor_msgs.msg import Image, CameraInfo
-from cv_bridge import CvBridge
+from concurrent.futures import ThreadPoolExecutor
+from typing import List, Optional, Tuple
+
 import cv2
 import numpy as np
+from numpy.typing import NDArray
 import yaml
-import os
+import rclpy
+from cv_bridge import CvBridge
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.node import Node
+from sensor_msgs.msg import CameraInfo, Image
 from geometry_msgs.msg import PoseStamped
 from apm_msgs.msg import (
     DetectedObject,
@@ -24,7 +29,7 @@ class PoseEstimationNode(Node):
     """
     Node for 6D pose estimation of detected objects
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__('pose_estimation_node')
         
         # Declare parameters
@@ -46,8 +51,8 @@ class PoseEstimationNode(Node):
         self.cv_bridge = CvBridge()
         
         # Initialize camera intrinsics
-        self.camera_matrix = None
-        self.dist_coeffs = None
+        self.camera_matrix: Optional[NDArray[np.float64]] = None
+        self.dist_coeffs: Optional[NDArray[np.float64]] = None
         
         # Create subscribers
         self.image_sub = self.create_subscription(
@@ -87,16 +92,16 @@ class PoseEstimationNode(Node):
 
         # Initialize state
         self._data_lock = threading.Lock()
-        self.latest_rgb_image = None
-        self.latest_depth_image = None
-        self.latest_segmented_objects = None
+        self.latest_rgb_image: Optional[NDArray[np.uint8]] = None
+        self.latest_depth_image: Optional[NDArray[np.float32]] = None
+        self.latest_segmented_objects: Optional[Detection2DArray] = None
 
         # Thread pool executor for processing
         self.processing_executor = ThreadPoolExecutor(max_workers=2)
 
         self.get_logger().info('Pose estimation node initialized')
     
-    def load_config(self):
+    def load_config(self) -> None:
         """
         Load pose estimation configuration from YAML file
         """
@@ -129,7 +134,7 @@ class PoseEstimationNode(Node):
             self.max_depth = 5.0
             self.depth_scale = 0.001
     
-    def camera_info_callback(self, msg):
+    def camera_info_callback(self, msg: CameraInfo) -> None:
         """
         Process camera info message to extract intrinsics
         """
@@ -137,7 +142,7 @@ class PoseEstimationNode(Node):
         self.dist_coeffs = np.array(msg.d)
         self.get_logger().debug('Received camera intrinsics')
     
-    def image_callback(self, msg):
+    def image_callback(self, msg: Image) -> None:
         """
         Process incoming RGB image
         """
@@ -149,7 +154,7 @@ class PoseEstimationNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing RGB image: {str(e)}')
     
-    def depth_callback(self, msg):
+    def depth_callback(self, msg: Image) -> None:
         """
         Process incoming depth image
         """
@@ -161,7 +166,7 @@ class PoseEstimationNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error processing depth image: {str(e)}')
     
-    def segmented_objects_callback(self, msg):
+    def segmented_objects_callback(self, msg: Detection2DArray) -> None:
         """
         Process segmented objects message
         """
@@ -169,7 +174,7 @@ class PoseEstimationNode(Node):
             self.latest_segmented_objects = msg
         self.processing_executor.submit(self.process_data)
     
-    def process_data(self):
+    def process_data(self) -> None:
         """
         Process all available data to estimate object poses
         """
@@ -284,7 +289,7 @@ class PoseEstimationNode(Node):
         except Exception as e:
             self.get_logger().error(f'Error estimating poses: {str(e)}')
 
-def main(args=None):
+def main(args: Optional[List[str]] = None) -> None:
     rclpy.init(args=args)
 
     pose_estimation_node = PoseEstimationNode()

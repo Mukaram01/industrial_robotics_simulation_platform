@@ -119,15 +119,23 @@ def test_scenario_file_cycle(tmp_path):
 
     data = {'name': 'test', 'description': 'desc', 'config': {'foo': 'bar'}}
     ec.EnvironmentConfiguratorNode.save_scenario(dummy, data)
-    path = tmp_path / 'test.yaml'
-    assert path.exists()
+    yaml_path = tmp_path / 'test.yaml'
+    assert yaml_path.exists()
 
     dummy.environment_config = {}
     ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'test')
     assert dummy.environment_config['foo'] == 'bar'
 
     ec.EnvironmentConfiguratorNode.delete_scenario(dummy, 'test')
-    assert not path.exists()
+    assert not yaml_path.exists()
+
+    # JSON scenario
+    json_path = tmp_path / 'test.json'
+    json_path.write_text(json.dumps({'foo': 'baz'}))
+
+    dummy.environment_config = {}
+    ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'test')
+    assert dummy.environment_config['foo'] == 'baz'
 
 
 def test_save_scenario_creates_dir(tmp_path):
@@ -163,9 +171,16 @@ def test_load_missing_uses_default(tmp_path):
     assert dummy.environment_config['description'] == default['description']
 
 
-def test_empty_yaml_results_in_empty_config(tmp_path):
+def test_empty_config_results_in_empty_config(tmp_path):
     dummy = make_dummy(tmp_path)
+
+    # Empty YAML
     (tmp_path / 'empty.yaml').write_text('')
+    ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'empty')
+    assert dummy.environment_config == {}
+
+    # Empty JSON
+    (tmp_path / 'empty.json').write_text('')
     ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'empty')
     assert dummy.environment_config == {}
 
@@ -246,7 +261,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
         'sensor_msgs': types.ModuleType('sensor_msgs'),
         'sensor_msgs.msg': types.ModuleType('sensor_msgs.msg'),
         'cv_bridge': types.ModuleType('cv_bridge'),
-        'flask': types.ModuleType('flask'),
+        'flask': __import__('flask'),
         'flask_socketio': types.ModuleType('flask_socketio'),
         'ament_index_python': types.ModuleType('ament_index_python'),
         'ament_index_python.packages': types.ModuleType('ament_index_python.packages'),
@@ -272,23 +287,13 @@ def test_web_interface_logger_initialization_order(tmp_path):
         pass
     stub_modules['cv_bridge'].CvBridge = DummyCvBridge
 
-    class DummyFlask:
+    import flask as real_flask
+
+    class DummyFlask(real_flask.Flask):
         def __init__(self, *a, **k):
-            pass
-
-        def route(self, *a, **k):
-            def decorator(f):
-                return f
-
-            return decorator
+            super().__init__(__name__)
 
     stub_modules['flask'].Flask = DummyFlask
-    stub_modules['flask'].render_template = lambda *a, **k: ''
-    stub_modules['flask'].request = types.SimpleNamespace(
-        get_json=lambda silent=True: {}, args={}, files={}, form={}
-    )
-    stub_modules['flask'].jsonify = lambda *a, **k: {}
-    stub_modules['flask'].send_from_directory = lambda *a, **k: ''
 
     class DummySocketIO:
         def __init__(self, app, cors_allowed_origins=None):
