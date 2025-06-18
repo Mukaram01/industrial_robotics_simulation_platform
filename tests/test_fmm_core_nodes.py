@@ -385,6 +385,10 @@ def test_pick_and_place_node_parameters(monkeypatch):
     assert mg.planning_time == 5.0
     assert mg.num_planning_attempts == 10
 
+    assert node.max_velocity_scaling_factor in (0.5, 0.8)
+    assert mg.max_velocity_scaling_factor in (0.5, 0.8)
+    assert mg.max_acceleration_scaling_factor == 0.5
+    assert isinstance(mg.workspace, tuple)
 
 
 def test_sorting_demo_control(monkeypatch):
