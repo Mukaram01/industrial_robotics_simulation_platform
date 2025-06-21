@@ -11,7 +11,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          # Python 3.12 lacks wheels for onnxruntime
+          # Use 3.10 which matches the Docker image
+          python-version: '3.10'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
