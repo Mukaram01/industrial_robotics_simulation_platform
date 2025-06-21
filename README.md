@@ -1,7 +1,7 @@
 # Industrial Robotics Simulation Platform - Executive Summary
 
-[![Build](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
-[![Tests](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![Build](https://github.com/Mukaram01/industrial_robotics_simulation_platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Mukaram01/industrial_robotics_simulation_platform/actions/workflows/ci.yml)
+[![Tests](https://github.com/Mukaram01/industrial_robotics_simulation_platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Mukaram01/industrial_robotics_simulation_platform/actions/workflows/ci.yml)
 
 ## Overview
 
