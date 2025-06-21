@@ -2,14 +2,14 @@
 
 object_detection:
   model:
-    path: "/home/ubuntu/ros2_apm_fmm_ws/install/apm_core/share/apm_core/models/ssd_mobilenet_v2.onnx"
+    path: "$(find apm_core)/models/ssd_mobilenet_v2.onnx"
     input_name: "input_tensor"
     output_names: ["detection_boxes", "detection_scores", "detection_classes"]
     input_size: [320, 320]
     confidence_threshold: 0.5
     
   classes:
-    path: "/home/ubuntu/ros2_apm_fmm_ws/install/apm_core/share/apm_core/config/coco_classes.txt"
+    path: "$(find apm_core)/config/coco_classes.txt"
     
   processing:
     enable_gpu: false
