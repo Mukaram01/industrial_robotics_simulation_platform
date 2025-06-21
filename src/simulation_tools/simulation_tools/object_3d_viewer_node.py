@@ -32,7 +32,7 @@ class Object3DViewerNode(Node):
 
         plt.ion()
         self.fig = plt.figure()
-        self.ax = self.fig.add_subplot(111, projection='3d')
+        self.ax: Axes3D = self.fig.add_subplot(111, projection='3d')
         self.timer = self.create_timer(0.5, self.update_plot)
 
         self.get_logger().info('Object 3D viewer node initialized')

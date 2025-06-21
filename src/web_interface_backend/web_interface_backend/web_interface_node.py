@@ -13,7 +13,7 @@ from rclpy.node import Node
 from std_msgs.msg import String, Bool
 from sensor_msgs.msg import Image, JointState
 from cv_bridge import CvBridge
-from typing import Optional, Any
+from typing import Optional, Any, cast
 import yaml  # type: ignore
 import json
 import threading
@@ -108,8 +108,8 @@ class WebInterfaceNode(Node):
         # Initialize state
         self.current_scenario = 'default'
         self.system_status = 'idle'
-        self.latest_rgb_image = None
-        self.latest_depth_image = None
+        self.latest_rgb_image: Optional[np.ndarray] = None
+        self.latest_depth_image: Optional[np.ndarray] = None
         self.latest_metrics = {
             'cycle_time': 0.0,
             'throughput': 0.0,
@@ -228,11 +228,12 @@ class WebInterfaceNode(Node):
     def rgb_callback(self, msg: Image) -> None:
         """Handle incoming RGB images and forward them to web clients."""
         try:
-            self.latest_rgb_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-            
+            img = cast(np.ndarray, self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8'))
+            self.latest_rgb_image = img
+
             success, buffer = cv2.imencode(
                 '.jpg',
-                self.latest_rgb_image,
+                img,
                 [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
             )
 
@@ -252,10 +253,12 @@ class WebInterfaceNode(Node):
     def depth_callback(self, msg: Image) -> None:
         """Handle incoming depth images and forward them to web clients."""
         try:
-            self.latest_depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-            
+            depth_img = cast(np.ndarray, self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough'))
+            self.latest_depth_image = depth_img
+
             # Normalize depth image for visualization
-            depth_normalized = cv2.normalize(self.latest_depth_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            depth_normalized = np.empty(depth_img.shape, dtype=np.uint8)
+            cv2.normalize(depth_img, depth_normalized, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
             depth_colormap = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
             
             success, buffer = cv2.imencode(
