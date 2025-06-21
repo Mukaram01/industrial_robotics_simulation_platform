@@ -323,14 +323,14 @@ class CameraSimulatorNode(Node):
 
     def add_noise(self, image: np.ndarray, noise_level: float) -> np.ndarray:
         """Return the image with Gaussian noise applied."""
+        noise: np.ndarray
         if len(image.shape) == 3:  # RGB image
-            noise_rgb = np.random.normal(0, noise_level * 255, image.shape).astype(np.int16)
-            noisy_image = np.clip(image.astype(np.int16) + noise_rgb, 0, 255).astype(np.uint8)
-            return noisy_image
+            noise = np.random.normal(0, noise_level * 255, image.shape).astype(np.int16)
+            noisy_image = np.clip(image.astype(np.int16) + noise, 0, 255).astype(np.uint8)
         else:  # Depth image
-            noise_depth = np.random.normal(0, noise_level, image.shape).astype(np.float32)
-            noisy_image = np.clip(image + noise_depth, 0, 10.0).astype(np.float32)
-            return noisy_image
+            noise = np.random.normal(0, noise_level, image.shape).astype(np.float32)
+            noisy_image = np.clip(image + noise, 0, 10.0).astype(np.float32)
+        return noisy_image
 
     def create_camera_info(self) -> CameraInfo:
         """Construct a basic ``CameraInfo`` message for the simulated sensor."""
