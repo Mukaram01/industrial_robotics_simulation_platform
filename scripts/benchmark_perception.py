@@ -4,6 +4,7 @@
 import argparse
 import json
 from pathlib import Path
+from ament_index_python.packages import get_package_share_directory
 
 import cv2
 import numpy as np
@@ -151,9 +152,14 @@ def main():
                         help="Path to image directory")
     parser.add_argument("--annotations", required=True,
                         help="Path to COCO annotations JSON")
-    parser.add_argument("--model",
-                        default="src/apm_core/models/ssd_mobilenet_v2.onnx",
-                        help="Path to ONNX detection model")
+    default_model = Path(
+        get_package_share_directory("apm_core")
+    ) / "models" / "ssd_mobilenet_v2.onnx"
+    parser.add_argument(
+        "--model",
+        default=str(default_model),
+        help="Path to ONNX detection model",
+    )
     parser.add_argument("--output", default="benchmark_results.json",
                         help="File to write metrics")
     args = parser.parse_args()
