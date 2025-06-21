@@ -6,7 +6,7 @@ import threading
 import rclpy
 from rclpy.node import Node
 from matplotlib import pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
+from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 from apm_msgs.msg import DetectedObjectArray
 

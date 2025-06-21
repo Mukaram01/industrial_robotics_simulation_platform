@@ -231,9 +231,10 @@ class WebInterfaceNode(Node):
             img = cast(np.ndarray, self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8'))
             self.latest_rgb_image = img
 
+            assert self.latest_rgb_image is not None
             success, buffer = cv2.imencode(
                 '.jpg',
-                img,
+                self.latest_rgb_image,
                 [cv2.IMWRITE_JPEG_QUALITY, self.jpeg_quality],
             )
 
@@ -256,9 +257,10 @@ class WebInterfaceNode(Node):
             depth_img = cast(np.ndarray, self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough'))
             self.latest_depth_image = depth_img
 
+            assert self.latest_depth_image is not None
             # Normalize depth image for visualization
             depth_normalized = np.empty(depth_img.shape, dtype=np.uint8)
-            cv2.normalize(depth_img, depth_normalized, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            cv2.normalize(self.latest_depth_image, depth_normalized, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
             depth_colormap = cv2.applyColorMap(depth_normalized, cv2.COLORMAP_JET)
             
             success, buffer = cv2.imencode(
