@@ -200,7 +200,7 @@ def test_error_sim_rate_bounds(tmp_path):
     assert dummy.error_simulation_rate == 0.0
 
 
-def test_web_interface_logger_initialization_order(tmp_path):
+def test_web_interface_logger_initialization_order(tmp_path, monkeypatch):
     """Ensure data directory exists before ActionLogger is created."""
     import types
     import importlib
@@ -232,6 +232,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
                 'detected_objects_topic': '/apm/detection/objects',
                 'joint_states_topic': '/joint_states',
                 'auto_open_browser': False,
+                'secret_key': 'dummy_key',
             }
 
         def declare_parameters(self, ns, params):
@@ -269,6 +270,7 @@ def test_web_interface_logger_initialization_order(tmp_path):
         'numpy': types.ModuleType('numpy'),
         'yaml': types.ModuleType('yaml'),
     }
+    stub_modules['numpy'].typing = types.SimpleNamespace(NDArray=object)
 
     stub_modules['rclpy'].node = stub_modules['rclpy.node']
     stub_modules['rclpy.node'].Node = DummyNode
@@ -320,6 +322,8 @@ def test_web_interface_logger_initialization_order(tmp_path):
 
     for name, mod in stub_modules.items():
         sys.modules[name] = mod
+
+    monkeypatch.setenv("WEB_INTERFACE_SECRET", "dummy_key")
 
     win = importlib.import_module('web_interface_backend.web_interface_node')
 

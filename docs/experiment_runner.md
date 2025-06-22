@@ -23,6 +23,7 @@ config_dir: configs/demo
 data_dir: /tmp/sim_data
 save_images: true
 allow_unsafe_werkzeug: true
+secret_key: mysecret
 opcua_port: 4840
 ```
 
@@ -41,7 +42,11 @@ ros2 launch simulation_tools integrated_system_launch.py \
   data_dir:=<data_dir> \
   save_images:=<true|false> \
   allow_unsafe_werkzeug:=<true|false> \
+  secret_key:=<key> \
   opcua_port:=<port>
 ```
+
+The secret key may also be provided via the `WEB_INTERFACE_SECRET`
+environment variable.
 
 Any unknown keys in the configuration file are ignored.

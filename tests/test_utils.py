@@ -9,6 +9,8 @@ from unittest.mock import MagicMock
 def _setup_ros_stubs(monkeypatch):
     """Create minimal ROS stubs used across multiple tests."""
 
+    monkeypatch.setenv("WEB_INTERFACE_SECRET", "dummy_key")
+
     root = Path(__file__).resolve().parents[1]
 
     # rclpy and node stub
