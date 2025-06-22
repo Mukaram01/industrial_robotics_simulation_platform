@@ -69,6 +69,8 @@ def test_safety_monitor_node_defaults():
 
 
 def test_web_interface_node_defaults():
+    import os
+    os.environ["WEB_INTERFACE_SECRET"] = "dummy_key"
     from web_interface_backend.web_interface_node import WebInterfaceNode
     node = _init_node(WebInterfaceNode)
     assert node.get_parameter('allow_unsafe_werkzeug').value is True
@@ -79,6 +81,7 @@ def test_web_interface_node_defaults():
         node.get_parameter('detected_objects_topic').value
         == '/apm/detection/objects'
     )
+    assert node.get_parameter('secret_key').value == 'dummy_key'
 
 
 def test_visualization_server_node_defaults():

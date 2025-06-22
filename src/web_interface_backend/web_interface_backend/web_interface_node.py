@@ -59,6 +59,7 @@ class WebInterfaceNode(Node):
         super().__init__('web_interface_node')
         
         # Declare parameters using a single dictionary
+        secret_env = os.environ.get('WEB_INTERFACE_SECRET', 'secret')
         param_defaults = {
             'port': 8080,
             'host': '0.0.0.0',
@@ -71,6 +72,7 @@ class WebInterfaceNode(Node):
             'detected_objects_topic': '/apm/detection/objects',
             'joint_states_topic': '/joint_states',
             'auto_open_browser': False,
+            'secret_key': secret_env,
         }
         self.declare_parameters('', [(k, v) for k, v in param_defaults.items()])
         
@@ -86,6 +88,7 @@ class WebInterfaceNode(Node):
         self.detected_objects_topic = self.get_parameter('detected_objects_topic').value
         self.joint_states_topic = self.get_parameter('joint_states_topic').value
         self.auto_open_browser = self.get_parameter('auto_open_browser').value
+        self.secret_key = self.get_parameter('secret_key').value
 
         if not self.log_db_path:
             if self.data_dir:
@@ -176,7 +179,7 @@ class WebInterfaceNode(Node):
         self.app = Flask(__name__,
                          template_folder=template_folder_path,
                          static_folder=static_folder_path)
-        self.app.secret_key = 'secret'
+        self.app.secret_key = self.secret_key
 
         self.login_manager = LoginManager()
         self.login_manager.login_view = 'login'
