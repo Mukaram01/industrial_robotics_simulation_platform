@@ -120,6 +120,16 @@ to the underlying ROS launch command.
 
 ## Handling Large Files
 
+Model weights and other large assets in the `models/` directory are stored using
+[Git LFS](https://git-lfs.github.com/). Install Git LFS **before cloning** the
+repository so these files download correctly:
+
+```bash
+sudo apt-get install git-lfs  # or follow the installer for your platform
+git lfs install
+git clone <repository-url>
+```
+
 This repository excludes large binary artifacts such as ONNX models and
 compressed archives via `.gitignore`. If you need to keep these files under
 version control, configure [Git LFS](https://git-lfs.github.com/) before
