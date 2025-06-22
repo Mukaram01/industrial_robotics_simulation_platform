@@ -4,11 +4,10 @@ This guide explains how to run the automated tests and style checks for the Indu
 
 ## 1. Install Dependencies
 
-Install the Python packages listed in `requirements.txt` along with the development tools:
+Install the Python packages and development tools listed in `requirements.txt`:
 
 ```bash
 pip install -r requirements.txt
-pip install flake8 pytest pytest-cov
 ```
 
 The tests use stub modules so ROS&nbsp;2 is not required. Ensure all dependencies are available in your environment before running the suite.

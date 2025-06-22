@@ -191,10 +191,10 @@ functionality, place the corresponding test cases in this directory.
 ### Code Style
 
 `flake8` checks are provided to help maintain consistent code formatting.
-Install the tool and run it against the source tree before submitting changes:
+Install all development dependencies and run the style checker before submitting changes:
 
 ```bash
-pip install flake8
+pip install -r requirements.txt
 flake8 src tests
 ```
 
