@@ -2,7 +2,6 @@ import sys
 import types
 from unittest.mock import MagicMock
 from pathlib import Path
-import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src'))
@@ -25,7 +24,12 @@ def _setup_ros_stubs(monkeypatch, param_overrides=None):
     if existing_mc and hasattr(existing_mc, 'MoveGroupCommander'):
         existing_mc.MoveGroupCommander.last_instance = None
 
+    # Ensure stale stubs are removed before creating new ones
     sys.modules.pop('moveit_commander', None)
+    existing_rclpy = sys.modules.pop('rclpy', None)
+    sys.modules.pop('rclpy.node', None)
+    if existing_rclpy and hasattr(existing_rclpy, 'node'):
+        delattr(existing_rclpy, 'node')
     rclpy_stub = types.ModuleType('rclpy')
     node_mod = types.ModuleType('rclpy.node')
 
@@ -372,22 +376,22 @@ def test_pick_and_place_node_locations(monkeypatch):
     assert pose.position.z >= 0.0
 
 
-@pytest.mark.xfail(reason="MoveGroupCommander stub not retained between tests")
 def test_pick_and_place_node_parameters(monkeypatch):
     overrides = {
         'max_velocity_scaling_factor': 0.8,
         'workspace_limits': [-1.0, 1.0, -1.0, 1.0, 0.0, 0.7],
     }
 
+    import importlib
+    import sys
     _setup_ros_stubs(monkeypatch, param_overrides=overrides)
     sys.modules.pop('fmm_core.fmm_core.pick_and_place_node', None)
-    from fmm_core.fmm_core import pick_and_place_node as ppn
+    ppn = importlib.import_module('fmm_core.fmm_core.pick_and_place_node')
 
     node = ppn.PickAndPlaceNode()
 
     mg = node.move_group
-    if node.max_velocity_scaling_factor != overrides['max_velocity_scaling_factor']:
-        pytest.xfail("Parameter overrides not applied")
+    assert node.max_velocity_scaling_factor == overrides['max_velocity_scaling_factor']
     assert node.planning_time == 5.0
     assert node.num_planning_attempts == 10
     assert node.max_velocity_scaling_factor == 0.8
