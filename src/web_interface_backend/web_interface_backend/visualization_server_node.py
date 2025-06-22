@@ -37,6 +37,11 @@ class VisualizationServerNode(Node):
             )
             self.visualization_rate = 10.0
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
+        if not 0 <= self.jpeg_quality <= 100:
+            self.get_logger().warning(
+                f'Invalid jpeg_quality {self.jpeg_quality}, using 75 instead'
+            )
+            self.jpeg_quality = 75
         
         # Create data directory if it doesn't exist
         if self.data_dir and not os.path.exists(self.data_dir):

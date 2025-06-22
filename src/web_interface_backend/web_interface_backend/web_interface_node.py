@@ -83,6 +83,11 @@ class WebInterfaceNode(Node):
         self.allow_unsafe_werkzeug = self.get_parameter('allow_unsafe_werkzeug').value
         self.log_db_path = self.get_parameter('log_db_path').value
         self.jpeg_quality = int(self.get_parameter('jpeg_quality').value)
+        if not 0 <= self.jpeg_quality <= 100:
+            self.get_logger().warning(
+                f'Invalid jpeg_quality {self.jpeg_quality}, using 75 instead'
+            )
+            self.jpeg_quality = 75
         self.detected_objects_topic = self.get_parameter('detected_objects_topic').value
         self.joint_states_topic = self.get_parameter('joint_states_topic').value
         self.auto_open_browser = self.get_parameter('auto_open_browser').value
