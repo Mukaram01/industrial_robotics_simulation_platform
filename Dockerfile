@@ -17,7 +17,7 @@ RUN apt-get update && \
     rosdep update && \
     rosdep install --from-paths src -y --ignore-src \
         --rosdistro humble \
-        --skip-keys "ament_python flask-socketio pymodbus pyyaml moveit_commander onnxruntime flask paho-mqtt numpy"
+        --skip-keys "ament_python flask-socketio pymodbus pyyaml moveit_commander onnxruntime flask paho-mqtt numpy asyncua"
 
 # Build the workspace
 RUN bash -c "source /opt/ros/humble/setup.bash && colcon build"
