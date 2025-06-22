@@ -9,7 +9,9 @@ COPY . /opt/industrial_ws
 # Install system dependencies and Python requirements
 RUN apt-get update && \
     rosdep update && \
-    rosdep install --from-paths src -y --ignore-src && \
+    rosdep install --from-paths src -y --ignore-src \
+        --rosdistro humble \
+        --skip-keys "ament_python flask-socketio pymodbus pyyaml moveit_commander onnxruntime" && \
     pip install --no-cache-dir -r requirements.txt && \
     . /opt/ros/humble/setup.sh && \
     colcon build
