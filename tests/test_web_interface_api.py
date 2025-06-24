@@ -331,3 +331,25 @@ def test_save_scenario_endpoint(monkeypatch, tmp_path):
     data = json.loads(msg.data)
     assert data['update_scenario']['name'] == 'test'
     logger_mock.log.assert_called_with('save_scenario', {'id': 'test'})
+
+
+def test_download_export_invalid_id(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.data_dir = str(tmp_path)
+
+    client = node.app.test_client()
+    _login(client)
+
+    res = client.get('/api/exports/..etc')
+    assert res.status_code == 400
