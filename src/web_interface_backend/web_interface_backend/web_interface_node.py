@@ -19,6 +19,7 @@ import json
 import threading
 import time
 import shutil
+import tempfile
 import webbrowser
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect
 from flask_socketio import SocketIO
@@ -715,12 +716,17 @@ class WebInterfaceNode(Node):
         @self.app.route('/api/exports/<export_id>')
         @login_required
         def download_export(export_id):
+            if not SCENARIO_ID_PATTERN.match(export_id):
+                return jsonify({'error': 'Invalid export ID'}), 400
+
             exports_dir = os.path.join(self.data_dir, 'exports') if self.data_dir else ''
             path = os.path.join(exports_dir, export_id)
             if not exports_dir or not os.path.isdir(path):
                 return jsonify({'error': 'Export not found'}), 404
-            archive = shutil.make_archive('/tmp/' + export_id, 'zip', path)
-            return send_from_directory('/tmp', os.path.basename(archive), as_attachment=True)
+
+            with tempfile.TemporaryDirectory() as tmpdir:
+                archive = shutil.make_archive(os.path.join(tmpdir, export_id), 'zip', path)
+                return send_from_directory(tmpdir, os.path.basename(archive), as_attachment=True)
         
         @self.app.route('/static/<path:path>')
         def serve_static(path):
