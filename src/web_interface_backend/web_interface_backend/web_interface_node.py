@@ -349,7 +349,8 @@ class WebInterfaceNode(Node):
             path = os.path.join(self.config_dir, 'users.yaml')
             if os.path.exists(path):
                 try:
-                    data = yaml.safe_load(open(path, 'r'))
+                    with open(path) as f:
+                        data = yaml.safe_load(f)
                     if isinstance(data, dict):
                         return {str(k): str(v) for k, v in data.items()}
                 except Exception as e:  # pragma: no cover - log and fall back
