@@ -190,6 +190,13 @@ Then execute:
 pytest
 ```
 
+You can also run the `setup_and_test.sh` helper script, which installs the
+dependencies and executes `flake8` followed by `pytest`:
+
+```bash
+scripts/setup_and_test.sh
+```
+
 ### Tests Directory
 
 All unit tests are located in the `tests/` folder. Each file targets a specific
