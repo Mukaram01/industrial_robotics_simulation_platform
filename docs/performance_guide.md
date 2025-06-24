@@ -56,3 +56,19 @@ python scripts/benchmark_planning.py \
 ```
 
 Results are written to `planning_profile.json` for further analysis alongside the simulation and perception profiles.
+
+## 5. Error Simulation Rate
+
+The simulation includes optional error injection controlled by the
+`error_simulation_rate` parameter. It defines the probability of triggering a
+random error whenever metrics are published. Acceptable values range from `0.0`
+(no errors) to `1.0` (an error every cycle).
+
+Set the parameter when launching the system:
+
+```bash
+ros2 launch simulation_core full_system.launch.py error_simulation_rate:=0.3
+```
+
+You can adjust the rate while the system is running using the same configuration
+topic described in the full system guide.
