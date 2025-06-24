@@ -87,3 +87,22 @@ ros2 run gazebo_ros spawn_entity.py \
 Navigate to [http://localhost:8080](http://localhost:8080) in your browser to control the simulation, add objects and monitor status.
 
 The full system is now running with Gazebo, RViz, object detection and the web dashboard.
+
+## 7. Adjust Error Simulation Rate
+
+The environment configurator node can randomly trigger errors during metrics
+updates. Control how often this happens using the `error_simulation_rate`
+parameter. A value of `0.0` disables error injection while `1.0` forces an error
+every cycle.
+
+Set the rate when launching the system:
+
+```bash
+ros2 launch simulation_core full_system.launch.py error_simulation_rate:=0.2
+```
+
+You can also change the value at runtime by publishing a configuration message:
+
+```bash
+ros2 topic pub /simulation/config std_msgs/msg/String '{"settings": {"simulation": {"error_simulation_rate": 0.5}}}'
+```
