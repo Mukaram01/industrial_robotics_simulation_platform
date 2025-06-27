@@ -59,3 +59,16 @@ def test_command_processing(monkeypatch):
     assert not node.jog_pub.publish.called
     assert not node.waypoint_pub.publish.called
     assert not node.sequence_pub.publish.called
+
+
+def test_unsupported_command_logs_warning(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+    sys.modules.pop('simulation_core.robot_control_node', None)
+    sys.modules.pop('simulation_core', None)
+    from simulation_core import robot_control_node as rcn
+
+    node = rcn.RobotControlNode()
+
+    node.get_logger().warning.reset_mock()
+    node.command_callback(_msg('bad_cmd'))
+    node.get_logger().warning.assert_called_once_with('Unsupported command: bad_cmd')

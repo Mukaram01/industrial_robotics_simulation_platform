@@ -60,6 +60,8 @@ class RobotControlNode(Node):
             out = String()
             out.data = 'execute'
             self.sequence_pub.publish(out)
+        else:
+            self.get_logger().warning(f'Unsupported command: {msg.data}')
 
 
 def main(args=None):
