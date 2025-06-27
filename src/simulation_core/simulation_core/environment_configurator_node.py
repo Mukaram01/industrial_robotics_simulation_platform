@@ -43,8 +43,9 @@ class EnvironmentConfiguratorNode(Node):
         self.current_scenario = self.scenario if self.scenario else self.default_scenario
         self.running = False
         self.environment_config: dict[str, Any] = {}
+        self._threads: list[threading.Thread] = []
         self.load_scenario(self.current_scenario)
-        
+
         # Create publishers
         self.status_pub = self.create_publisher(
             String, 
@@ -295,7 +296,13 @@ class EnvironmentConfiguratorNode(Node):
         if shutil.which(cmd[0]) is None:
             self.get_logger().warning(f'{cmd[0]} not found, skipping process')
             return
-        threading.Thread(target=subprocess.run, args=(cmd,), kwargs={'check': False}).start()
+        thread = threading.Thread(
+            target=subprocess.run,
+            args=(cmd,),
+            kwargs={'check': False},
+        )
+        thread.start()
+        self._threads.append(thread)
 
     def _load_robot_models(self) -> None:
         """Parse robot model files and start appropriate nodes."""
@@ -421,6 +428,21 @@ class EnvironmentConfiguratorNode(Node):
         metrics_msg = String()
         metrics_msg.data = json.dumps(self.metrics)
         self.metrics_pub.publish(metrics_msg)
+
+    def shutdown(self) -> None:
+        """Cancel timers and join spawned threads."""
+        try:
+            self.status_timer.cancel()
+        except Exception:  # pragma: no cover - best effort
+            pass
+        if self.record_metrics:
+            try:
+                self.metrics_timer.cancel()
+            except Exception:  # pragma: no cover - best effort
+                pass
+        for thread in self._threads:
+            if thread.is_alive():
+                thread.join(timeout=0.1)
     
     def get_default_config(self) -> dict:
         return {
@@ -491,6 +513,7 @@ def main(args: list[str] | None = None) -> None:
     except KeyboardInterrupt:
         pass
     finally:
+        node.shutdown()
         node.destroy_node()
         rclpy.shutdown()
 
