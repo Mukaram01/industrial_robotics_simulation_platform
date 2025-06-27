@@ -149,6 +149,27 @@ def test_save_scenario_creates_dir(tmp_path):
     assert (config_dir / 'auto.yaml').exists()
 
 
+def test_invalid_scenario_id_ignored(tmp_path):
+    dummy = make_dummy(tmp_path)
+    ec.EnvironmentConfiguratorNode.save_scenario(
+        dummy, {'name': 'bad-id', 'config': {}}
+    )
+    assert not (tmp_path / 'bad-id.yaml').exists()
+
+
+def test_delete_invalid_scenario_noop(tmp_path):
+    dummy = make_dummy(tmp_path)
+    ec.EnvironmentConfiguratorNode.delete_scenario(dummy, 'bad-id')
+    assert not (tmp_path / 'bad-id.yaml').exists()
+
+
+def test_load_invalid_scenario_no_change(tmp_path):
+    dummy = make_dummy(tmp_path)
+    dummy.environment_config = {'foo': 1}
+    ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'bad-id')
+    assert dummy.environment_config == {'foo': 1}
+
+
 def test_update_settings(tmp_path):
     dummy = make_dummy(tmp_path)
     ec.EnvironmentConfiguratorNode.update_settings(
