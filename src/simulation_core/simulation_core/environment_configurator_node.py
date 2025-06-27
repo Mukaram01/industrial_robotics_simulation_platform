@@ -2,6 +2,7 @@
 """ROS2 node loading environment configs and spawning scenarios."""
 
 import os
+import re
 import subprocess
 import shutil
 import rclpy
@@ -13,6 +14,8 @@ import json
 import threading
 import time
 import random
+
+SCENARIO_ID_PATTERN = re.compile(r'^[A-Za-z0-9_]+$')
 
 class EnvironmentConfiguratorNode(Node):
     def __init__(self) -> None:
@@ -215,6 +218,10 @@ class EnvironmentConfiguratorNode(Node):
             self.get_logger().error(f'Error processing config message: {e}')
     
     def load_scenario(self, scenario: str) -> None:
+        if not SCENARIO_ID_PATTERN.match(scenario):
+            self.get_logger().warning(f'Invalid scenario ID: {scenario}')
+            return
+
         self.current_scenario = scenario
         
         # Try to load scenario from file
@@ -254,6 +261,9 @@ class EnvironmentConfiguratorNode(Node):
         os.makedirs(self.config_dir, exist_ok=True)
 
         scenario_id = scenario_data.get('name', 'custom')
+        if not SCENARIO_ID_PATTERN.match(scenario_id):
+            self.get_logger().warning(f'Invalid scenario ID: {scenario_id}')
+            return
         description = scenario_data.get('description', 'Custom scenario')
         config = scenario_data.get('config', {})
         
@@ -274,6 +284,10 @@ class EnvironmentConfiguratorNode(Node):
     def delete_scenario(self, scenario_id: str) -> None:
         if not self.config_dir:
             self.get_logger().error('Config directory not set, cannot delete scenario')
+            return
+
+        if not SCENARIO_ID_PATTERN.match(scenario_id):
+            self.get_logger().warning(f'Invalid scenario ID: {scenario_id}')
             return
         
         # Don't delete default scenario
