@@ -11,6 +11,12 @@ except ModuleNotFoundError:
 # reuse helper from API tests
 from test_utils import _setup_ros_stubs
 
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT / "src"))
+sys.path.append(str(ROOT / "src" / "web_interface_backend"))
+
 
 def test_run_server_fallback(monkeypatch):
     _setup_ros_stubs(monkeypatch)
