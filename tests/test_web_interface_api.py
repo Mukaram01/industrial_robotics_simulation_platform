@@ -3,7 +3,12 @@ from pathlib import Path
 from unittest.mock import MagicMock
 import io
 import json
-import yaml
+import pytest
+
+try:
+    import yaml
+except ModuleNotFoundError:
+    pytest.skip("PyYAML is required for web interface tests", allow_module_level=True)
 
 from test_utils import _setup_ros_stubs
 

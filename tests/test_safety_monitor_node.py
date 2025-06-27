@@ -1,5 +1,11 @@
 import sys
 from pathlib import Path
+import pytest
+
+try:
+    import yaml  # noqa: F401
+except ModuleNotFoundError:
+    pytest.skip("PyYAML is required for safety monitor tests", allow_module_level=True)
 
 from test_utils import _setup_ros_stubs
 

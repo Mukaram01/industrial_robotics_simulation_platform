@@ -1,5 +1,11 @@
 import sqlite3
 import json
+import pytest
+
+try:
+    import yaml  # noqa: F401
+except ModuleNotFoundError:
+    pytest.skip("PyYAML is required for core logic tests", allow_module_level=True)
 
 # Ensure packages under src/ are importable
 import sys
