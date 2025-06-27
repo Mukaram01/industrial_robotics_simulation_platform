@@ -33,12 +33,24 @@ sys.modules['rclpy.node'] = rclpy_stub.node
 sys.modules['std_msgs'] = std_msgs_stub
 sys.modules['std_msgs.msg'] = std_msgs_stub.msg
 
+# Provide a minimal yaml stub if PyYAML isn't available
+yaml_stub_created = False
+try:
+    import yaml  # noqa: F401
+except ModuleNotFoundError:
+    yaml_stub_created = True
+    yaml_stub = types.ModuleType('yaml')
+    yaml_stub.safe_load = lambda *a, **k: {}
+    sys.modules['yaml'] = yaml_stub
+
 from web_interface_backend.action_logger import ActionLogger  # noqa: E402
 from simulation_core import environment_configurator_node as ec  # noqa: E402
 
 # Remove stub modules so other tests that expect missing ROS will skip
 for mod in ['rclpy', 'rclpy.node', 'std_msgs', 'std_msgs.msg']:
     sys.modules.pop(mod, None)
+if yaml_stub_created:
+    sys.modules.pop('yaml', None)
 
 
 class DummyLogger:
