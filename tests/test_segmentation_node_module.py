@@ -3,9 +3,10 @@ import types
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import numpy as np
-
+import pytest
 from test_utils import _setup_ros_stubs
+
+np = pytest.importorskip('numpy')
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT / 'src' / 'advanced_perception'))
