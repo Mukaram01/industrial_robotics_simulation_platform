@@ -179,7 +179,7 @@ The container will automatically launch the integrated system using
 ## Running Tests
 
 `pytest` is used for running the unit tests. After building the workspace,
-install any Python dependencies with:
+Python 3.10 is recommended when executing the test suite. Install any Python dependencies with:
 
 ```bash
 pip install -r requirements.txt
