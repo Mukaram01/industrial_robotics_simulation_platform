@@ -3,13 +3,11 @@
 
 import rclpy
 from rclpy.node import Node
-from moveit_msgs.msg import DisplayTrajectory, RobotTrajectory, MoveItErrorCodes
+from moveit_msgs.msg import DisplayTrajectory
 from moveit_msgs.srv import GetPositionIK, GetPositionFK
-from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion
-from sensor_msgs.msg import JointState
-from std_msgs.msg import Header, String
+from geometry_msgs.msg import Pose
+from std_msgs.msg import String
 from apm_msgs.msg import DetectedObject, DetectedObjectArray
-import numpy as np
 import tf2_ros
 from tf2_geometry_msgs import do_transform_pose
 from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
