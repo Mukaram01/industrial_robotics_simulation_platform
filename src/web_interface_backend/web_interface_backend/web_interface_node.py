@@ -694,7 +694,12 @@ class WebInterfaceNode(Node):
         @self.app.route('/api/actions')
         @login_required
         def api_actions():
-            limit = int(request.args.get('limit', 100))
+            limit_str = request.args.get('limit', '100')
+            try:
+                limit = int(limit_str)
+            except ValueError:
+                return jsonify({'error': 'Invalid limit parameter'}), 400
+
             rows = []
             try:
                 rows = self.action_logger.get_recent_actions(limit)

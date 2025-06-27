@@ -358,3 +358,24 @@ def test_download_export_invalid_id(monkeypatch, tmp_path):
 
     res = client.get('/api/exports/..etc')
     assert res.status_code == 400
+
+
+def test_actions_invalid_limit(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+    _login(client)
+
+    res = client.get('/api/actions?limit=bad')
+    assert res.status_code == 400
+
