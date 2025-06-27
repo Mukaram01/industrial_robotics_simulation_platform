@@ -371,3 +371,21 @@ def test_web_interface_logger_initialization_order(tmp_path, monkeypatch):
         pkg = sys.modules.get('web_interface_backend')
         if pkg and hasattr(pkg, 'web_interface_node'):
             delattr(pkg, 'web_interface_node')
+
+
+def test_simulate_error_updates_metrics(tmp_path):
+    dummy = make_dummy(tmp_path)
+    dummy.record_metrics = True
+    dummy.metrics = {
+        'cycle_time': 0.0,
+        'throughput': 0.0,
+        'accuracy': 100.0,
+        'errors': 0,
+        'objects_processed': 0,
+    }
+    dummy.running = True
+
+    ec.EnvironmentConfiguratorNode.simulate_error(dummy, 'gripper_failure')
+
+    assert dummy.metrics['errors'] == 1
+    assert dummy.metrics['accuracy'] == 95.0
