@@ -1,7 +1,12 @@
 import sys
 from types import ModuleType
-
+import pytest
 import importlib.metadata as md
+
+try:
+    import rclpy  # noqa: F401
+except ModuleNotFoundError:
+    pytest.skip("rclpy is required for registry tests", allow_module_level=True)
 
 sys.path.append('src')
 sys.path.append('src/simulation_core')

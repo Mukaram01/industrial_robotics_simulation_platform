@@ -3,7 +3,17 @@ import types
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import numpy as np
+import pytest
+
+try:
+    import numpy as np
+except ModuleNotFoundError:
+    pytest.skip("NumPy is required for segmentation tests", allow_module_level=True)
+
+try:
+    import yaml  # noqa: F401
+except ModuleNotFoundError:
+    pytest.skip("PyYAML is required for segmentation tests", allow_module_level=True)
 
 from test_utils import _setup_ros_stubs
 

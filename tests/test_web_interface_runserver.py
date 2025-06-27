@@ -1,6 +1,12 @@
 import sys
 import types
 from unittest.mock import MagicMock
+import pytest
+
+try:
+    import yaml  # noqa: F401
+except ModuleNotFoundError:
+    pytest.skip("PyYAML is required for web interface tests", allow_module_level=True)
 
 # reuse helper from API tests
 from test_utils import _setup_ros_stubs

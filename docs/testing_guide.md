@@ -13,6 +13,8 @@ Python 3.10 is the recommended interpreter when running the test suite.
 
 The tests use stub modules so ROS&nbsp;2 is not required. Ensure all dependencies are available in your environment before running the suite.
 
+Some tests rely on optional packages like **NumPy** and **PyYAML**. If these packages are missing, those tests will be skipped automatically.
+
 ## 2. Run Flake8
 
 Check code formatting with `flake8`:

@@ -2,7 +2,17 @@ import sys
 import types
 from pathlib import Path
 
-import numpy as np
+import pytest
+
+try:
+    import numpy as np
+except ModuleNotFoundError:
+    pytest.skip("NumPy is required for pose estimation tests", allow_module_level=True)
+
+try:
+    import yaml  # noqa: F401
+except ModuleNotFoundError:
+    pytest.skip("PyYAML is required for pose estimation tests", allow_module_level=True)
 
 from test_utils import _setup_ros_stubs
 
