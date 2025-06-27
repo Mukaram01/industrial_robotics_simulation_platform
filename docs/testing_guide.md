@@ -9,6 +9,7 @@ Install the Python packages and development tools listed in `requirements.txt`:
 ```bash
 pip install -r requirements.txt
 ```
+Python 3.10 is the recommended interpreter when running the test suite.
 
 The tests use stub modules so ROS&nbsp;2 is not required. Ensure all dependencies are available in your environment before running the suite.
 
