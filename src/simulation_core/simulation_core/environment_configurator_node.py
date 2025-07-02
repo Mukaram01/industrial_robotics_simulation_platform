@@ -297,13 +297,15 @@ class EnvironmentConfiguratorNode(Node):
             return
         
         scenario_path = os.path.join(self.config_dir, f'{scenario_id}.yaml')
-        
-        if os.path.exists(scenario_path):
-            try:
-                os.remove(scenario_path)
-                self.get_logger().info(f'Deleted scenario {scenario_id}')
-            except Exception as e:
-                self.get_logger().error(f'Error deleting scenario file {scenario_id}: {e}')
+        json_path = os.path.join(self.config_dir, f'{scenario_id}.json')
+
+        for path in (scenario_path, json_path):
+            if os.path.exists(path):
+                try:
+                    os.remove(path)
+                    self.get_logger().info(f'Deleted scenario {scenario_id}')
+                except Exception as e:
+                    self.get_logger().error(f'Error deleting scenario file {scenario_id}: {e}')
 
     def _launch_process(self, cmd: list[str]) -> None:
         """Launch a ROS2 process if available."""

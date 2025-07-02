@@ -155,6 +155,9 @@ def test_scenario_file_cycle(tmp_path):
     ec.EnvironmentConfiguratorNode.load_scenario(dummy, 'test')
     assert dummy.environment_config['foo'] == 'baz'
 
+    ec.EnvironmentConfiguratorNode.delete_scenario(dummy, 'test')
+    assert not json_path.exists()
+
 
 def test_save_scenario_creates_dir(tmp_path):
     config_dir = tmp_path / 'configs' / 'scenarios'
