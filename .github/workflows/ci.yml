@@ -26,4 +26,5 @@ jobs:
       - name: Test
         run: pytest --cov=src --cov-report=xml -q
       - name: Docker build
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: docker build -t industrial_sim .
