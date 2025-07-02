@@ -19,7 +19,7 @@ All recognized keys map directly to the launch arguments used by `integrated_sys
 use_realsense: false
 use_advanced_perception: true
 scenario: pick_and_place
-config_dir: configs/demo
+config_dir: src/simulation_core/config
 data_dir: /tmp/sim_data
 save_images: true
 allow_unsafe_werkzeug: true
