@@ -4,9 +4,10 @@ This guide walks through launching every component of the simulation platform: G
 
 ## Prerequisites
 
-- Ubuntu 22.04 or newer with ROS&nbsp;2 Humble installed (`source /opt/ros/humble/setup.bash`)
+- Ubuntu 22.04 or newer with [ROS&nbsp;2 Humble](https://docs.ros.org/en/humble/Installation.html) installed (`source /opt/ros/humble/setup.bash`)
 - Gazebo packages installed (`sudo apt install ros-humble-gazebo-ros-pkgs`)
 - `python3-rosdep` installed and initialized
+- Docker can be used to run the platform if you prefer not to install ROS&nbsp;2 locally
 
 ## 1. Build the Workspace
 
