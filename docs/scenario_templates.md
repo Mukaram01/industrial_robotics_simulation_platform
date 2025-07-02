@@ -36,3 +36,23 @@ robots:
 ```
 
 Use these snippets as a starting point when defining your own scenarios. Additional sections such as conveyors, containers and sorting rules may be added as shown in other files under `src/simulation_core/config`.
+
+## Objects Example
+
+Objects are listed under the `objects` key. Each entry requires an `id`,
+`type`, `position` and `dimensions`. The `position` and `dimensions` arrays
+contain three values representing meters. Set `pick_target: true` on any
+object that should be grasped by a robot.
+
+```yaml
+objects:
+  - id: support_table
+    type: table
+    position: [0.0, 0.0, 0.0]
+    dimensions: [1.0, 1.0, 0.8]
+  - id: part_1
+    type: box
+    position: [0.2, 0.0, 0.8]
+    dimensions: [0.05, 0.05, 0.05]
+    pick_target: true
+```
