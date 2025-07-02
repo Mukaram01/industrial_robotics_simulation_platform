@@ -112,7 +112,7 @@ Use `scripts/run_experiment.py` to launch the integrated system with
 parameters defined in a YAML or JSON configuration file:
 
 ```bash
-python scripts/run_experiment.py --config configs/my_experiment.yaml
+python scripts/run_experiment.py --config my_experiment.yaml
 ```
 
 The script reads options such as `scenario`, `use_realsense` and

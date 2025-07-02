@@ -44,14 +44,14 @@ Use the `benchmark_planning.py` script to measure latency in the planning stack 
 
 ```bash
 python scripts/benchmark_planning.py \
-  --scenario configs/pick_and_place.yaml
+  --scenario src/simulation_core/config/pick_and_place.yaml
 ```
 
 Increase the number of iterations to stress test the planner and capture system-wide behaviour:
 
 ```bash
 python scripts/benchmark_planning.py \
-  --scenario configs/pick_and_place.yaml \
+  --scenario src/simulation_core/config/pick_and_place.yaml \
   --runs 50 --system-stats
 ```
 
