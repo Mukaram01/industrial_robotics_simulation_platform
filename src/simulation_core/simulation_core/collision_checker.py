@@ -76,5 +76,11 @@ def detect_collisions(environment_config: Dict[str, Any] | List[_AABB], min_dist
             dz = max(a["min"][2] - b["max"][2], b["min"][2] - a["max"][2], 0.0)
             dist = (dx ** 2 + dy ** 2 + dz ** 2) ** 0.5
             if dist < min_distance:
-                violations.append({"type": "collision", "objects": [a["id"], b["id"]], "distance": dist})
+                violations.append(
+                    {
+                        "type": "near_miss",
+                        "objects": [a["id"], b["id"]],
+                        "distance": dist,
+                    }
+                )
     return violations
