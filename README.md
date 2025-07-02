@@ -119,6 +119,15 @@ The script reads options such as `scenario`, `use_realsense` and
 `use_advanced_perception` from the configuration file and forwards them
 to the underlying ROS launch command.
 
+## Simple Simulation Launch
+
+`scripts/run_sim.py` offers a lightweight wrapper around the default
+launch command. It starts the simulation with a few simple flags:
+
+```bash
+python scripts/run_sim.py --use-realsense
+```
+
 ## Handling Large Files
 
 Model weights and other large assets in the `models/` directory are stored using

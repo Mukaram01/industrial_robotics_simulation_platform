@@ -30,6 +30,9 @@ ros2 launch simulation_core full_system.launch.py \
     use_realsense:=false use_advanced_perception:=true
 ```
 
+A convenient wrapper for this command is available as
+[scripts/run_sim.py](../scripts/run_sim.py).
+
 If you prefer to start components separately for debugging, launch them
 individually:
 
