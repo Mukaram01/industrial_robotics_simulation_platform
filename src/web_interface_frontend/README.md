@@ -16,3 +16,6 @@ Files are served automatically by the Flask server in `web_interface_backend`.
 
 ## Extension
 Modify the resources under `static/` and `templates/` to customise the web interface.
+For an overview of how each template maps to a dashboard page see
+[UI Customization](../../docs/ui_customization.md).
+
