@@ -75,6 +75,7 @@ class EnvironmentConfiguratorNode(Node):
         self.status_timer = self.create_timer(1.0, self.publish_status)
         
         # Start metrics timer if enabled
+        self.metrics_timer = None
         if self.record_metrics:
             self.metrics_timer = self.create_timer(0.5, self.publish_metrics)
             self.metrics = {
@@ -379,10 +380,31 @@ class EnvironmentConfiguratorNode(Node):
         if 'simulation' in settings:
             sim_settings = settings['simulation']
             self.physics_enabled = sim_settings.get('physics_enabled', self.physics_enabled)
+            prev_record_metrics = self.record_metrics
             self.record_metrics = sim_settings.get('record_metrics', self.record_metrics)
             # Value should be between 0 and 1
             rate = sim_settings.get('error_simulation_rate', self.error_simulation_rate)
             self.error_simulation_rate = max(0.0, min(rate, 1.0))
+
+            if self.record_metrics and not prev_record_metrics:
+                if hasattr(self, 'create_timer'):
+                    self.metrics_timer = self.create_timer(0.5, self.publish_metrics)
+                else:
+                    self.metrics_timer = None
+                self.metrics = {
+                    'cycle_time': 0.0,
+                    'throughput': 0.0,
+                    'accuracy': 100.0,
+                    'errors': 0,
+                    'objects_processed': 0,
+                }
+                self.last_metrics_time = time.time()
+            elif not self.record_metrics and prev_record_metrics and self.metrics_timer:
+                try:
+                    self.metrics_timer.cancel()
+                except Exception:
+                    pass
+                self.metrics_timer = None
         
         self.get_logger().info('Updated settings')
     
