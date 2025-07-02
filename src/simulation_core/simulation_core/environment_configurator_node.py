@@ -9,7 +9,10 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
 import yaml  # type: ignore
-from typing import Any
+from typing import Any, Optional, cast, TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: no cover - used for type checking only
+    from rclpy.timer import Timer
 import json
 import threading
 import time
@@ -75,9 +78,9 @@ class EnvironmentConfiguratorNode(Node):
         self.status_timer = self.create_timer(1.0, self.publish_status)
         
         # Start metrics timer if enabled
-        self.metrics_timer = None
+        self.metrics_timer: Optional['Timer'] = None
         if self.record_metrics:
-            self.metrics_timer = self.create_timer(0.5, self.publish_metrics)
+            self.metrics_timer = cast('Timer', self.create_timer(0.5, self.publish_metrics))
             self.metrics = {
                 'cycle_time': 0.0,
                 'throughput': 0.0,
@@ -390,7 +393,7 @@ class EnvironmentConfiguratorNode(Node):
 
             if self.record_metrics and not prev_record_metrics:
                 if hasattr(self, 'create_timer'):
-                    self.metrics_timer = self.create_timer(0.5, self.publish_metrics)
+                    self.metrics_timer = cast('Timer', self.create_timer(0.5, self.publish_metrics))
                 else:
                     self.metrics_timer = None
                 self.metrics = {
@@ -473,7 +476,7 @@ class EnvironmentConfiguratorNode(Node):
             self.status_timer.cancel()
         except Exception:  # pragma: no cover - best effort
             pass
-        if self.record_metrics:
+        if self.record_metrics and self.metrics_timer is not None:
             try:
                 self.metrics_timer.cancel()
             except Exception:  # pragma: no cover - best effort
