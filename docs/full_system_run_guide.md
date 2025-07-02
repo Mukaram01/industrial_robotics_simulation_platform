@@ -110,3 +110,13 @@ You can also change the value at runtime by publishing a configuration message:
 ```bash
 ros2 topic pub /simulation/config std_msgs/msg/String '{"settings": {"simulation": {"error_simulation_rate": 0.5}}}'
 ```
+
+## 8. Adjusting Camera FPS
+
+The camera simulator defaults to the frame rate specified in `src/simulation_core/config/default_camera_config.yaml`. You can override this when launching the synthetic camera node. For example:
+
+```bash
+ros2 run perception_nodes synthetic_camera_node frame_rate:=60.0
+```
+
+
