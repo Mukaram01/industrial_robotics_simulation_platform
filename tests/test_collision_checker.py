@@ -28,4 +28,5 @@ def test_near_miss_detection(monkeypatch):
     assert detect_collisions(aabbs) == []
     near = detect_collisions(aabbs, min_distance=0.5)
     assert near
+    assert near[0]['type'] == 'near_miss'
     assert 'distance' in near[0]
