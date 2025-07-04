@@ -18,7 +18,7 @@ Run the environment configurator:
 ros2 run simulation_core environment_configurator_node
 ```
 
-`launch/full_system.launch.py` starts all core services together.
+Use `simulation_tools/integrated_system_launch.py` to start all core services together.
 
 ## Extension
 Scenario and safety YAML files live under `config/`. Pass `config_dir` when launching to use a custom directory or modify the provided files to create new scenarios.

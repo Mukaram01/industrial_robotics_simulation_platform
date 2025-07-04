@@ -67,7 +67,7 @@ random error whenever metrics are published. Acceptable values range from `0.0`
 Set the parameter when launching the system:
 
 ```bash
-ros2 launch simulation_core full_system.launch.py error_simulation_rate:=0.3
+ros2 launch simulation_tools integrated_system_launch.py error_simulation_rate:=0.3
 ```
 
 You can adjust the rate while the system is running using the same configuration
