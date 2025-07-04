@@ -64,7 +64,16 @@ From the repository root, build all packages via the meta-package:
 
 ```bash
 colcon build --packages-select industrial_robotics_simulation_platform_meta
+source install/setup.bash
 ```
+
+If the workspace isn't built or sourced, launching may fail with an error similar to:
+
+```
+package 'perception_nodes' found at '/path/to/install/perception_nodes', but libexec directory '/path/to/install/perception_nodes/lib/perception_nodes' does not exist
+```
+
+Running the build command and sourcing the generated `setup.bash` resolves the missing `libexec` directory.
 
 ## Documentation
 
