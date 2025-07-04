@@ -220,7 +220,7 @@ The OPC UA server port can also be overridden at launch using the `opcua_port`
 argument. For example:
 
 ```bash
-ros2 launch simulation_core full_system.launch.py opcua_port:=4841
+ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
 ```
 
 The OPC UA server runs with minimal security configuration and listens only on
@@ -703,7 +703,7 @@ def load_model(self):
 - Verify the configured port is free: `sudo lsof -i:4840`
 - Specify an alternative port when launching, e.g.:
   ```bash
-  ros2 launch simulation_core full_system.launch.py opcua_port:=4841
+  ros2 launch simulation_tools integrated_system_launch.py opcua_port:=4841
   ```
 
 #### MQTT Broker Connection Errors

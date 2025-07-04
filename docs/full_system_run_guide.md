@@ -27,7 +27,7 @@ source install/setup.bash
 Open a terminal and launch the main system (camera simulator, protocol bridge, safety monitor and web server):
 
 ```bash
-ros2 launch simulation_core full_system.launch.py \
+ros2 launch simulation_tools integrated_system_launch.py \
     use_realsense:=false use_advanced_perception:=true
 ```
 
@@ -102,7 +102,7 @@ every cycle.
 Set the rate when launching the system:
 
 ```bash
-ros2 launch simulation_core full_system.launch.py error_simulation_rate:=0.2
+ros2 launch simulation_tools integrated_system_launch.py error_simulation_rate:=0.2
 ```
 
 You can also change the value at runtime by publishing a configuration message:
