@@ -51,7 +51,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'config_dir',
             default_value=os.path.join(
-                get_package_share_directory('simulation_tools'),
+                get_package_share_directory('simulation_core'),
                 'config',
             ),
             description='Directory containing configuration files',
