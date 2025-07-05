@@ -4,7 +4,7 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, Command
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
@@ -15,8 +15,13 @@ def generate_launch_description():
     # Declare launch arguments
     use_realsense = LaunchConfiguration("use_realsense")
     use_rviz = LaunchConfiguration("use_rviz")
+    use_delta_robot = LaunchConfiguration("use_delta_robot")
+    use_ur5_robot = LaunchConfiguration("use_ur5_robot")
+    use_sim_time = LaunchConfiguration("use_sim_time")
     # Get package directories
     simulation_tools_dir = get_package_share_directory('simulation_tools')
+    delta_desc_dir = get_package_share_directory('delta_robot_description')
+    ur5_desc_dir = get_package_share_directory('ur5_robot_description')
 
     # Create launch description
     ld = LaunchDescription()
@@ -58,6 +63,12 @@ def generate_launch_description():
         description='Launch MoveIt for motion planning'
     ))
 
+    ld.add_action(DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='false',
+        description='Use simulation time'
+    ))
+
     # Launch RViz conditionally using IfCondition
     rviz_config_file = os.path.join(
         simulation_tools_dir, 'config', 'visualization.rviz'
@@ -73,13 +84,56 @@ def generate_launch_description():
     )
     ld.add_action(rviz_node)
 
-    # Joint state publisher (always needed for visualization)
-    joint_state_publisher = Node(
+    # Robot descriptions
+    delta_urdf = os.path.join(delta_desc_dir, 'urdf', 'delta_robot.urdf.xacro')
+    ur5_urdf = os.path.join(ur5_desc_dir, 'urdf', 'ur5_robot.urdf.xacro')
+
+    delta_description = Command(['xacro', delta_urdf])
+    ur5_description = Command(['xacro', ur5_urdf])
+
+    # Robot state publishers
+    delta_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='delta_robot_state_publisher',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'robot_description': delta_description,
+        }],
+        condition=IfCondition(use_delta_robot),
+    )
+    ld.add_action(delta_state_publisher)
+
+    ur5_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='ur5_robot_state_publisher',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'robot_description': ur5_description,
+        }],
+        condition=IfCondition(use_ur5_robot),
+    )
+    ld.add_action(ur5_state_publisher)
+
+    # Joint state publishers
+    delta_joint_state_publisher = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
-        name='joint_state_publisher'
+        name='delta_joint_state_publisher',
+        parameters=[{'use_sim_time': use_sim_time}],
+        condition=IfCondition(use_delta_robot),
     )
-    ld.add_action(joint_state_publisher)
+    ld.add_action(delta_joint_state_publisher)
+
+    ur5_joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='ur5_joint_state_publisher',
+        parameters=[{'use_sim_time': use_sim_time}],
+        condition=IfCondition(use_ur5_robot),
+    )
+    ld.add_action(ur5_joint_state_publisher)
 
     # Include realsense launch file conditionally
     realsense_launch_file = os.path.join(
