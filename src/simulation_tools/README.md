@@ -22,3 +22,8 @@ Other launches include `realsense_hybrid_launch.py` for RealSense cameras and `v
 
 ## Extension
 Pass `-h` to any launch file to see configurable arguments and adapt them to your needs.
+
+Both `integrated_system_launch.py` and `realsense_hybrid_launch.py` accept a
+`camera_config` argument that points to a YAML file with parameters for the
+`realsense2_camera` node. The default is the sample configuration in
+`simulation_core/config/realsense_config.yaml`.

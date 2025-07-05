@@ -12,8 +12,19 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     # Declare launch arguments
     # Launch parameters
-    config_dir = LaunchConfiguration('config_dir', default=os.path.join(
-        get_package_share_directory('simulation_core'), 'config'))
+    config_dir = LaunchConfiguration(
+        'config_dir',
+        default=os.path.join(
+            get_package_share_directory('simulation_core'), 'config')
+    )
+    camera_config = LaunchConfiguration(
+        'camera_config',
+        default=os.path.join(
+            get_package_share_directory('simulation_core'),
+            'config',
+            'realsense_config.yaml',
+        ),
+    )
     data_dir = LaunchConfiguration('data_dir', default='/tmp/simulation_data')
     save_images = LaunchConfiguration('save_images', default='false')
     allow_unsafe_werkzeug = LaunchConfiguration('allow_unsafe_werkzeug', default='true')
@@ -45,6 +56,13 @@ def generate_launch_description():
             default_value=os.path.join(get_package_share_directory('simulation_core'), 'config'),
             description='Directory containing configuration files'),
         DeclareLaunchArgument(
+            'camera_config',
+            default_value=os.path.join(
+                get_package_share_directory('simulation_core'),
+                'config',
+                'realsense_config.yaml'),
+            description='YAML file with parameters for the RealSense camera'),
+        DeclareLaunchArgument(
             'data_dir',
             default_value='/tmp/simulation_data',
             description='Directory for storing data and exports'),
@@ -71,18 +89,7 @@ def generate_launch_description():
             package='realsense2_camera',
             executable='realsense2_camera_node',
             name='realsense2_camera',
-            parameters=[{
-                'enable_color': True,
-                'enable_depth': True,
-                'enable_infra1': False,
-                'enable_infra2': False,
-                'color_width': 640,
-                'color_height': 480,
-                'depth_width': 640,
-                'depth_height': 480,
-                'depth_fps': 30,
-                'color_fps': 30
-            }],
+            parameters=[camera_config],
             output='screen'
         )
     )
