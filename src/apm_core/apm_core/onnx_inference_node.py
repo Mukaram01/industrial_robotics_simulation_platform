@@ -310,12 +310,9 @@ class OnnxInferenceNode(Node):
         # Convert to RGB (if model expects RGB)
         rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
         
-        # Normalize pixel values to [0, 1]
-        normalized = rgb.astype(np.float32) / 255.0
-        
-        # Add batch dimension
-        batched = np.expand_dims(normalized, axis=0)
-        
+        # ONNX model expects uint8 input so keep original scale
+        batched = np.expand_dims(rgb, axis=0).astype(np.uint8)
+
         return batched
     
     def process_detections(self, outputs, image_shape):
