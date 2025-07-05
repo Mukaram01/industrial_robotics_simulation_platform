@@ -18,6 +18,7 @@ sudo apt install python3-rosdep
 sudo rosdep init
 rosdep update
 rosdep install --from-paths src -y --ignore-src
+./create_setup_cfgs.sh
 colcon build --symlink-install
 source install/setup.bash
 ```
