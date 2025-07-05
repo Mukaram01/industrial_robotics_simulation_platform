@@ -141,6 +141,14 @@ launch command. It starts the simulation with a few simple flags:
 python scripts/run_sim.py --use-realsense
 ```
 
+## Default Credentials
+
+The web interface starts with a single account where both the username and
+password are `admin`. You can create or modify user accounts by placing a
+`users.yaml` file in the directory passed as `config_dir` when launching the
+web interface. Each key-value pair in that file defines a username and its
+password.
+
 ## Handling Large Files
 
 Model weights and other large assets in the `models/` directory are stored using
