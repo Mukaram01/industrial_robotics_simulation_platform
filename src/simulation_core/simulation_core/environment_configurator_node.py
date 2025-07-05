@@ -5,11 +5,14 @@ import os
 import re
 import subprocess
 import shutil
+import tempfile
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Bool
 import yaml  # type: ignore
 from typing import Any, Optional, cast, TYPE_CHECKING
+
+import xacro  # type: ignore
 
 if TYPE_CHECKING:  # pragma: no cover - used for type checking only
     from rclpy.timer import Timer
@@ -335,7 +338,30 @@ class EnvironmentConfiguratorNode(Node):
                 )
                 continue
 
-            if model_file.endswith(('.urdf', '.urdf.xacro')):
+            if model_file.endswith('.urdf.xacro'):
+                try:
+                    from urdf_parser_py.urdf import URDF
+                    xml_str = xacro.process_file(model_file).toxml()
+                    URDF.from_xml_string(xml_str)
+                    tmp = tempfile.NamedTemporaryFile('w', suffix='.urdf', delete=False)
+                    with tmp:
+                        tmp.write(xml_str)
+                    self.get_logger().info(
+                        f"Launching robot_state_publisher for {model_file}"
+                    )
+                    self._launch_process([
+                        'ros2',
+                        'run',
+                        'robot_state_publisher',
+                        'robot_state_publisher',
+                        tmp.name,
+                    ])
+                except Exception as e:
+                    self.get_logger().error(
+                        f"Failed to process xacro {model_file}: {e}"
+                    )
+                    continue
+            elif model_file.endswith('.urdf'):
                 try:
                     from urdf_parser_py.urdf import URDF
                     URDF.from_xml_file(model_file)
@@ -352,7 +378,9 @@ class EnvironmentConfiguratorNode(Node):
                         ]
                     )
                 except Exception as e:
-                    self.get_logger().error(f'Failed to parse URDF {model_file}: {e}')
+                    self.get_logger().error(
+                        f'Failed to parse URDF {model_file}: {e}'
+                    )
             elif model_file.endswith('.sdf'):
                 try:
                     import sdformat  # noqa: F401
