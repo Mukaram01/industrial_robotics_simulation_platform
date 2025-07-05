@@ -64,6 +64,8 @@ From the repository root, build all packages via the meta-package:
 
 ```bash
 pip install -r requirements.txt
+# generate setup.cfg files for ROS 2 Python packages
+./create_setup_cfgs.sh
 colcon build --packages-select industrial_robotics_simulation_platform_meta
 source install/setup.bash
 ```
