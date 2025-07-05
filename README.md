@@ -63,6 +63,7 @@ For installation and launch instructions, see [industrial_deployment_guide.md](i
 From the repository root, build all packages via the meta-package:
 
 ```bash
+pip install -r requirements.txt
 colcon build --packages-select industrial_robotics_simulation_platform_meta
 source install/setup.bash
 ```
