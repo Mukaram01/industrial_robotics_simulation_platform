@@ -30,6 +30,24 @@ camera_integration:
 
 Customize this file as needed and pass it to the launch files using the `config_dir` argument.
 
+If the RealSense driver publishes `aligned_depth_to_color/image_raw` instead of
+`/camera/depth/image_rect_raw`, remap the depth topic so that the perception
+nodes receive the expected name. A minimal remapping file looks like:
+
+```yaml
+topic_mapping:
+  "/camera/depth/image_rect_raw": "/camera/aligned_depth_to_color/image_raw"
+```
+
+You can pass this file to the launch system with the updated launch arguments:
+
+```bash
+ros2 launch simulation_tools integrated_system_launch.py \
+  use_realsense:=true \
+  config_dir:=src/simulation_core/config \
+  --ros-args -r /camera/depth/image_rect_raw:=/camera/aligned_depth_to_color/image_raw
+```
+
 ## 3. Launch with the Real Camera
 
 Use the integrated launch file with the `use_realsense` flag:
