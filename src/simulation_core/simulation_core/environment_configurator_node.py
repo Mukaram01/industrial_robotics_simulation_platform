@@ -53,6 +53,7 @@ class EnvironmentConfiguratorNode(Node):
         self.running = False
         self.environment_config: dict[str, Any] = {}
         self._threads: list[threading.Thread] = []
+        self._tmp_files: list[str] = []
         self.load_scenario(self.current_scenario)
 
         # Create publishers
@@ -344,6 +345,7 @@ class EnvironmentConfiguratorNode(Node):
                     xml_str = xacro.process_file(model_file).toxml()
                     URDF.from_xml_string(xml_str)
                     tmp = tempfile.NamedTemporaryFile('w', suffix='.urdf', delete=False)
+                    self._tmp_files.append(tmp.name)
                     with tmp:
                         tmp.write(xml_str)
                     self.get_logger().info(
@@ -512,6 +514,13 @@ class EnvironmentConfiguratorNode(Node):
         for thread in self._threads:
             if thread.is_alive():
                 thread.join(timeout=0.1)
+
+        for path in self._tmp_files:
+            if os.path.exists(path):
+                try:
+                    os.remove(path)
+                except Exception:  # pragma: no cover - best effort
+                    pass
     
     def get_default_config(self) -> dict:
         return {
