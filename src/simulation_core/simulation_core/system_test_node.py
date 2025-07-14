@@ -65,7 +65,10 @@ class SystemTestNode(Node):
         if self.test_running:
             self.get_logger().warning('Test already running')
             return
-        
+
+        if self.data_dir:
+            os.makedirs(self.data_dir, exist_ok=True)
+
         self.test_running = True
         self.start_time = time.time()
         self._last_log_time = 0.0
@@ -112,7 +115,11 @@ class SystemTestNode(Node):
         
         # Save test results
         if self.data_dir:
-            results_path = os.path.join(self.data_dir, f'test_results_{time.strftime("%Y%m%d_%H%M%S")}.json')
+            os.makedirs(self.data_dir, exist_ok=True)
+            results_path = os.path.join(
+                self.data_dir,
+                f'test_results_{time.strftime("%Y%m%d_%H%M%S")}.json',
+            )
             try:
                 with open(results_path, 'w') as f:
                     json.dump(self.test_results, f, indent=2)
