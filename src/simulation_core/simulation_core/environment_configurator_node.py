@@ -446,13 +446,25 @@ class EnvironmentConfiguratorNode(Node):
     def simulate_error(self, error_type: str) -> None:
         if not self.running:
             return
-        
+
         self.get_logger().info(f'Simulating error: {error_type}')
-        
+
+        # Pick a random error type if requested
+        if error_type == 'random':
+            error_type = random.choice(
+                [
+                    'gripper_failure',
+                    'object_slip',
+                    'sensor_noise',
+                    'communication_delay',
+                    'power_fluctuation',
+                ]
+            )
+
         # Update metrics
         if self.record_metrics:
             self.metrics['errors'] += 1
-            
+
             # Different error types affect different metrics
             if error_type == 'gripper_failure':
                 self.metrics['accuracy'] = max(0.0, self.metrics['accuracy'] - 5.0)
@@ -460,6 +472,12 @@ class EnvironmentConfiguratorNode(Node):
                 self.metrics['accuracy'] = max(0.0, self.metrics['accuracy'] - 3.0)
             elif error_type == 'sensor_noise':
                 self.metrics['accuracy'] = max(0.0, self.metrics['accuracy'] - 2.0)
+            elif error_type == 'communication_delay':
+                self.metrics['cycle_time'] += 1.0
+            elif error_type == 'power_fluctuation':
+                self.metrics['throughput'] = max(
+                    0.0, self.metrics['throughput'] * 0.8
+                )
     
     def publish_status(self) -> None:
         status_msg = String()
