@@ -379,3 +379,25 @@ def test_actions_invalid_limit(monkeypatch):
     res = client.get('/api/actions?limit=bad')
     assert res.status_code == 400
 
+
+def test_shutdown_closes_logger(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    logger_mock = MagicMock()
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock(return_value=logger_mock))
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.server_thread = MagicMock()
+    node.server_thread.is_alive.return_value = False
+
+    node.shutdown()
+
+    logger_mock.close.assert_called_once()
+
