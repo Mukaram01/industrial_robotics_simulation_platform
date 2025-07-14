@@ -257,6 +257,46 @@ def test_jog_api_publishes(monkeypatch):
     logger_mock.log.assert_called_once_with('jog', {'joint': 1, 'delta': 0.1})
 
 
+def test_jog_api_invalid_delta(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+    _login(client)
+
+    res = client.post('/api/jog', json={'joint': 'j1', 'delta': 'bad'})
+    assert res.status_code == 400
+
+
+def test_jog_api_invalid_joint(monkeypatch):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    client = node.app.test_client()
+    _login(client)
+
+    res = client.post('/api/jog', json={'joint': '..bad', 'delta': 0.1})
+    assert res.status_code == 400
+
+
 def test_waypoint_api_execute(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 
