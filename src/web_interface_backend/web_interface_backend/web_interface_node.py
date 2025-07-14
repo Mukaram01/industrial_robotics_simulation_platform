@@ -903,6 +903,7 @@ class WebInterfaceNode(Node):
 
     def shutdown(self) -> None:
         """Stop the Socket.IO server and wait for its thread to finish."""
+        self.action_logger.close()
         try:
             self.socketio.stop()
         except Exception as e:  # pragma: no cover - best effort shutdown
