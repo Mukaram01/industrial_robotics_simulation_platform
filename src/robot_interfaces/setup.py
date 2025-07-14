@@ -16,4 +16,10 @@ setup(
     maintainer_email='user@example.com',
     description='Robot specific interfaces',
     license='Apache-2.0',
+    entry_points={
+        'simulation_core.robots': [
+            'delta = robot_interfaces.delta_interface:DeltaInterface',
+            'ur5 = robot_interfaces.ur5_interface:UR5Interface',
+        ],
+    },
 )
