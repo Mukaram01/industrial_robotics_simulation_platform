@@ -54,6 +54,8 @@ class EnvironmentConfiguratorNode(Node):
         self.environment_config: dict[str, Any] = {}
         self._threads: list[threading.Thread] = []
         self._tmp_files: list[str] = []
+        self._record_proc: Optional[subprocess.Popen] = None
+        self._play_proc: Optional[subprocess.Popen] = None
         self.load_scenario(self.current_scenario)
 
         # Create publishers
@@ -138,20 +140,69 @@ class EnvironmentConfiguratorNode(Node):
             self.get_logger().warning('Emergency stop triggered')
         
         elif command == 'start_recording':
-            self.get_logger().info('Starting recording')
-            # In a real implementation, this would start recording the simulation
-        
+            if self._record_proc is not None:
+                self.get_logger().warning('Recording already running')
+                return
+            bag_dir = os.path.join('data', 'recordings')
+            os.makedirs(bag_dir, exist_ok=True)
+            bag_name = time.strftime('%Y%m%d_%H%M%S')
+            bag_path = os.path.join(bag_dir, bag_name)
+            cmd = ['ros2', 'bag', 'record', '-a', '-o', bag_path]
+            try:
+                self._record_proc = subprocess.Popen(cmd)
+                self.get_logger().info(f'Started recording to {bag_path}')
+            except Exception as e:
+                self.get_logger().error(f'Failed to start recording: {e}')
+                self._record_proc = None
+
         elif command == 'stop_recording':
+            if self._record_proc is None:
+                self.get_logger().warning('Recording not running')
+                return
             self.get_logger().info('Stopping recording')
-            # In a real implementation, this would stop recording and save
-        
+            try:
+                self._record_proc.terminate()
+                self._record_proc.wait(timeout=5)
+            except Exception as e:
+                self.get_logger().error(f'Failed to stop recording: {e}')
+            finally:
+                self._record_proc = None
+
         elif command == 'start_playback':
-            self.get_logger().info('Starting playback')
-            # In a real implementation, this would start playback
-        
+            if self._play_proc is not None:
+                self.get_logger().warning('Playback already running')
+                return
+            bag_dir = os.path.join('data', 'recordings')
+            if not os.path.isdir(bag_dir):
+                self.get_logger().warning('No recordings available')
+                return
+            bags = sorted(
+                os.path.join(bag_dir, d) for d in os.listdir(bag_dir)
+            )
+            if not bags:
+                self.get_logger().warning('No recordings available')
+                return
+            bag_path = bags[-1]
+            cmd = ['ros2', 'bag', 'play', bag_path]
+            try:
+                self._play_proc = subprocess.Popen(cmd)
+                self.get_logger().info(f'Started playback from {bag_path}')
+            except Exception as e:
+                self.get_logger().error(f'Failed to start playback: {e}')
+                self._play_proc = None
+
         elif command == 'stop_playback':
+            if self._play_proc is None:
+                self.get_logger().warning('Playback not running')
+                return
             self.get_logger().info('Stopping playback')
-            # In a real implementation, this would stop playback
+            try:
+                self._play_proc.terminate()
+                self._play_proc.wait(timeout=5)
+            except Exception as e:
+                self.get_logger().error(f'Failed to stop playback: {e}')
+            finally:
+                self._play_proc = None
     
     def config_callback(self, msg: String) -> None:
         try:
@@ -514,6 +565,14 @@ class EnvironmentConfiguratorNode(Node):
         for thread in self._threads:
             if thread.is_alive():
                 thread.join(timeout=0.1)
+
+        for proc in (self._record_proc, self._play_proc):
+            if proc is not None:
+                try:
+                    proc.terminate()
+                    proc.wait(timeout=5)
+                except Exception:  # pragma: no cover - best effort
+                    pass
 
         for path in self._tmp_files:
             if os.path.exists(path):
