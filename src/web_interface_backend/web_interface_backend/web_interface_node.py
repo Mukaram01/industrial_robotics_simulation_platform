@@ -35,6 +35,7 @@ import numpy as np
 import base64
 
 SCENARIO_ID_PATTERN = re.compile(r'^[A-Za-z0-9_]+$')
+JOINT_PATTERN = re.compile(r'^[A-Za-z0-9_]+$')
 
 from ament_index_python.packages import get_package_share_directory
 from .action_logger import ActionLogger
@@ -666,10 +667,18 @@ class WebInterfaceNode(Node):
             if joint is None or delta is None:
                 return jsonify({'error': 'joint and delta required'}), 400
 
+            if not JOINT_PATTERN.match(str(joint)):
+                return jsonify({'error': 'invalid joint'}), 400
+
+            try:
+                delta_val = float(delta)
+            except (TypeError, ValueError):
+                return jsonify({'error': 'invalid delta'}), 400
+
             cmd_msg = String()
-            cmd_msg.data = f'jog {joint} {delta}'
+            cmd_msg.data = f'jog {joint} {delta_val}'
             self.command_pub.publish(cmd_msg)
-            self.action_logger.log('jog', {'joint': joint, 'delta': delta})
+            self.action_logger.log('jog', {'joint': joint, 'delta': delta_val})
             return jsonify({'success': True})
 
         @self.app.route('/api/waypoint', methods=['POST'])
