@@ -699,6 +699,8 @@ class WebInterfaceNode(Node):
                 limit = int(limit_str)
             except ValueError:
                 return jsonify({'error': 'Invalid limit parameter'}), 400
+            if limit <= 0:
+                return jsonify({'error': 'Invalid limit parameter'}), 400
 
             rows = []
             try:
