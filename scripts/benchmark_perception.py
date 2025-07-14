@@ -107,9 +107,15 @@ def evaluate_detections(gt_list, pred_list, num_classes, iou_thresh=0.5):
         for idx, (img_idx, pred) in enumerate(image_preds):
             gts = cls_gts[img_idx]
             ious = [
-                iou(pred["box"], [gt["bbox"][0], gt["bbox"][1],
-                                     gt["bbox"][0] + gt["bbox"][2],
-                                     gt["bbox"][1] + gt["bbox"][3]])
+                iou(
+                    pred["box"],
+                    [
+                        gt["bbox"][0],
+                        gt["bbox"][1],
+                        gt["bbox"][0] + gt["bbox"][2],
+                        gt["bbox"][1] + gt["bbox"][3],
+                    ],
+                )
                 for gt in gts
             ]
             if ious and max(ious) >= iou_thresh:
