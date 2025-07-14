@@ -112,6 +112,16 @@ You can also change the value at runtime by publishing a configuration message:
 ros2 topic pub /simulation/config std_msgs/msg/String '{"settings": {"simulation": {"error_simulation_rate": 0.5}}}'
 ```
 
+### Supported Error Types
+
+The environment configurator recognizes the following error types:
+
+- `gripper_failure` – gripper fails to grasp an object
+- `object_slip` – object slips from the gripper
+- `sensor_noise` – temporary sensor inaccuracy
+- `communication_delay` – delayed control communication increases cycle time
+- `power_fluctuation` – power instability reduces throughput
+
 ## 8. Adjusting Camera FPS
 
 The camera simulator defaults to the frame rate specified in `src/simulation_core/config/default_camera_config.yaml`. You can override this when launching the synthetic camera node. For example:
