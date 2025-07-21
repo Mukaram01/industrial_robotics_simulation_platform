@@ -358,6 +358,26 @@ class WebInterfaceNode(Node):
                     self.get_logger().error(f'Error loading users: {e}')
         return {'admin': 'admin'}
 
+    def _load_environment_config(self) -> dict | None:
+        """Load environment geometry from the current scenario file."""
+        if not self.config_dir or not self.current_scenario:
+            return None
+        for ext in ('yaml', 'json'):
+            path = os.path.join(self.config_dir, f'{self.current_scenario}.{ext}')
+            if os.path.exists(path):
+                try:
+                    with open(path, 'r', encoding='utf-8') as f:
+                        if ext == 'json':
+                            data = json.load(f)
+                        else:
+                            data = yaml.safe_load(f)
+                    if isinstance(data, dict):
+                        env_keys = ['environment', 'objects', 'containers', 'conveyors']
+                        return {k: data.get(k) for k in env_keys if k in data}
+                except Exception as e:  # pragma: no cover - log and ignore
+                    self.get_logger().error(f'Error loading environment: {e}')
+        return None
+
     def setup_routes(self) -> None:
         """Register Flask HTTP routes for the user interface."""
         @self.app.route('/login', methods=['GET', 'POST'])
@@ -486,6 +506,14 @@ class WebInterfaceNode(Node):
         @login_required
         def get_objects():
             return jsonify({'objects': self.latest_objects})
+
+        @self.app.route('/api/environment')
+        @login_required
+        def get_environment():
+            env = self._load_environment_config()
+            if env is None:
+                return jsonify({'error': 'Environment not available'}), 404
+            return jsonify({'environment': env})
         
         @self.app.route('/api/scenarios')
         @login_required

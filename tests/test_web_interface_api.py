@@ -297,6 +297,54 @@ def test_jog_api_invalid_joint(monkeypatch):
     assert res.status_code == 400
 
 
+def test_environment_api(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.config_dir = str(tmp_path)
+    node.current_scenario = 'test'
+    (tmp_path / 'test.yaml').write_text(
+        'environment:\n  size: [1,1,1]\nobjects:\n - id: a\n   position: [0,0,0]\n   dimensions: [1,1,1]'
+    )
+    client = node.app.test_client()
+    _login(client)
+    res = client.get('/api/environment')
+    assert res.status_code == 200
+    data = res.get_json()
+    assert 'environment' in data
+    assert 'objects' in data['environment']
+
+
+def test_environment_api_missing(monkeypatch, tmp_path):
+    _setup_ros_stubs(monkeypatch)
+
+    sys.modules.pop('web_interface_backend.web_interface_node', None)
+
+    from web_interface_backend import web_interface_node as win
+    import flask
+    win.Flask = flask.Flask
+
+    monkeypatch.setattr(win, 'ActionLogger', MagicMock())
+    monkeypatch.setattr(win.WebInterfaceNode, 'run_server', lambda self: None)
+
+    node = win.WebInterfaceNode()
+    node.config_dir = str(tmp_path)
+    node.current_scenario = 'missing'
+    client = node.app.test_client()
+    _login(client)
+    res = client.get('/api/environment')
+    assert res.status_code == 404
+
+
 def test_waypoint_api_execute(monkeypatch):
     _setup_ros_stubs(monkeypatch)
 

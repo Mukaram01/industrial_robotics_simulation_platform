@@ -166,6 +166,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="/static/env_viewer.js"></script>
 <script>
 const socket = io();
 const statusBadge = document.getElementById('status-badge');
@@ -194,34 +195,8 @@ const clearWaypointsBtn = document.getElementById('clear-waypoints');
 const executeSequenceBtn = document.getElementById('execute-sequence');
 const ctx = workspaceCanvas.getContext('2d');
 let objects = [];
-let scene, camera, renderer;
 const envCanvas = document.getElementById('env-canvas');
-function initThree() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, envCanvas.clientWidth/envCanvas.clientHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({canvas: envCanvas});
-    renderer.setSize(envCanvas.clientWidth, envCanvas.clientHeight);
-    camera.position.z = 2;
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(0,0,2).add(new THREE.Vector3(1,1,1));
-    scene.add(light);
-    animate();
-}
-function animate(){
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-function updateThreeObjects(){
-    if(!scene)return;
-    scene.clear();
-    const material = new THREE.MeshNormalMaterial();
-    objects.forEach(o=>{
-        const geo = new THREE.BoxGeometry(0.05,0.05,0.05);
-        const mesh = new THREE.Mesh(geo, material);
-        mesh.position.set(o.position.x,o.position.y,o.position.z);
-        scene.add(mesh);
-    });
-}
+EnvViewer.init(envCanvas);
 socket.on('status_update', function(data) {
     statusBadge.textContent = data.status;
     statusBadge.className = 'badge';
@@ -244,13 +219,14 @@ socket.on('status_update', function(data) {
             statusBadge.classList.add('bg-secondary');
     }
     addToCommandLog(`Status: ${data.status}`);
+    EnvViewer.loadEnvironment();
 });
 socket.on('objects_update', function(data) {
     objects = data.objects;
     objectsCount.textContent = objects.length;
     updateObjectDropdown();
     drawWorkspace();
-    updateThreeObjects();
+    EnvViewer.updateObjects(objects);
 });
 socket.on('image_data', function(data) {
     if (data.rgb && rgbImage) {
@@ -463,7 +439,7 @@ function sendCommand(cmd) {
         body: JSON.stringify({ command: cmd })
     }).then(() => addToCommandLog('Command: ' + cmd));
 }
-initThree();
+EnvViewer.loadEnvironment();
 loadScenarios();
 loadExports();
 drawWorkspace();
