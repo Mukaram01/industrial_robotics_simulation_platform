@@ -27,6 +27,16 @@ style of individual views.
    templates to inject scripts, extra CSS or content sections. Use these blocks
    to add widgets to any page.
 
+### Environment Viewer
+
+The control page includes a Three.js viewer showing the layout of the current
+scenario. The viewer is rendered inside the `env-canvas` element and is driven
+by `/static/env_viewer.js`. Geometry is loaded from the backend via the
+`/api/environment` endpoint which returns the `environment`, `objects`,
+`containers` and `conveyors` sections of the active scenario file. Modifying
+these fields in your scenario YAML will automatically change what the viewer
+displays.
+
 After modifying the templates, rebuild the `web_interface_frontend` package
 using `colcon build --packages-select web_interface_frontend` so the updated
 files are installed.
