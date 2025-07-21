@@ -410,3 +410,24 @@ def test_simulate_error_updates_metrics(tmp_path):
 
     assert dummy.metrics['errors'] == 1
     assert dummy.metrics['accuracy'] == 95.0
+
+
+def test_simulate_new_error_types(tmp_path):
+    dummy = make_dummy(tmp_path)
+    dummy.record_metrics = True
+    dummy.metrics = {
+        'cycle_time': 2.0,
+        'throughput': 60.0,
+        'accuracy': 100.0,
+        'errors': 0,
+        'objects_processed': 0,
+    }
+    dummy.running = True
+
+    ec.EnvironmentConfiguratorNode.simulate_error(dummy, 'communication_delay')
+    assert dummy.metrics['errors'] == 1
+    assert dummy.metrics['cycle_time'] == 3.0
+
+    ec.EnvironmentConfiguratorNode.simulate_error(dummy, 'power_fluctuation')
+    assert dummy.metrics['errors'] == 2
+    assert dummy.metrics['throughput'] == pytest.approx(48.0)
