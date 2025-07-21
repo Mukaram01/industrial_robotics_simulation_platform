@@ -106,3 +106,11 @@ def test_industrial_protocol_bridge_defaults(monkeypatch):
     assert node.get_parameter('modbus_host').value == 'localhost'
     assert node.get_parameter('modbus_port').value == 502
     assert node.get_parameter('modbus_enabled').value is False
+
+
+def test_joint_plotter_node_defaults():
+    from simulation_tools.joint_plotter_node import JointPlotterNode
+
+    node = _init_node(JointPlotterNode)
+
+    assert node.get_parameter('joint_states_topic').value == '/joint_states'

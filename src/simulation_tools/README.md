@@ -18,7 +18,7 @@ Start the full system:
 ros2 launch simulation_tools integrated_system_launch.py
 ```
 
-Other launches include `realsense_hybrid_launch.py` for RealSense cameras and `visualization_launch.py` for a standalone visualization server.
+Other launches include `realsense_hybrid_launch.py` for RealSense cameras and `visualization_launch.py` for a standalone visualization server. The latter accepts `use_joint_plotter:=true` to show live joint plots.
 
 ## Extension
 Pass `-h` to any launch file to see configurable arguments and adapt them to your needs.

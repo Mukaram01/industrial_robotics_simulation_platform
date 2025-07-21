@@ -37,6 +37,7 @@ setup(
     entry_points={
         'console_scripts': [
             'object_3d_viewer = simulation_tools.object_3d_viewer_node:main',
+            'joint_plotter = simulation_tools.joint_plotter_node:main',
         ]
     },
 )

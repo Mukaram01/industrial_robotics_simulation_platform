@@ -72,7 +72,15 @@ Open another terminal for RViz to view the UR5 model and camera feeds:
 ros2 launch ur5_robot_description display.launch.py
 ```
 
-## 5. (Optional) Run Gazebo
+## 5. View Joint State Plots
+
+Start a Matplotlib window that displays joint angles in real time:
+
+```bash
+ros2 launch simulation_tools visualization_launch.py use_joint_plotter:=true
+```
+
+## 6. (Optional) Run Gazebo
 
 To see the robot in a physics simulation, start Gazebo in a separate terminal:
 
@@ -87,13 +95,13 @@ ros2 run gazebo_ros spawn_entity.py \
     -topic /robot_description -entity ur5
 ```
 
-## 6. Access the Web Interface
+## 7. Access the Web Interface
 
 Navigate to [http://localhost:8080](http://localhost:8080) in your browser to control the simulation, add objects and monitor status.
 
 The full system is now running with Gazebo, RViz, object detection and the web dashboard.
 
-## 7. Adjust Error Simulation Rate
+## 8. Adjust Error Simulation Rate
 
 The environment configurator node can randomly trigger errors during metrics
 updates. Control how often this happens using the `error_simulation_rate`

@@ -18,6 +18,7 @@ def generate_launch_description():
     use_delta_robot = LaunchConfiguration("use_delta_robot")
     use_ur5_robot = LaunchConfiguration("use_ur5_robot")
     use_sim_time = LaunchConfiguration("use_sim_time")
+    use_joint_plotter = LaunchConfiguration("use_joint_plotter")
     # Get package directories
     simulation_tools_dir = get_package_share_directory('simulation_tools')
     delta_desc_dir = get_package_share_directory('delta_robot_description')
@@ -55,6 +56,12 @@ def generate_launch_description():
         'use_rviz',
         default_value='true',
         description='Launch RViz for visualization'
+    ))
+
+    ld.add_action(DeclareLaunchArgument(
+        'use_joint_plotter',
+        default_value='false',
+        description='Launch joint plotter for /joint_states'
     ))
 
     ld.add_action(DeclareLaunchArgument(
@@ -134,6 +141,15 @@ def generate_launch_description():
         condition=IfCondition(use_ur5_robot),
     )
     ld.add_action(ur5_joint_state_publisher)
+
+    joint_plotter_node = Node(
+        package='simulation_tools',
+        executable='joint_plotter',
+        name='joint_plotter',
+        output='screen',
+        condition=IfCondition(use_joint_plotter),
+    )
+    ld.add_action(joint_plotter_node)
 
     # Include realsense launch file conditionally
     realsense_launch_file = os.path.join(
