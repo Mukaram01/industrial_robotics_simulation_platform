@@ -141,6 +141,10 @@ launch command. It starts the simulation with a few simple flags:
 python scripts/run_sim.py --use-realsense
 ```
 
+> **Note:** The helper scripts check for a ROS 2 Humble installation. Ensure
+> you have sourced `/opt/ros/humble/setup.bash` (and built the workspace if
+> necessary) before invoking them.
+
 ## Default Credentials
 
 The web interface starts with a single account where both the username and
