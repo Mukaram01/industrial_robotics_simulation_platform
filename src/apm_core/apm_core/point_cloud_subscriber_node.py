@@ -13,7 +13,7 @@ class PointCloudSubscriberNode(Node):
         
         # Declare parameters
         self.declare_parameter('pointcloud_topic', '/camera/depth/color/points')
-        pointcloud_topic = self.get_parameter('pointcloud_topic').get_parameter_value().string_value
+        pointcloud_topic = self.get_parameter('pointcloud_topic').value
         
         # Create subscription
         self.subscription = self.create_subscription(
