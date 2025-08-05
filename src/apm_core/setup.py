@@ -29,6 +29,7 @@ setup(
         'onnxruntime',
         'pyyaml',
     ],
+    python_requires='>=3.10',
     zip_safe=True,
     maintainer='ubuntu',
     maintainer_email='user@example.com',
