@@ -14,7 +14,7 @@ class ImageSubscriberNode(Node):
         
         # Declare parameters
         self.declare_parameter('image_topic', '/camera/color/image_raw')
-        image_topic = self.get_parameter('image_topic').get_parameter_value().string_value
+        image_topic = self.get_parameter('image_topic').value
         
         # Create subscription
         self.subscription = self.create_subscription(

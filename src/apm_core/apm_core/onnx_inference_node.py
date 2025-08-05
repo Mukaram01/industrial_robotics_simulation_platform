@@ -25,7 +25,7 @@ class OnnxInferenceNode(Node):
         
         # Declare parameters
         self.declare_parameter('config_file', 'default_object_detection_config.yaml')
-        config_file = self.get_parameter('config_file').get_parameter_value().string_value
+        config_file = self.get_parameter('config_file').value
         
         # Load configuration
         self.config = self.load_config(config_file)
